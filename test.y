@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "Expression.h"
+#include "Fonction.h"
 
 void yyerror(int *, const char *);
 int yylex(void);
@@ -11,7 +12,7 @@ int yylex(void);
    Val* val64;
 
    void* type;
-   void* proto;
+   //void* proto;
    void* instr;
    void* instrv;
    void* prog;
@@ -30,6 +31,10 @@ int yylex(void);
    Val* valeur;
    Caractere* cval;
    Expression* expression;
+
+   Fonction* fonc;
+   Prototype* proto;
+   ParametreDeclar* paramDeclar;
 }
 
 /*
@@ -107,8 +112,8 @@ int yylex(void);
 %type <TODO> expression_for
 %type <affect> affectation
 %type <valvar> valeur_variable
-%type <TODO> fonction
-%type <TODO> parametre_declaration
+%type <fonc> fonction
+%type <paramDeclar> parametre_declaration
 %type <TODO> appel_fonction
 %type <TODO> liste_expression
 
