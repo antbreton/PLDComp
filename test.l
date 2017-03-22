@@ -16,7 +16,7 @@ caractere '[a-zA-Z]{1}'
 [ \n\t]  	{ /* ignore */ }
 
 
-{caractere}	{ return CARACTERE; }
+{caractere}	{ yylval.cval = new Caractere(yytext['0']); return CARACTERE; }
 "("      	{ return PAROUVR; }
 ")"      	{ return PARFERM; }
 "int32_t"	{ return INT32;}
@@ -50,7 +50,7 @@ caractere '[a-zA-Z]{1}'
 "%"         { return DIVEUCL;}
 "!"         { return NOT;}  
 
-{entier} 	{ yylval.val32 = atoi(yytext); return INT32; }
+{entier} 	{ yylval.val32 = new Val(atoi(yytext)); return VAL; }
 
 {string} 	{ return IDENTIFIANT; }
 

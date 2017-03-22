@@ -7,8 +7,8 @@ void yyerror(int *, const char *);
 int yylex(void);
 %}
 %union {
-   VAL* val32;
-   VAL* val64;
+   Val* val32;
+   Val* val64;
 
    void* type;
    void* proto;
@@ -25,12 +25,11 @@ int yylex(void);
    void* TODO;
    void* affect;
    void* valvar;
-   int inutile;
-   
-   //expression
-   OperateurUnaire* opeun;
-   VAL* valeur;
-   CARACTERE* cval;
+   int* inutile;
+   Not *non;
+   Val* valeur;
+   Caractere* cval;
+   Expression* expression;
 }
 
 /*
@@ -75,7 +74,7 @@ int yylex(void);
 %token MULT
 %token DIV
 %token DIVEUCL
-%token NOT
+%token <non> NOT
 
 %left VIRGULE
 %right EGAL_AFFECTATION
@@ -103,9 +102,8 @@ int yylex(void);
 %type <TODO> suffixe_tab
 %type <TODO> bloc
 %type <TODO> contenu_bloc
-%type <expr> expression
+%type <expression> expression
 %type <opebin> operateurbinaire
-%type <opeun> operateurunaire
 %type <TODO> declaration_droite
 %type <TODO> expression_for
 %type <affect> affectation
@@ -173,7 +171,7 @@ prototype : type IDENTIFIANT PAROUVR parametres_declaration PARFERM;
 
 parametres_declaration : type;
 
-expression : operateurunaire expression { $$ = new OperateurUnaire($1); }
+expression : NOT expression { $$ = new Not($2); }
            | expression operateurbinaire expression
            | PAROUVR expression PARFERM 
            | appel_fonction
@@ -181,8 +179,8 @@ expression : operateurunaire expression { $$ = new OperateurUnaire($1); }
            | IDENTIFIANT
            | valeur_variable;
            
-valeur_variable : VAL { $$ = new VAL($1); }
-                | CARACTERE { $$ = new CARACTERE($1); };
+valeur_variable : VAL
+                | CARACTERE
 
 affectation : IDENTIFIANT EGAL_AFFECTATION expression;
 
@@ -199,7 +197,7 @@ operateurbinaire : AND
                  | MULT
                  | DIV
                  | DIVEUCL;
-operateurunaire : NOT;
+
 
 /**** QUENTIN ****/
 structure_de_controle : bloc_if | bloc_boucle;
@@ -221,19 +219,6 @@ bloc : ACCOLOUVR contenu_bloc ACCOLFERM;
 contenu_bloc : contenu_bloc instr 
              | instr;
 
-/************************/
-
-/*axiome : expr { *resultat = $1; }
-       ;
-
-expr : expr PLUS expr { $$ = $1 + $3; }
-     | expr MUL expr  { $$ = $1 * $3; }
-     | expr DIV expr  { $$ = $1 / $3; }
-     | expr MOINS expr{ $$ = $1 - $3; }
-     | OPEN expr CLOSE{ $$ = $2; }
-     | ENTIER         { $$ = $1; }
-     ;
-*/
 
 
 

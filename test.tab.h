@@ -90,11 +90,10 @@ union YYSTYPE
 {
 #line 9 "test.y" /* yacc.c:1909  */
 
-   VAL* val32;
-   VAL* val64;
+   Val* val32;
+   Val* val64;
 
    void* type;
-   void* typev;
    void* proto;
    void* instr;
    void* instrv;
@@ -109,14 +108,13 @@ union YYSTYPE
    void* TODO;
    void* affect;
    void* valvar;
-   int inutile;
-   
-   //expression
-   OperateurUnaire* opeun;
-   VAL* valeur;
-   CARACTERE* cval;
+   int* inutile;
+   Not *non;
+   Val* valeur;
+   Caractere* cval;
+   Expression* expression;
 
-#line 120 "test.tab.h" /* yacc.c:1909  */
+#line 118 "test.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

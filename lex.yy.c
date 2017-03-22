@@ -819,7 +819,7 @@ YY_RULE_SETUP
 case 3:
 YY_RULE_SETUP
 #line 19 "test.l"
-{ return CARACTERE; }
+{ yylval.cval = new Caractere(yytext['0']); return CARACTERE; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
@@ -984,7 +984,7 @@ YY_RULE_SETUP
 case 36:
 YY_RULE_SETUP
 #line 53 "test.l"
-{ yylval.val32 = atoi(yytext); return INT32; }
+{ yylval.val32 = new Val(atoi(yytext)); return VAL; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
