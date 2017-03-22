@@ -1,0 +1,285 @@
+Non-terminaux inutiles dans la grammaire
+
+   declaration_droite
+   separateur_decl
+   declaration
+   fonction
+   parametre_declaration
+   prototype
+   appel_fonction
+   liste_expression
+   typev
+   type
+   instrv
+   instr
+   programme
+   axiome
+   parametres_declaration
+   expression
+   affectation
+   operateurbinaire
+   operateurunaire
+   structure_de_controle
+   bloc_if
+   bloc_boucle
+   expression_for
+   bloc_for
+   bloc_while
+   bloc
+   contenu_bloc
+
+
+Terminaux inutilisés dans la grammaire
+
+   IDENTIFIANT
+   PAROUVR
+   PARFERM
+   INT32
+   INT64
+   CHAR
+   VOID
+   PV
+   RETURN
+   ACCOLOUVR
+   ACCOLFERM
+   IF
+   ELSE
+   WHILE
+   FOR
+   VIRGULE
+   EGALEGAL
+   EGAL_AFFECTATION
+   AND
+   OR
+   INF
+   SUP
+   INFEGAL
+   SUPEGAL
+   DIFF
+   PLUS
+   MOINS
+   MULT
+   DIV
+   DIVEUCL
+   NOT
+
+
+Règles inutiles dans la grammaire
+
+    5 declaration_droite: typev IDENTIFIANT suffixe_tab
+
+    6 separateur_decl: separateur_decl VIRGULE IDENTIFIANT
+    7                | %empty
+
+    8 declaration: declaration_droite separateur_decl
+    9            | declaration_droite separateur_decl EGAL_AFFECTATION expression
+
+   10 fonction: prototype PV
+   11         | prototype bloc
+
+   12 parametre_declaration: parametre_declaration VIRGULE declaration_droite
+   13                      | declaration_droite
+
+   14 prototype: type IDENTIFIANT PAROUVR parametre_declaration PARFERM
+
+   15 appel_fonction: IDENTIFIANT PAROUVR liste_expression PARFERM
+
+   16 liste_expression: expression VIRGULE liste_expression
+   17                 | expression
+
+   18 typev: INT32
+   19      | INT64
+   20      | CHAR
+
+   21 type: typev
+   22     | VOID
+
+   23 instrv: expression PV
+   24       | structure_de_controle
+   25       | bloc
+   26       | RETURN CROCHOUVR expression CROCHFERM PV
+   27       | PV
+
+   28 instr: instrv declaration PV
+
+   29 programme: programme fonction
+   30          | programme declaration
+   31          | %empty
+
+   32 axiome: programme
+
+   33 prototype: type IDENTIFIANT PAROUVR parametres_declaration PARFERM
+
+   34 parametres_declaration: type
+
+   35 expression: operateurunaire expression
+   36           | expression operateurbinaire expression
+   37           | PAROUVR expression PARFERM
+   38           | appel_fonction
+   39           | affectation
+   40           | IDENTIFIANT
+   41           | valeur_variable
+
+   42 affectation: IDENTIFIANT EGAL_AFFECTATION expression
+
+   43 operateurbinaire: AND
+   44                 | OR
+   45                 | INF
+   46                 | SUP
+   47                 | INFEGAL
+   48                 | SUPEGAL
+   49                 | EGALEGAL
+   50                 | DIFF
+   51                 | PLUS
+   52                 | MOINS
+   53                 | MULT
+   54                 | DIV
+   55                 | DIVEUCL
+
+   56 operateurunaire: NOT
+
+   57 structure_de_controle: bloc_if
+   58                      | bloc_boucle
+
+   59 bloc_if: IF PAROUVR expression PARFERM instrv ELSE instrv
+   60        | IF PAROUVR expression PARFERM instrv
+
+   61 bloc_boucle: bloc_for
+   62            | bloc_while
+
+   63 expression_for: expression
+   64               | %empty
+
+   65 bloc_for: FOR PAROUVR expression_for PV expression_for PV expression_for PV PARFERM instrv
+
+   66 bloc_while: WHILE PAROUVR expression PARFERM instrv
+
+   67 bloc: ACCOLOUVR contenu_bloc ACCOLFERM
+
+   68 contenu_bloc: contenu_bloc instr
+   69             | instr
+
+
+Grammaire
+
+    0 $accept: suffixe_tab $end
+
+    1 suffixe_tab: CROCHOUVR valeur_variable CROCHFERM
+    2            | %empty
+
+    3 valeur_variable: VAL
+    4                | CARACTERE
+
+
+Terminaux, suivis des règles où ils apparaissent
+
+$end (0) 0
+error (256)
+IDENTIFIANT (258)
+PAROUVR (259)
+PARFERM (260)
+INT32 (261)
+INT64 (262)
+CHAR (263)
+VOID (264)
+PV (265)
+RETURN (266)
+CROCHOUVR (267) 1
+CROCHFERM (268) 1
+ACCOLOUVR (269)
+ACCOLFERM (270)
+IF (271)
+ELSE (272)
+WHILE (273)
+FOR (274)
+VIRGULE (275)
+EGALEGAL (276)
+EGAL_AFFECTATION (277)
+VAL (278) 3
+CARACTERE (279) 4
+AND (280)
+OR (281)
+INF (282)
+SUP (283)
+INFEGAL (284)
+SUPEGAL (285)
+DIFF (286)
+PLUS (287)
+MOINS (288)
+MULT (289)
+DIV (290)
+DIVEUCL (291)
+NOT (292)
+
+
+Non-terminaux, suivis des règles où ils apparaissent
+
+$accept (38)
+    à gauche: 0
+suffixe_tab (39)
+    à gauche: 1 2, à droite: 0
+valeur_variable (40)
+    à gauche: 3 4, à droite: 1
+
+
+État 0
+
+    0 $accept: . suffixe_tab $end
+
+    CROCHOUVR  décalage et aller à l'état 1
+
+    $défaut  réduction par utilisation de la règle 2 (suffixe_tab)
+
+    suffixe_tab  aller à l'état 2
+
+
+État 1
+
+    1 suffixe_tab: CROCHOUVR . valeur_variable CROCHFERM
+
+    VAL        décalage et aller à l'état 3
+    CARACTERE  décalage et aller à l'état 4
+
+    valeur_variable  aller à l'état 5
+
+
+État 2
+
+    0 $accept: suffixe_tab . $end
+
+    $end  décalage et aller à l'état 6
+
+
+État 3
+
+    3 valeur_variable: VAL .
+
+    $défaut  réduction par utilisation de la règle 3 (valeur_variable)
+
+
+État 4
+
+    4 valeur_variable: CARACTERE .
+
+    $défaut  réduction par utilisation de la règle 4 (valeur_variable)
+
+
+État 5
+
+    1 suffixe_tab: CROCHOUVR valeur_variable . CROCHFERM
+
+    CROCHFERM  décalage et aller à l'état 7
+
+
+État 6
+
+    0 $accept: suffixe_tab $end .
+
+    $défaut  accepter
+
+
+État 7
+
+    1 suffixe_tab: CROCHOUVR valeur_variable CROCHFERM .
+
+    $défaut  réduction par utilisation de la règle 1 (suffixe_tab)
