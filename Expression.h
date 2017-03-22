@@ -7,21 +7,21 @@ class Expression {
 		virtual ~Expression() {}	
 };
 
-class VAL : Expression {
+class Val : public Expression {
 	public:
-		VAL(int valeur):Expression(), valeur(valeur) {}
+		Val(int valeur):Expression(), valeur(valeur) {}
 		const int valeur;
 };
 
-class CARACTERE : Expression {
+class Caractere : public Expression {
 	public:
-		CARACTERE():Expression() {}
-		const char c;
+		Caractere(char c):Expression(), c(c) {}
+		char c;
 };
 
-class OperateurUnaire : Expression {
+class Not : public Expression {
 	public:
-		OperateurUnaire(Expression * membre):Expression(), membre(membre) {}
+		Not(Expression * membre):Expression(), membre(membre) {}
 	private:
 		Expression * membre;
 };
