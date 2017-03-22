@@ -105,7 +105,7 @@ int yylex(void);
 
 %%
 
-/*** ANTOINE *****/
+
 //déclaration Variables
 
 suffixe_tab : CROCHOUVR valeur_variable CROCHFERM
@@ -142,7 +142,7 @@ instrv : expression PV
        | bloc
        | RETURN CROCHOUVR expression CROCHFERM PV
        | PV;
-instr : instrv declaration PV
+instr : instrv declaration PV;
 programme : programme fonction
           | programme declaration
           |;
@@ -176,7 +176,7 @@ operateurbinaire : AND
                  | DIVEUCL;
 operateurunaire : NOT;
 
-/**** QUENTIN ****/
+
 structure_de_controle : bloc_if | bloc_boucle;
 
 bloc_if : IF PAROUVR expression PARFERM instrv ELSE instrv 
@@ -188,27 +188,13 @@ expression_for : expression
 bloc_for : FOR PAROUVR expression_for PV expression_for PV expression_for PV PARFERM instrv;
 
 bloc_while : WHILE PAROUVR expression PARFERM instrv;
-////*******/////
+
 
 
 /******LUCA SANS S******/
 bloc : ACCOLOUVR contenu_bloc ACCOLFERM;
 contenu_bloc : contenu_bloc instr 
              | instr;
-
-/************************/
-
-/*axiome : expr { *resultat = $1; }
-       ;
-
-expr : expr PLUS expr { $$ = /$1 + $3; }
-     | expr MUL expr  { $$ = $1 * $3; }
-     | expr DIV expr  { $$ = $1 / $3; }
-     | expr MOINS expr{ $$ = $1 - $3; }
-     | OPEN expr CLOSE{ $$ = $2; }
-     | ENTIER         { $$ = $1; }
-     ;
-*/
 
 
 
