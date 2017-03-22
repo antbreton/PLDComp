@@ -1,13 +1,15 @@
 %{
 #include <stdio.h>
 #include <stdint.h>
+#include "Expression.h"
+
 void yyerror(int *, const char *);
 int yylex(void);
 %}
 %union {
-   int32_t val32;
-   int64_t val64;
-   char cval;
+   VAL* val32;
+   VAL* val64;
+
    void* type;
    void* typev;
    void* proto;
@@ -20,11 +22,16 @@ int yylex(void);
    void* blocwhile;
    void* expr;
    void* opebin;
-   void* opeun;
+
    void* TODO;
    void* affect;
    void* valvar;
- int inutile;
+   int inutile;
+   
+   //expression
+   OperateurUnaire* opeun;
+   VAL* valeur;
+   CARACTERE* cval;
 }
 /*
 %token PLUS MOINS DIV OPEN CLOSE MUL
@@ -54,8 +61,8 @@ int yylex(void);
 %token VIRGULE
 %token EGALEGAL
 %token EGAL_AFFECTATION
-%token VAL
-%token CARACTERE
+%token <valeur> VAL
+%token <cval> CARACTERE
 %token AND
 %token OR
 %token INF
@@ -105,7 +112,7 @@ int yylex(void);
 
 %%
 
-
+/*** ANTOINE *****/
 //déclaration Variables
 
 suffixe_tab : CROCHOUVR valeur_variable CROCHFERM
@@ -136,31 +143,40 @@ liste_expression : expression VIRGULE liste_expression
                 | expression;
 
 typev : INT32 | INT64 | CHAR;
+
 type : typev | VOID;
+
 instrv : expression PV
        | structure_de_controle
        | bloc
        | RETURN CROCHOUVR expression CROCHFERM PV
        | PV;
+       
 instr : instrv declaration PV;
+
 programme : programme fonction
           | programme declaration
           |;
+          
 axiome : programme;
 
 prototype : type IDENTIFIANT PAROUVR parametres_declaration PARFERM;
+
 parametres_declaration : type;
 
-expression : operateurunaire expression
+expression : operateurunaire expression { $$ = new OperateurUnaire($1); }
            | expression operateurbinaire expression
            | PAROUVR expression PARFERM 
            | appel_fonction
            | affectation
            | IDENTIFIANT
            | valeur_variable;
-valeur_variable : VAL
-                | CARACTERE;
+           
+valeur_variable : VAL { $$ = new VAL($1); }
+                | CARACTERE { $$ = new CARACTERE($1); };
+                
 affectation : IDENTIFIANT EGAL_AFFECTATION expression;
+
 operateurbinaire : AND
                  | OR
                  | INF
@@ -176,7 +192,7 @@ operateurbinaire : AND
                  | DIVEUCL;
 operateurunaire : NOT;
 
-
+/**** QUENTIN ****/
 structure_de_controle : bloc_if | bloc_boucle;
 
 bloc_if : IF PAROUVR expression PARFERM instrv ELSE instrv 
@@ -188,13 +204,27 @@ expression_for : expression
 bloc_for : FOR PAROUVR expression_for PV expression_for PV expression_for PV PARFERM instrv;
 
 bloc_while : WHILE PAROUVR expression PARFERM instrv;
-
+////*******/////
 
 
 /******LUCA SANS S******/
 bloc : ACCOLOUVR contenu_bloc ACCOLFERM;
 contenu_bloc : contenu_bloc instr 
              | instr;
+
+/************************/
+
+/*axiome : expr { *resultat = $1; }
+       ;
+
+expr : expr PLUS expr { $$ = $1 + $3; }
+     | expr MUL expr  { $$ = $1 * $3; }
+     | expr DIV expr  { $$ = $1 / $3; }
+     | expr MOINS expr{ $$ = $1 - $3; }
+     | OPEN expr CLOSE{ $$ = $2; }
+     | ENTIER         { $$ = $1; }
+     ;
+*/
 
 
 
