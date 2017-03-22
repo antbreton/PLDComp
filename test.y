@@ -97,7 +97,6 @@ int yylex(void);
 %type <TODO> bloc
 %type <TODO> contenu_bloc
 %type <expr> expression
-%type <opebin> operateurbinaire
 %type <opeun> operateurunaire
 %type <TODO> declaration_droite
 %type <TODO> expression_for
@@ -161,8 +160,20 @@ programme : programme fonction
 prototype : type IDENTIFIANT PAROUVR parametres_declaration PARFERM;
 parametres_declaration : type;
 
-expression : operateurunaire expression
-           | expression operateurbinaire expression
+expression : NOT expression
+           | expression AND expression
+           | expression OR expression
+           | expression INF expression
+           | expression SUP expression
+           | expression INFEGAL expression
+           | expression SUPEGAL expression
+           | expression EGALEGAL expression
+           | expression DIFF expression
+           | expression PLUS expression
+           | expression MOINS expression
+           | expression MULT expression
+           | expression DIV expression
+           | expression DIVEUCL expression
            | PAROUVR expression PARFERM 
            | appel_fonction
            | affectation
@@ -170,22 +181,12 @@ expression : operateurunaire expression
            | valeur_variable;
 
 
+
+
 valeur_variable : VAL
                 | CARACTERE;
 affectation : IDENTIFIANT EGAL_AFFECTATION expression;
-operateurbinaire : AND
-                 | OR
-                 | INF
-                 | SUP
-                 | INFEGAL
-                 | SUPEGAL
-                 | EGALEGAL
-                 | DIFF
-                 | PLUS
-                 | MOINS
-                 | MULT
-                 | DIV
-                 | DIVEUCL;
+
 operateurunaire : NOT;
 
 
