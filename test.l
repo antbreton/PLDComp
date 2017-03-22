@@ -48,9 +48,7 @@ caractere '[a-zA-Z]{1}'
 "%"         { return DIVEUCL;}
 "!"         { return NOT;}  
 
-{entier} 	{ yylval.ival = atoi(yytext); return ENTIER; }
+{entier} 	{ yylval.val32 = atoi(yytext); return INT32; }
 
 {string} 	{ return IDENTIFIANT; }
 
-
-%token VAL
