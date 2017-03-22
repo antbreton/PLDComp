@@ -88,11 +88,11 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 7 "test.y" /* yacc.c:1909  */
+#line 9 "test.y" /* yacc.c:1909  */
 
-   int32_t val32;
-   int64_t val64;
-   char cval;
+   VAL* val32;
+   VAL* val64;
+
    void* type;
    void* typev;
    void* proto;
@@ -105,13 +105,18 @@ union YYSTYPE
    void* blocwhile;
    void* expr;
    void* opebin;
-   void* opeun;
+
    void* TODO;
    void* affect;
    void* valvar;
- int inutile;
+   int inutile;
+   
+   //expression
+   OperateurUnaire* opeun;
+   VAL* valeur;
+   CARACTERE* cval;
 
-#line 115 "test.tab.h" /* yacc.c:1909  */
+#line 120 "test.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

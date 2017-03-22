@@ -11,7 +11,6 @@ int yylex(void);
    VAL* val64;
 
    void* type;
-   void* typev;
    void* proto;
    void* instr;
    void* instrv;
@@ -33,15 +32,16 @@ int yylex(void);
    VAL* valeur;
    CARACTERE* cval;
 }
+
 /*
 %token PLUS MOINS DIV OPEN CLOSE MUL
 %token <ival> ENTIER
 
 %type <ival> expr
-
-%left MOINS PLUS
-%left MUL DIV
 */
+
+
+
 %token IDENTIFIANT
 %token PAROUVR PARFERM
 %token <val32> INT32
@@ -77,9 +77,18 @@ int yylex(void);
 %token DIVEUCL
 %token NOT
 
+%left VIRGULE
+%right EGAL_AFFECTATION
+%left OR
+%left AND
+%left EGALEGAL DIFF
+%left INFEGAL SUPEGAL INF SUP
+%left MOINS PLUS
+%left MULT DIV DIVEUCL
+%right NOT
+%left CROCHOUVR CROCHFERM ACCOLOUVR ACCOLFERM
 
 
-%type <typev> typev
 %type <type> type
 %type <TODO> instrv
 %type <TODO> instr
@@ -115,11 +124,13 @@ int yylex(void);
 /*** ANTOINE *****/
 //déclaration Variables
 
+axiome : programme;
+
 suffixe_tab : CROCHOUVR valeur_variable CROCHFERM
             | {$$ = NULL;}
             ;
 
-declaration_droite : typev IDENTIFIANT suffixe_tab;
+declaration_droite : type IDENTIFIANT suffixe_tab;
 
 separateur_decl : separateur_decl VIRGULE IDENTIFIANT
                 | /* vide */;
@@ -142,9 +153,8 @@ appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM;
 liste_expression : expression VIRGULE liste_expression
                 | expression;
 
-typev : INT32 | INT64 | CHAR;
 
-type : typev | VOID;
+type : INT32 | INT64 | CHAR | VOID;
 
 instrv : expression PV
        | structure_de_controle
@@ -157,8 +167,7 @@ instr : instrv declaration PV;
 programme : programme fonction
           | programme declaration
           |;
-          
-axiome : programme;
+
 
 prototype : type IDENTIFIANT PAROUVR parametres_declaration PARFERM;
 
@@ -174,7 +183,7 @@ expression : operateurunaire expression { $$ = new OperateurUnaire($1); }
            
 valeur_variable : VAL { $$ = new VAL($1); }
                 | CARACTERE { $$ = new CARACTERE($1); };
-                
+
 affectation : IDENTIFIANT EGAL_AFFECTATION expression;
 
 operateurbinaire : AND
@@ -207,7 +216,7 @@ bloc_while : WHILE PAROUVR expression PARFERM instrv;
 ////*******/////
 
 
-/******LUCA SANS S******/
+
 bloc : ACCOLOUVR contenu_bloc ACCOLFERM;
 contenu_bloc : contenu_bloc instr 
              | instr;

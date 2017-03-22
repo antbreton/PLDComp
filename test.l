@@ -1,7 +1,9 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include "Expression.h"
 #include "test.tab.h"
+
 %}
 %option noyywrap
 entier [0-9]+

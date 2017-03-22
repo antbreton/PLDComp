@@ -66,10 +66,12 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include "Expression.h"
+
 void yyerror(int *, const char *);
 int yylex(void);
 
-#line 73 "test.tab.c" /* yacc.c:339  */
+#line 75 "test.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -147,11 +149,11 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 7 "test.y" /* yacc.c:355  */
+#line 9 "test.y" /* yacc.c:355  */
 
-   int32_t val32;
-   int64_t val64;
-   char cval;
+   VAL* val32;
+   VAL* val64;
+
    void* type;
    void* typev;
    void* proto;
@@ -164,13 +166,18 @@ union YYSTYPE
    void* blocwhile;
    void* expr;
    void* opebin;
-   void* opeun;
+
    void* TODO;
    void* affect;
    void* valvar;
- int inutile;
+   int inutile;
+   
+   //expression
+   OperateurUnaire* opeun;
+   VAL* valeur;
+   CARACTERE* cval;
 
-#line 174 "test.tab.c" /* yacc.c:355  */
+#line 181 "test.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -187,7 +194,7 @@ int yyparse (int * resultat);
 
 /* Copy the second part of user declarations.  */
 
-#line 191 "test.tab.c" /* yacc.c:358  */
+#line 198 "test.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -488,7 +495,7 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   111,   111,   112,   161,   162
+       0,   118,   118,   119,   175,   176
 };
 #endif
 
@@ -1264,13 +1271,25 @@ yyreduce:
   switch (yyn)
     {
         case 3:
-#line 112 "test.y" /* yacc.c:1646  */
+#line 119 "test.y" /* yacc.c:1646  */
     {(yyval.TODO) = NULL;}
-#line 1270 "test.tab.c" /* yacc.c:1646  */
+#line 1277 "test.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 4:
+#line 175 "test.y" /* yacc.c:1646  */
+    { (yyval.valvar) = new VAL((yyvsp[0].valeur)); }
+#line 1283 "test.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 5:
+#line 176 "test.y" /* yacc.c:1646  */
+    { (yyval.valvar) = new CARACTERE((yyvsp[0].cval)); }
+#line 1289 "test.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1274 "test.tab.c" /* yacc.c:1646  */
+#line 1293 "test.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1498,7 +1517,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 215 "test.y" /* yacc.c:1906  */
+#line 231 "test.y" /* yacc.c:1906  */
 
 
 void yyerror(int * res, const char * msg) {
