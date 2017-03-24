@@ -174,7 +174,7 @@ parametres_declaration : type;
 
 expression : NOT expression { $$ = new Not($2); }
            | expression AND expression
-           | expression OR expression
+           | expression OR expression { $$ = new OperationOR($1, $3); }
            | expression INF expression
            | expression SUP expression
            | expression INFEGAL expression
