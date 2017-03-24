@@ -4,14 +4,16 @@
 #include "Expression.h"
 #include "Fonction.h"
 #include "Structure.h"
+#include "General.h"
+
 void yyerror(int *, const char *);
 int yylex(void);
 %}
 %union {
    Val* val32;
    Val* val64;
-
-   void* type;
+	 string* identifiant;
+   string* type;
    //void* proto;
    void* instr;
    InstructionV* instrv;
@@ -32,10 +34,11 @@ int yylex(void);
    Val* valeur;
    Caractere* cval;
    Expression* expression;
-
+	 Declaration* declaration;
    Fonction* fonc;
    Prototype* proto;
    ParametreDeclar* paramDeclar;
+   std::vector<string>* listeIdentifiants;
 }
 
 /*
@@ -110,6 +113,7 @@ int yylex(void);
 %type <TODO> contenu_bloc
 %type <expression> expression
 %type <TODO> declaration_droite
+%type <declaration> declaration
 %type <TODO> expression_for
 %type <affect> affectation
 %type <valvar> valeur_variable
@@ -117,7 +121,7 @@ int yylex(void);
 %type <paramDeclar> parametre_declaration
 %type <TODO> appel_fonction
 %type <TODO> liste_expression
-
+%type <listeIdentifiants> separateur_decl
 
 //%left IDENTIFIANT PAROUVR PARFERM INT32 INT64 CHAR VOID
 %parse-param { int * resultat }
@@ -133,12 +137,12 @@ suffixe_tab : CROCHOUVR valeur_variable CROCHFERM
             | {$$ = NULL;}
             ;
 
-declaration_droite : type IDENTIFIANT suffixe_tab;
+declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1);};
 
-separateur_decl : separateur_decl VIRGULE IDENTIFIANT
-                | /* vide */;
+separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back("test");}	// A chaque appel on push l'identifiant courant dans la liste
+                | /* vide */ { $$ = new std::vector<string>();};			// On crée la liste d'identifiant quand on est sur vide
 
-declaration : declaration_droite separateur_decl
+declaration : declaration_droite separateur_decl { $$->setIdentifiants($2);}
             | declaration_droite separateur_decl EGAL_AFFECTATION expression;
 
 //fonction
@@ -157,7 +161,10 @@ liste_expression : expression VIRGULE liste_expression
                 | expression;
 
 
-type : INT32 | INT64 | CHAR | VOID;
+type : INT32 { $$ = new string("INT32");}
+		 | INT64 { $$ = new string("INT64");}
+		 | CHAR { $$ = new string("CHAR");}
+		 | VOID { $$ = new string("VOID");};
 
 instrv : expression PV
        | structure_de_controle
@@ -180,7 +187,7 @@ parametres_declaration : type;
 
 expression : NOT expression { $$ = new Not($2); }
            | expression AND expression
-           | expression OR expression { $$ = new OperationOR($1, $3); }
+           | expression OR expression {/* $$ = new OperationOR($1, $3);*/}
            | expression INF expression
            | expression SUP expression
            | expression INFEGAL expression

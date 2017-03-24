@@ -55,5 +55,5 @@ caractere '[a-zA-Z]{1}'
 
 {entier} 	{ yylval.val32 = new Val(atoi(yytext)); return VAL; }
 
-{string} 	{ return IDENTIFIANT; }
+{string} 	{ yylval.identifiant = new string(yytext); return IDENTIFIANT; }
 

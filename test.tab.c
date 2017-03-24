@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.0.2"
+#define YYBISON_VERSION "3.0.4"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -69,10 +69,12 @@
 #include "Expression.h"
 #include "Fonction.h"
 #include "Structure.h"
+#include "General.h"
+
 void yyerror(int *, const char *);
 int yylex(void);
 
-#line 76 "test.tab.c" /* yacc.c:339  */
+#line 78 "test.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -147,15 +149,15 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE YYSTYPE;
+
 union YYSTYPE
 {
-#line 10 "test.y" /* yacc.c:355  */
+#line 12 "test.y" /* yacc.c:355  */
 
    Val* val32;
    Val* val64;
-
-   void* type;
+	 string* identifiant;
+   string* type;
    //void* proto;
    void* instr;
    InstructionV* instrv;
@@ -176,13 +178,16 @@ union YYSTYPE
    Val* valeur;
    Caractere* cval;
    Expression* expression;
-
+	 Declaration* declaration;
    Fonction* fonc;
    Prototype* proto;
    ParametreDeclar* paramDeclar;
+   std::vector<string>* listeIdentifiants;
 
-#line 185 "test.tab.c" /* yacc.c:355  */
+#line 188 "test.tab.c" /* yacc.c:355  */
 };
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -196,7 +201,7 @@ int yyparse (int * resultat);
 
 /* Copy the second part of user declarations.  */
 
-#line 200 "test.tab.c" /* yacc.c:358  */
+#line 205 "test.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -497,13 +502,13 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   130,   130,   132,   133,   136,   138,   139,   141,   142,
-     145,   146,   148,   149,   152,   154,   156,   157,   160,   160,
-     160,   160,   162,   163,   164,   165,   166,   168,   170,   171,
-     172,   175,   177,   181,   182,   183,   184,   185,   186,   187,
-     188,   189,   190,   191,   192,   193,   194,   195,   196,   197,
-     198,   199,   203,   204,   207,   212,   213,   215,   216,   218,
-     218,   223,   225,   230,   231,   232
+       0,   134,   134,   136,   137,   140,   142,   143,   145,   146,
+     149,   150,   152,   153,   156,   158,   160,   161,   164,   165,
+     166,   167,   169,   170,   171,   172,   173,   175,   177,   178,
+     179,   182,   184,   188,   189,   190,   191,   192,   193,   194,
+     195,   196,   197,   198,   199,   200,   201,   202,   203,   204,
+     205,   206,   210,   211,   214,   219,   220,   222,   223,   225,
+     225,   230,   232,   237,   238,   239
 };
 #endif
 
@@ -1408,37 +1413,91 @@ yyreduce:
   switch (yyn)
     {
         case 4:
-#line 133 "test.y" /* yacc.c:1646  */
+#line 137 "test.y" /* yacc.c:1646  */
     {(yyval.TODO) = NULL;}
-#line 1414 "test.tab.c" /* yacc.c:1646  */
+#line 1419 "test.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 5:
+#line 140 "test.y" /* yacc.c:1646  */
+    { (yyval.TODO) = new Declaration(*(yyvsp[-2].type));}
+#line 1425 "test.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 6:
+#line 142 "test.y" /* yacc.c:1646  */
+    { (yyval.listeIdentifiants)->push_back("test");}
+#line 1431 "test.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 7:
+#line 143 "test.y" /* yacc.c:1646  */
+    { (yyval.listeIdentifiants) = new std::vector<string>();}
+#line 1437 "test.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 8:
+#line 145 "test.y" /* yacc.c:1646  */
+    { (yyval.declaration)->setIdentifiants((yyvsp[0].listeIdentifiants));}
+#line 1443 "test.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 164 "test.y" /* yacc.c:1646  */
+    { (yyval.type) = new string("INT32");}
+#line 1449 "test.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 165 "test.y" /* yacc.c:1646  */
+    { (yyval.type) = new string("INT64");}
+#line 1455 "test.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 166 "test.y" /* yacc.c:1646  */
+    { (yyval.type) = new string("CHAR");}
+#line 1461 "test.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 21:
+#line 167 "test.y" /* yacc.c:1646  */
+    { (yyval.type) = new string("VOID");}
+#line 1467 "test.tab.c" /* yacc.c:1646  */
     break;
 
   case 33:
-#line 181 "test.y" /* yacc.c:1646  */
+#line 188 "test.y" /* yacc.c:1646  */
     { (yyval.expression) = new Not((yyvsp[0].expression)); }
-#line 1420 "test.tab.c" /* yacc.c:1646  */
+#line 1473 "test.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 35:
+#line 190 "test.y" /* yacc.c:1646  */
+    {/* $$ = new OperationOR($1, $3);*/}
+#line 1479 "test.tab.c" /* yacc.c:1646  */
     break;
 
   case 58:
-#line 216 "test.y" /* yacc.c:1646  */
+#line 223 "test.y" /* yacc.c:1646  */
     { (yyval.blocif) = new BlocIf((yyvsp[-2].expression),(yyvsp[0].instrv));}
-#line 1426 "test.tab.c" /* yacc.c:1646  */
+#line 1485 "test.tab.c" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 223 "test.y" /* yacc.c:1646  */
+#line 230 "test.y" /* yacc.c:1646  */
     { (yyval.blocfor) = new BlocFor((yyvsp[-7].expression),(yyvsp[-5].expression),(yyvsp[-3].expression),(yyvsp[0].instrv));}
-#line 1432 "test.tab.c" /* yacc.c:1646  */
+#line 1491 "test.tab.c" /* yacc.c:1646  */
     break;
 
   case 62:
-#line 225 "test.y" /* yacc.c:1646  */
+#line 232 "test.y" /* yacc.c:1646  */
     { (yyval.blocwhile) = new BlocWhile((yyvsp[-2].expression),(yyvsp[0].instrv));}
-#line 1438 "test.tab.c" /* yacc.c:1646  */
+#line 1497 "test.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1442 "test.tab.c" /* yacc.c:1646  */
+#line 1501 "test.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1666,7 +1725,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 237 "test.y" /* yacc.c:1906  */
+#line 244 "test.y" /* yacc.c:1906  */
 
 
 void yyerror(int * res, const char * msg) {
