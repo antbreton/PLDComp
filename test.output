@@ -1,0 +1,2073 @@
+Non-terminaux inutiles dans la grammaire
+
+   expression_for
+
+
+État 115 conflits: 1 décalage/réduction
+
+
+Grammaire
+
+    0 $accept: axiome $end
+
+    1 axiome: programme
+
+    2 suffixe_tab: CROCHOUVR valeur_variable CROCHFERM
+    3            | %empty
+
+    4 declaration_droite: type IDENTIFIANT suffixe_tab
+
+    5 separateur_decl: separateur_decl VIRGULE IDENTIFIANT
+    6                | %empty
+
+    7 declaration: declaration_droite separateur_decl
+    8            | declaration_droite separateur_decl EGAL_AFFECTATION expression
+
+    9 fonction: prototype PV
+   10         | prototype bloc
+
+   11 parametre_declaration: parametre_declaration VIRGULE declaration_droite
+   12                      | declaration_droite
+
+   13 prototype: type IDENTIFIANT PAROUVR parametre_declaration PARFERM
+
+   14 appel_fonction: IDENTIFIANT PAROUVR liste_expression PARFERM
+
+   15 liste_expression: expression VIRGULE liste_expression
+   16                 | expression
+
+   17 type: INT32
+   18     | INT64
+   19     | CHAR
+   20     | VOID
+
+   21 instrv: expression PV
+   22       | structure_de_controle
+   23       | bloc
+   24       | RETURN CROCHOUVR expression CROCHFERM PV
+   25       | PV
+
+   26 instr: instrv declaration PV
+
+   27 programme: programme fonction
+   28          | programme declaration
+   29          | %empty
+
+   30 prototype: type IDENTIFIANT PAROUVR parametres_declaration PARFERM
+
+   31 parametres_declaration: type
+
+   32 expression: NOT expression
+   33           | expression AND expression
+   34           | expression OR expression
+   35           | expression INF expression
+   36           | expression SUP expression
+   37           | expression INFEGAL expression
+   38           | expression SUPEGAL expression
+   39           | expression EGALEGAL expression
+   40           | expression DIFF expression
+   41           | expression PLUS expression
+   42           | expression MOINS expression
+   43           | expression MULT expression
+   44           | expression DIV expression
+   45           | expression DIVEUCL expression
+   46           | PAROUVR expression PARFERM
+   47           | appel_fonction
+   48           | affectation
+   49           | IDENTIFIANT
+   50           | valeur_variable
+
+   51 valeur_variable: VAL
+   52                | CARACTERE
+
+   53 affectation: IDENTIFIANT EGAL_AFFECTATION expression
+
+   54 structure_de_controle: bloc_if
+   55                      | bloc_boucle
+
+   56 bloc_if: IF PAROUVR expression PARFERM instrv ELSE instrv
+   57        | IF PAROUVR expression PARFERM instrv
+
+   58 bloc_boucle: bloc_for
+   59            | bloc_while
+
+   60 bloc_for: FOR PAROUVR expression PV expression PV expression PV PARFERM instrv
+
+   61 bloc_while: WHILE PAROUVR expression PARFERM instrv
+
+   62 bloc: ACCOLOUVR contenu_bloc ACCOLFERM
+
+   63 contenu_bloc: contenu_bloc instr
+   64             | instr
+
+
+Terminaux, suivis des règles où ils apparaissent
+
+$end (0) 0
+error (256)
+IDENTIFIANT (258) 4 5 13 14 30 49 53
+PAROUVR (259) 13 14 30 46 56 57 60 61
+PARFERM (260) 13 14 30 46 56 57 60 61
+INT32 (261) 17
+INT64 (262) 18
+CHAR (263) 19
+VOID (264) 20
+PV (265) 9 21 24 25 26 60
+RETURN (266) 24
+CROCHOUVR (267) 2 24
+CROCHFERM (268) 2 24
+ACCOLOUVR (269) 62
+ACCOLFERM (270) 62
+IF (271) 56 57
+ELSE (272) 56
+WHILE (273) 61
+FOR (274) 60
+VIRGULE (275) 5 11 15
+EGALEGAL (276) 39
+EGAL_AFFECTATION (277) 8 53
+VAL (278) 51
+CARACTERE (279) 52
+AND (280) 33
+OR (281) 34
+INF (282) 35
+SUP (283) 36
+INFEGAL (284) 37
+SUPEGAL (285) 38
+DIFF (286) 40
+PLUS (287) 41
+MOINS (288) 42
+MULT (289) 43
+DIV (290) 44
+DIVEUCL (291) 45
+NOT (292) 32
+
+
+Non-terminaux, suivis des règles où ils apparaissent
+
+$accept (38)
+    à gauche: 0
+axiome (39)
+    à gauche: 1, à droite: 0
+suffixe_tab (40)
+    à gauche: 2 3, à droite: 4
+declaration_droite (41)
+    à gauche: 4, à droite: 7 8 11 12
+separateur_decl (42)
+    à gauche: 5 6, à droite: 5 7 8
+declaration (43)
+    à gauche: 7 8, à droite: 26 28
+fonction (44)
+    à gauche: 9 10, à droite: 27
+parametre_declaration (45)
+    à gauche: 11 12, à droite: 11 13
+prototype (46)
+    à gauche: 13 30, à droite: 9 10
+appel_fonction (47)
+    à gauche: 14, à droite: 47
+liste_expression (48)
+    à gauche: 15 16, à droite: 14 15
+type (49)
+    à gauche: 17 18 19 20, à droite: 4 13 30 31
+instrv (50)
+    à gauche: 21 22 23 24 25, à droite: 26 56 57 60 61
+instr (51)
+    à gauche: 26, à droite: 63 64
+programme (52)
+    à gauche: 27 28 29, à droite: 1 27 28
+parametres_declaration (53)
+    à gauche: 31, à droite: 30
+expression (54)
+    à gauche: 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49
+    50, à droite: 8 15 16 21 24 32 33 34 35 36 37 38 39 40 41 42 43
+    44 45 46 53 56 57 60 61
+valeur_variable (55)
+    à gauche: 51 52, à droite: 2 50
+affectation (56)
+    à gauche: 53, à droite: 48
+structure_de_controle (57)
+    à gauche: 54 55, à droite: 22
+bloc_if (58)
+    à gauche: 56 57, à droite: 54
+bloc_boucle (59)
+    à gauche: 58 59, à droite: 55
+bloc_for (60)
+    à gauche: 60, à droite: 58
+bloc_while (61)
+    à gauche: 61, à droite: 59
+bloc (62)
+    à gauche: 62, à droite: 10 23
+contenu_bloc (63)
+    à gauche: 63 64, à droite: 62 63
+
+
+État 0
+
+    0 $accept: . axiome $end
+
+    $défaut  réduction par utilisation de la règle 29 (programme)
+
+    axiome     aller à l'état 1
+    programme  aller à l'état 2
+
+
+État 1
+
+    0 $accept: axiome . $end
+
+    $end  décalage et aller à l'état 3
+
+
+État 2
+
+    1 axiome: programme .
+   27 programme: programme . fonction
+   28          | programme . declaration
+
+    INT32  décalage et aller à l'état 4
+    INT64  décalage et aller à l'état 5
+    CHAR   décalage et aller à l'état 6
+    VOID   décalage et aller à l'état 7
+
+    $défaut  réduction par utilisation de la règle 1 (axiome)
+
+    declaration_droite  aller à l'état 8
+    declaration         aller à l'état 9
+    fonction            aller à l'état 10
+    prototype           aller à l'état 11
+    type                aller à l'état 12
+
+
+État 3
+
+    0 $accept: axiome $end .
+
+    $défaut  accepter
+
+
+État 4
+
+   17 type: INT32 .
+
+    $défaut  réduction par utilisation de la règle 17 (type)
+
+
+État 5
+
+   18 type: INT64 .
+
+    $défaut  réduction par utilisation de la règle 18 (type)
+
+
+État 6
+
+   19 type: CHAR .
+
+    $défaut  réduction par utilisation de la règle 19 (type)
+
+
+État 7
+
+   20 type: VOID .
+
+    $défaut  réduction par utilisation de la règle 20 (type)
+
+
+État 8
+
+    7 declaration: declaration_droite . separateur_decl
+    8            | declaration_droite . separateur_decl EGAL_AFFECTATION expression
+
+    $défaut  réduction par utilisation de la règle 6 (separateur_decl)
+
+    separateur_decl  aller à l'état 13
+
+
+État 9
+
+   28 programme: programme declaration .
+
+    $défaut  réduction par utilisation de la règle 28 (programme)
+
+
+État 10
+
+   27 programme: programme fonction .
+
+    $défaut  réduction par utilisation de la règle 27 (programme)
+
+
+État 11
+
+    9 fonction: prototype . PV
+   10         | prototype . bloc
+
+    PV         décalage et aller à l'état 14
+    ACCOLOUVR  décalage et aller à l'état 15
+
+    bloc  aller à l'état 16
+
+
+État 12
+
+    4 declaration_droite: type . IDENTIFIANT suffixe_tab
+   13 prototype: type . IDENTIFIANT PAROUVR parametre_declaration PARFERM
+   30          | type . IDENTIFIANT PAROUVR parametres_declaration PARFERM
+
+    IDENTIFIANT  décalage et aller à l'état 17
+
+
+État 13
+
+    5 separateur_decl: separateur_decl . VIRGULE IDENTIFIANT
+    7 declaration: declaration_droite separateur_decl .
+    8            | declaration_droite separateur_decl . EGAL_AFFECTATION expression
+
+    VIRGULE           décalage et aller à l'état 18
+    EGAL_AFFECTATION  décalage et aller à l'état 19
+
+    $défaut  réduction par utilisation de la règle 7 (declaration)
+
+
+État 14
+
+    9 fonction: prototype PV .
+
+    $défaut  réduction par utilisation de la règle 9 (fonction)
+
+
+État 15
+
+   62 bloc: ACCOLOUVR . contenu_bloc ACCOLFERM
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    PV           décalage et aller à l'état 22
+    RETURN       décalage et aller à l'état 23
+    ACCOLOUVR    décalage et aller à l'état 15
+    IF           décalage et aller à l'état 24
+    WHILE        décalage et aller à l'état 25
+    FOR          décalage et aller à l'état 26
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction         aller à l'état 30
+    instrv                 aller à l'état 31
+    instr                  aller à l'état 32
+    expression             aller à l'état 33
+    valeur_variable        aller à l'état 34
+    affectation            aller à l'état 35
+    structure_de_controle  aller à l'état 36
+    bloc_if                aller à l'état 37
+    bloc_boucle            aller à l'état 38
+    bloc_for               aller à l'état 39
+    bloc_while             aller à l'état 40
+    bloc                   aller à l'état 41
+    contenu_bloc           aller à l'état 42
+
+
+État 16
+
+   10 fonction: prototype bloc .
+
+    $défaut  réduction par utilisation de la règle 10 (fonction)
+
+
+État 17
+
+    4 declaration_droite: type IDENTIFIANT . suffixe_tab
+   13 prototype: type IDENTIFIANT . PAROUVR parametre_declaration PARFERM
+   30          | type IDENTIFIANT . PAROUVR parametres_declaration PARFERM
+
+    PAROUVR    décalage et aller à l'état 43
+    CROCHOUVR  décalage et aller à l'état 44
+
+    $défaut  réduction par utilisation de la règle 3 (suffixe_tab)
+
+    suffixe_tab  aller à l'état 45
+
+
+État 18
+
+    5 separateur_decl: separateur_decl VIRGULE . IDENTIFIANT
+
+    IDENTIFIANT  décalage et aller à l'état 46
+
+
+État 19
+
+    8 declaration: declaration_droite separateur_decl EGAL_AFFECTATION . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 47
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 20
+
+   14 appel_fonction: IDENTIFIANT . PAROUVR liste_expression PARFERM
+   49 expression: IDENTIFIANT .
+   53 affectation: IDENTIFIANT . EGAL_AFFECTATION expression
+
+    PAROUVR           décalage et aller à l'état 48
+    EGAL_AFFECTATION  décalage et aller à l'état 49
+
+    $défaut  réduction par utilisation de la règle 49 (expression)
+
+
+État 21
+
+   46 expression: PAROUVR . expression PARFERM
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 50
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 22
+
+   25 instrv: PV .
+
+    $défaut  réduction par utilisation de la règle 25 (instrv)
+
+
+État 23
+
+   24 instrv: RETURN . CROCHOUVR expression CROCHFERM PV
+
+    CROCHOUVR  décalage et aller à l'état 51
+
+
+État 24
+
+   56 bloc_if: IF . PAROUVR expression PARFERM instrv ELSE instrv
+   57        | IF . PAROUVR expression PARFERM instrv
+
+    PAROUVR  décalage et aller à l'état 52
+
+
+État 25
+
+   61 bloc_while: WHILE . PAROUVR expression PARFERM instrv
+
+    PAROUVR  décalage et aller à l'état 53
+
+
+État 26
+
+   60 bloc_for: FOR . PAROUVR expression PV expression PV expression PV PARFERM instrv
+
+    PAROUVR  décalage et aller à l'état 54
+
+
+État 27
+
+   51 valeur_variable: VAL .
+
+    $défaut  réduction par utilisation de la règle 51 (valeur_variable)
+
+
+État 28
+
+   52 valeur_variable: CARACTERE .
+
+    $défaut  réduction par utilisation de la règle 52 (valeur_variable)
+
+
+État 29
+
+   32 expression: NOT . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 55
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 30
+
+   47 expression: appel_fonction .
+
+    $défaut  réduction par utilisation de la règle 47 (expression)
+
+
+État 31
+
+   26 instr: instrv . declaration PV
+
+    INT32  décalage et aller à l'état 4
+    INT64  décalage et aller à l'état 5
+    CHAR   décalage et aller à l'état 6
+    VOID   décalage et aller à l'état 7
+
+    declaration_droite  aller à l'état 8
+    declaration         aller à l'état 56
+    type                aller à l'état 57
+
+
+État 32
+
+   64 contenu_bloc: instr .
+
+    $défaut  réduction par utilisation de la règle 64 (contenu_bloc)
+
+
+État 33
+
+   21 instrv: expression . PV
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    PV        décalage et aller à l'état 58
+    EGALEGAL  décalage et aller à l'état 59
+    AND       décalage et aller à l'état 60
+    OR        décalage et aller à l'état 61
+    INF       décalage et aller à l'état 62
+    SUP       décalage et aller à l'état 63
+    INFEGAL   décalage et aller à l'état 64
+    SUPEGAL   décalage et aller à l'état 65
+    DIFF      décalage et aller à l'état 66
+    PLUS      décalage et aller à l'état 67
+    MOINS     décalage et aller à l'état 68
+    MULT      décalage et aller à l'état 69
+    DIV       décalage et aller à l'état 70
+    DIVEUCL   décalage et aller à l'état 71
+
+
+État 34
+
+   50 expression: valeur_variable .
+
+    $défaut  réduction par utilisation de la règle 50 (expression)
+
+
+État 35
+
+   48 expression: affectation .
+
+    $défaut  réduction par utilisation de la règle 48 (expression)
+
+
+État 36
+
+   22 instrv: structure_de_controle .
+
+    $défaut  réduction par utilisation de la règle 22 (instrv)
+
+
+État 37
+
+   54 structure_de_controle: bloc_if .
+
+    $défaut  réduction par utilisation de la règle 54 (structure_de_controle)
+
+
+État 38
+
+   55 structure_de_controle: bloc_boucle .
+
+    $défaut  réduction par utilisation de la règle 55 (structure_de_controle)
+
+
+État 39
+
+   58 bloc_boucle: bloc_for .
+
+    $défaut  réduction par utilisation de la règle 58 (bloc_boucle)
+
+
+État 40
+
+   59 bloc_boucle: bloc_while .
+
+    $défaut  réduction par utilisation de la règle 59 (bloc_boucle)
+
+
+État 41
+
+   23 instrv: bloc .
+
+    $défaut  réduction par utilisation de la règle 23 (instrv)
+
+
+État 42
+
+   62 bloc: ACCOLOUVR contenu_bloc . ACCOLFERM
+   63 contenu_bloc: contenu_bloc . instr
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    PV           décalage et aller à l'état 22
+    RETURN       décalage et aller à l'état 23
+    ACCOLOUVR    décalage et aller à l'état 15
+    ACCOLFERM    décalage et aller à l'état 72
+    IF           décalage et aller à l'état 24
+    WHILE        décalage et aller à l'état 25
+    FOR          décalage et aller à l'état 26
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction         aller à l'état 30
+    instrv                 aller à l'état 31
+    instr                  aller à l'état 73
+    expression             aller à l'état 33
+    valeur_variable        aller à l'état 34
+    affectation            aller à l'état 35
+    structure_de_controle  aller à l'état 36
+    bloc_if                aller à l'état 37
+    bloc_boucle            aller à l'état 38
+    bloc_for               aller à l'état 39
+    bloc_while             aller à l'état 40
+    bloc                   aller à l'état 41
+
+
+État 43
+
+   13 prototype: type IDENTIFIANT PAROUVR . parametre_declaration PARFERM
+   30          | type IDENTIFIANT PAROUVR . parametres_declaration PARFERM
+
+    INT32  décalage et aller à l'état 4
+    INT64  décalage et aller à l'état 5
+    CHAR   décalage et aller à l'état 6
+    VOID   décalage et aller à l'état 7
+
+    declaration_droite      aller à l'état 74
+    parametre_declaration   aller à l'état 75
+    type                    aller à l'état 76
+    parametres_declaration  aller à l'état 77
+
+
+État 44
+
+    2 suffixe_tab: CROCHOUVR . valeur_variable CROCHFERM
+
+    VAL        décalage et aller à l'état 27
+    CARACTERE  décalage et aller à l'état 28
+
+    valeur_variable  aller à l'état 78
+
+
+État 45
+
+    4 declaration_droite: type IDENTIFIANT suffixe_tab .
+
+    $défaut  réduction par utilisation de la règle 4 (declaration_droite)
+
+
+État 46
+
+    5 separateur_decl: separateur_decl VIRGULE IDENTIFIANT .
+
+    $défaut  réduction par utilisation de la règle 5 (separateur_decl)
+
+
+État 47
+
+    8 declaration: declaration_droite separateur_decl EGAL_AFFECTATION expression .
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    EGALEGAL  décalage et aller à l'état 59
+    AND       décalage et aller à l'état 60
+    OR        décalage et aller à l'état 61
+    INF       décalage et aller à l'état 62
+    SUP       décalage et aller à l'état 63
+    INFEGAL   décalage et aller à l'état 64
+    SUPEGAL   décalage et aller à l'état 65
+    DIFF      décalage et aller à l'état 66
+    PLUS      décalage et aller à l'état 67
+    MOINS     décalage et aller à l'état 68
+    MULT      décalage et aller à l'état 69
+    DIV       décalage et aller à l'état 70
+    DIVEUCL   décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 8 (declaration)
+
+
+État 48
+
+   14 appel_fonction: IDENTIFIANT PAROUVR . liste_expression PARFERM
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction    aller à l'état 30
+    liste_expression  aller à l'état 79
+    expression        aller à l'état 80
+    valeur_variable   aller à l'état 34
+    affectation       aller à l'état 35
+
+
+État 49
+
+   53 affectation: IDENTIFIANT EGAL_AFFECTATION . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 81
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 50
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+   46           | PAROUVR expression . PARFERM
+
+    PARFERM   décalage et aller à l'état 82
+    EGALEGAL  décalage et aller à l'état 59
+    AND       décalage et aller à l'état 60
+    OR        décalage et aller à l'état 61
+    INF       décalage et aller à l'état 62
+    SUP       décalage et aller à l'état 63
+    INFEGAL   décalage et aller à l'état 64
+    SUPEGAL   décalage et aller à l'état 65
+    DIFF      décalage et aller à l'état 66
+    PLUS      décalage et aller à l'état 67
+    MOINS     décalage et aller à l'état 68
+    MULT      décalage et aller à l'état 69
+    DIV       décalage et aller à l'état 70
+    DIVEUCL   décalage et aller à l'état 71
+
+
+État 51
+
+   24 instrv: RETURN CROCHOUVR . expression CROCHFERM PV
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 83
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 52
+
+   56 bloc_if: IF PAROUVR . expression PARFERM instrv ELSE instrv
+   57        | IF PAROUVR . expression PARFERM instrv
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 84
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 53
+
+   61 bloc_while: WHILE PAROUVR . expression PARFERM instrv
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 85
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 54
+
+   60 bloc_for: FOR PAROUVR . expression PV expression PV expression PV PARFERM instrv
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 86
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 55
+
+   32 expression: NOT expression .
+   33           | expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    $défaut  réduction par utilisation de la règle 32 (expression)
+
+
+État 56
+
+   26 instr: instrv declaration . PV
+
+    PV  décalage et aller à l'état 87
+
+
+État 57
+
+    4 declaration_droite: type . IDENTIFIANT suffixe_tab
+
+    IDENTIFIANT  décalage et aller à l'état 88
+
+
+État 58
+
+   21 instrv: expression PV .
+
+    $défaut  réduction par utilisation de la règle 21 (instrv)
+
+
+État 59
+
+   39 expression: expression EGALEGAL . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 89
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 60
+
+   33 expression: expression AND . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 90
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 61
+
+   34 expression: expression OR . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 91
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 62
+
+   35 expression: expression INF . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 92
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 63
+
+   36 expression: expression SUP . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 93
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 64
+
+   37 expression: expression INFEGAL . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 94
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 65
+
+   38 expression: expression SUPEGAL . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 95
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 66
+
+   40 expression: expression DIFF . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 96
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 67
+
+   41 expression: expression PLUS . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 97
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 68
+
+   42 expression: expression MOINS . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 98
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 69
+
+   43 expression: expression MULT . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 99
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 70
+
+   44 expression: expression DIV . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 100
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 71
+
+   45 expression: expression DIVEUCL . expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 101
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 72
+
+   62 bloc: ACCOLOUVR contenu_bloc ACCOLFERM .
+
+    $défaut  réduction par utilisation de la règle 62 (bloc)
+
+
+État 73
+
+   63 contenu_bloc: contenu_bloc instr .
+
+    $défaut  réduction par utilisation de la règle 63 (contenu_bloc)
+
+
+État 74
+
+   12 parametre_declaration: declaration_droite .
+
+    $défaut  réduction par utilisation de la règle 12 (parametre_declaration)
+
+
+État 75
+
+   11 parametre_declaration: parametre_declaration . VIRGULE declaration_droite
+   13 prototype: type IDENTIFIANT PAROUVR parametre_declaration . PARFERM
+
+    PARFERM  décalage et aller à l'état 102
+    VIRGULE  décalage et aller à l'état 103
+
+
+État 76
+
+    4 declaration_droite: type . IDENTIFIANT suffixe_tab
+   31 parametres_declaration: type .
+
+    IDENTIFIANT  décalage et aller à l'état 88
+
+    $défaut  réduction par utilisation de la règle 31 (parametres_declaration)
+
+
+État 77
+
+   30 prototype: type IDENTIFIANT PAROUVR parametres_declaration . PARFERM
+
+    PARFERM  décalage et aller à l'état 104
+
+
+État 78
+
+    2 suffixe_tab: CROCHOUVR valeur_variable . CROCHFERM
+
+    CROCHFERM  décalage et aller à l'état 105
+
+
+État 79
+
+   14 appel_fonction: IDENTIFIANT PAROUVR liste_expression . PARFERM
+
+    PARFERM  décalage et aller à l'état 106
+
+
+État 80
+
+   15 liste_expression: expression . VIRGULE liste_expression
+   16                 | expression .
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    VIRGULE   décalage et aller à l'état 107
+    EGALEGAL  décalage et aller à l'état 59
+    AND       décalage et aller à l'état 60
+    OR        décalage et aller à l'état 61
+    INF       décalage et aller à l'état 62
+    SUP       décalage et aller à l'état 63
+    INFEGAL   décalage et aller à l'état 64
+    SUPEGAL   décalage et aller à l'état 65
+    DIFF      décalage et aller à l'état 66
+    PLUS      décalage et aller à l'état 67
+    MOINS     décalage et aller à l'état 68
+    MULT      décalage et aller à l'état 69
+    DIV       décalage et aller à l'état 70
+    DIVEUCL   décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 16 (liste_expression)
+
+
+État 81
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+   53 affectation: IDENTIFIANT EGAL_AFFECTATION expression .
+
+    EGALEGAL  décalage et aller à l'état 59
+    AND       décalage et aller à l'état 60
+    OR        décalage et aller à l'état 61
+    INF       décalage et aller à l'état 62
+    SUP       décalage et aller à l'état 63
+    INFEGAL   décalage et aller à l'état 64
+    SUPEGAL   décalage et aller à l'état 65
+    DIFF      décalage et aller à l'état 66
+    PLUS      décalage et aller à l'état 67
+    MOINS     décalage et aller à l'état 68
+    MULT      décalage et aller à l'état 69
+    DIV       décalage et aller à l'état 70
+    DIVEUCL   décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 53 (affectation)
+
+
+État 82
+
+   46 expression: PAROUVR expression PARFERM .
+
+    $défaut  réduction par utilisation de la règle 46 (expression)
+
+
+État 83
+
+   24 instrv: RETURN CROCHOUVR expression . CROCHFERM PV
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    CROCHFERM  décalage et aller à l'état 108
+    EGALEGAL   décalage et aller à l'état 59
+    AND        décalage et aller à l'état 60
+    OR         décalage et aller à l'état 61
+    INF        décalage et aller à l'état 62
+    SUP        décalage et aller à l'état 63
+    INFEGAL    décalage et aller à l'état 64
+    SUPEGAL    décalage et aller à l'état 65
+    DIFF       décalage et aller à l'état 66
+    PLUS       décalage et aller à l'état 67
+    MOINS      décalage et aller à l'état 68
+    MULT       décalage et aller à l'état 69
+    DIV        décalage et aller à l'état 70
+    DIVEUCL    décalage et aller à l'état 71
+
+
+État 84
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+   56 bloc_if: IF PAROUVR expression . PARFERM instrv ELSE instrv
+   57        | IF PAROUVR expression . PARFERM instrv
+
+    PARFERM   décalage et aller à l'état 109
+    EGALEGAL  décalage et aller à l'état 59
+    AND       décalage et aller à l'état 60
+    OR        décalage et aller à l'état 61
+    INF       décalage et aller à l'état 62
+    SUP       décalage et aller à l'état 63
+    INFEGAL   décalage et aller à l'état 64
+    SUPEGAL   décalage et aller à l'état 65
+    DIFF      décalage et aller à l'état 66
+    PLUS      décalage et aller à l'état 67
+    MOINS     décalage et aller à l'état 68
+    MULT      décalage et aller à l'état 69
+    DIV       décalage et aller à l'état 70
+    DIVEUCL   décalage et aller à l'état 71
+
+
+État 85
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+   61 bloc_while: WHILE PAROUVR expression . PARFERM instrv
+
+    PARFERM   décalage et aller à l'état 110
+    EGALEGAL  décalage et aller à l'état 59
+    AND       décalage et aller à l'état 60
+    OR        décalage et aller à l'état 61
+    INF       décalage et aller à l'état 62
+    SUP       décalage et aller à l'état 63
+    INFEGAL   décalage et aller à l'état 64
+    SUPEGAL   décalage et aller à l'état 65
+    DIFF      décalage et aller à l'état 66
+    PLUS      décalage et aller à l'état 67
+    MOINS     décalage et aller à l'état 68
+    MULT      décalage et aller à l'état 69
+    DIV       décalage et aller à l'état 70
+    DIVEUCL   décalage et aller à l'état 71
+
+
+État 86
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+   60 bloc_for: FOR PAROUVR expression . PV expression PV expression PV PARFERM instrv
+
+    PV        décalage et aller à l'état 111
+    EGALEGAL  décalage et aller à l'état 59
+    AND       décalage et aller à l'état 60
+    OR        décalage et aller à l'état 61
+    INF       décalage et aller à l'état 62
+    SUP       décalage et aller à l'état 63
+    INFEGAL   décalage et aller à l'état 64
+    SUPEGAL   décalage et aller à l'état 65
+    DIFF      décalage et aller à l'état 66
+    PLUS      décalage et aller à l'état 67
+    MOINS     décalage et aller à l'état 68
+    MULT      décalage et aller à l'état 69
+    DIV       décalage et aller à l'état 70
+    DIVEUCL   décalage et aller à l'état 71
+
+
+État 87
+
+   26 instr: instrv declaration PV .
+
+    $défaut  réduction par utilisation de la règle 26 (instr)
+
+
+État 88
+
+    4 declaration_droite: type IDENTIFIANT . suffixe_tab
+
+    CROCHOUVR  décalage et aller à l'état 44
+
+    $défaut  réduction par utilisation de la règle 3 (suffixe_tab)
+
+    suffixe_tab  aller à l'état 45
+
+
+État 89
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   39           | expression EGALEGAL expression .
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    INF      décalage et aller à l'état 62
+    SUP      décalage et aller à l'état 63
+    INFEGAL  décalage et aller à l'état 64
+    SUPEGAL  décalage et aller à l'état 65
+    PLUS     décalage et aller à l'état 67
+    MOINS    décalage et aller à l'état 68
+    MULT     décalage et aller à l'état 69
+    DIV      décalage et aller à l'état 70
+    DIVEUCL  décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 39 (expression)
+
+
+État 90
+
+   33 expression: expression . AND expression
+   33           | expression AND expression .
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    EGALEGAL  décalage et aller à l'état 59
+    INF       décalage et aller à l'état 62
+    SUP       décalage et aller à l'état 63
+    INFEGAL   décalage et aller à l'état 64
+    SUPEGAL   décalage et aller à l'état 65
+    DIFF      décalage et aller à l'état 66
+    PLUS      décalage et aller à l'état 67
+    MOINS     décalage et aller à l'état 68
+    MULT      décalage et aller à l'état 69
+    DIV       décalage et aller à l'état 70
+    DIVEUCL   décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 33 (expression)
+
+
+État 91
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   34           | expression OR expression .
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    EGALEGAL  décalage et aller à l'état 59
+    AND       décalage et aller à l'état 60
+    INF       décalage et aller à l'état 62
+    SUP       décalage et aller à l'état 63
+    INFEGAL   décalage et aller à l'état 64
+    SUPEGAL   décalage et aller à l'état 65
+    DIFF      décalage et aller à l'état 66
+    PLUS      décalage et aller à l'état 67
+    MOINS     décalage et aller à l'état 68
+    MULT      décalage et aller à l'état 69
+    DIV       décalage et aller à l'état 70
+    DIVEUCL   décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 34 (expression)
+
+
+État 92
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   35           | expression INF expression .
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    PLUS     décalage et aller à l'état 67
+    MOINS    décalage et aller à l'état 68
+    MULT     décalage et aller à l'état 69
+    DIV      décalage et aller à l'état 70
+    DIVEUCL  décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 35 (expression)
+
+
+État 93
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   36           | expression SUP expression .
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    PLUS     décalage et aller à l'état 67
+    MOINS    décalage et aller à l'état 68
+    MULT     décalage et aller à l'état 69
+    DIV      décalage et aller à l'état 70
+    DIVEUCL  décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 36 (expression)
+
+
+État 94
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   37           | expression INFEGAL expression .
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    PLUS     décalage et aller à l'état 67
+    MOINS    décalage et aller à l'état 68
+    MULT     décalage et aller à l'état 69
+    DIV      décalage et aller à l'état 70
+    DIVEUCL  décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 37 (expression)
+
+
+État 95
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   38           | expression SUPEGAL expression .
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    PLUS     décalage et aller à l'état 67
+    MOINS    décalage et aller à l'état 68
+    MULT     décalage et aller à l'état 69
+    DIV      décalage et aller à l'état 70
+    DIVEUCL  décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 38 (expression)
+
+
+État 96
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   40           | expression DIFF expression .
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    INF      décalage et aller à l'état 62
+    SUP      décalage et aller à l'état 63
+    INFEGAL  décalage et aller à l'état 64
+    SUPEGAL  décalage et aller à l'état 65
+    PLUS     décalage et aller à l'état 67
+    MOINS    décalage et aller à l'état 68
+    MULT     décalage et aller à l'état 69
+    DIV      décalage et aller à l'état 70
+    DIVEUCL  décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 40 (expression)
+
+
+État 97
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   41           | expression PLUS expression .
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    MULT     décalage et aller à l'état 69
+    DIV      décalage et aller à l'état 70
+    DIVEUCL  décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 41 (expression)
+
+
+État 98
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   42           | expression MOINS expression .
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    MULT     décalage et aller à l'état 69
+    DIV      décalage et aller à l'état 70
+    DIVEUCL  décalage et aller à l'état 71
+
+    $défaut  réduction par utilisation de la règle 42 (expression)
+
+
+État 99
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   43           | expression MULT expression .
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+
+    $défaut  réduction par utilisation de la règle 43 (expression)
+
+
+État 100
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   44           | expression DIV expression .
+   45           | expression . DIVEUCL expression
+
+    $défaut  réduction par utilisation de la règle 44 (expression)
+
+
+État 101
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+   45           | expression DIVEUCL expression .
+
+    $défaut  réduction par utilisation de la règle 45 (expression)
+
+
+État 102
+
+   13 prototype: type IDENTIFIANT PAROUVR parametre_declaration PARFERM .
+
+    $défaut  réduction par utilisation de la règle 13 (prototype)
+
+
+État 103
+
+   11 parametre_declaration: parametre_declaration VIRGULE . declaration_droite
+
+    INT32  décalage et aller à l'état 4
+    INT64  décalage et aller à l'état 5
+    CHAR   décalage et aller à l'état 6
+    VOID   décalage et aller à l'état 7
+
+    declaration_droite  aller à l'état 112
+    type                aller à l'état 57
+
+
+État 104
+
+   30 prototype: type IDENTIFIANT PAROUVR parametres_declaration PARFERM .
+
+    $défaut  réduction par utilisation de la règle 30 (prototype)
+
+
+État 105
+
+    2 suffixe_tab: CROCHOUVR valeur_variable CROCHFERM .
+
+    $défaut  réduction par utilisation de la règle 2 (suffixe_tab)
+
+
+État 106
+
+   14 appel_fonction: IDENTIFIANT PAROUVR liste_expression PARFERM .
+
+    $défaut  réduction par utilisation de la règle 14 (appel_fonction)
+
+
+État 107
+
+   15 liste_expression: expression VIRGULE . liste_expression
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction    aller à l'état 30
+    liste_expression  aller à l'état 113
+    expression        aller à l'état 80
+    valeur_variable   aller à l'état 34
+    affectation       aller à l'état 35
+
+
+État 108
+
+   24 instrv: RETURN CROCHOUVR expression CROCHFERM . PV
+
+    PV  décalage et aller à l'état 114
+
+
+État 109
+
+   56 bloc_if: IF PAROUVR expression PARFERM . instrv ELSE instrv
+   57        | IF PAROUVR expression PARFERM . instrv
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    PV           décalage et aller à l'état 22
+    RETURN       décalage et aller à l'état 23
+    ACCOLOUVR    décalage et aller à l'état 15
+    IF           décalage et aller à l'état 24
+    WHILE        décalage et aller à l'état 25
+    FOR          décalage et aller à l'état 26
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction         aller à l'état 30
+    instrv                 aller à l'état 115
+    expression             aller à l'état 33
+    valeur_variable        aller à l'état 34
+    affectation            aller à l'état 35
+    structure_de_controle  aller à l'état 36
+    bloc_if                aller à l'état 37
+    bloc_boucle            aller à l'état 38
+    bloc_for               aller à l'état 39
+    bloc_while             aller à l'état 40
+    bloc                   aller à l'état 41
+
+
+État 110
+
+   61 bloc_while: WHILE PAROUVR expression PARFERM . instrv
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    PV           décalage et aller à l'état 22
+    RETURN       décalage et aller à l'état 23
+    ACCOLOUVR    décalage et aller à l'état 15
+    IF           décalage et aller à l'état 24
+    WHILE        décalage et aller à l'état 25
+    FOR          décalage et aller à l'état 26
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction         aller à l'état 30
+    instrv                 aller à l'état 116
+    expression             aller à l'état 33
+    valeur_variable        aller à l'état 34
+    affectation            aller à l'état 35
+    structure_de_controle  aller à l'état 36
+    bloc_if                aller à l'état 37
+    bloc_boucle            aller à l'état 38
+    bloc_for               aller à l'état 39
+    bloc_while             aller à l'état 40
+    bloc                   aller à l'état 41
+
+
+État 111
+
+   60 bloc_for: FOR PAROUVR expression PV . expression PV expression PV PARFERM instrv
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 117
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 112
+
+   11 parametre_declaration: parametre_declaration VIRGULE declaration_droite .
+
+    $défaut  réduction par utilisation de la règle 11 (parametre_declaration)
+
+
+État 113
+
+   15 liste_expression: expression VIRGULE liste_expression .
+
+    $défaut  réduction par utilisation de la règle 15 (liste_expression)
+
+
+État 114
+
+   24 instrv: RETURN CROCHOUVR expression CROCHFERM PV .
+
+    $défaut  réduction par utilisation de la règle 24 (instrv)
+
+
+État 115
+
+   56 bloc_if: IF PAROUVR expression PARFERM instrv . ELSE instrv
+   57        | IF PAROUVR expression PARFERM instrv .
+
+    ELSE  décalage et aller à l'état 118
+
+    ELSE      [réduction par utilisation de la règle 57 (bloc_if)]
+    $défaut  réduction par utilisation de la règle 57 (bloc_if)
+
+
+État 116
+
+   61 bloc_while: WHILE PAROUVR expression PARFERM instrv .
+
+    $défaut  réduction par utilisation de la règle 61 (bloc_while)
+
+
+État 117
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+   60 bloc_for: FOR PAROUVR expression PV expression . PV expression PV PARFERM instrv
+
+    PV        décalage et aller à l'état 119
+    EGALEGAL  décalage et aller à l'état 59
+    AND       décalage et aller à l'état 60
+    OR        décalage et aller à l'état 61
+    INF       décalage et aller à l'état 62
+    SUP       décalage et aller à l'état 63
+    INFEGAL   décalage et aller à l'état 64
+    SUPEGAL   décalage et aller à l'état 65
+    DIFF      décalage et aller à l'état 66
+    PLUS      décalage et aller à l'état 67
+    MOINS     décalage et aller à l'état 68
+    MULT      décalage et aller à l'état 69
+    DIV       décalage et aller à l'état 70
+    DIVEUCL   décalage et aller à l'état 71
+
+
+État 118
+
+   56 bloc_if: IF PAROUVR expression PARFERM instrv ELSE . instrv
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    PV           décalage et aller à l'état 22
+    RETURN       décalage et aller à l'état 23
+    ACCOLOUVR    décalage et aller à l'état 15
+    IF           décalage et aller à l'état 24
+    WHILE        décalage et aller à l'état 25
+    FOR          décalage et aller à l'état 26
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction         aller à l'état 30
+    instrv                 aller à l'état 120
+    expression             aller à l'état 33
+    valeur_variable        aller à l'état 34
+    affectation            aller à l'état 35
+    structure_de_controle  aller à l'état 36
+    bloc_if                aller à l'état 37
+    bloc_boucle            aller à l'état 38
+    bloc_for               aller à l'état 39
+    bloc_while             aller à l'état 40
+    bloc                   aller à l'état 41
+
+
+État 119
+
+   60 bloc_for: FOR PAROUVR expression PV expression PV . expression PV PARFERM instrv
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction   aller à l'état 30
+    expression       aller à l'état 121
+    valeur_variable  aller à l'état 34
+    affectation      aller à l'état 35
+
+
+État 120
+
+   56 bloc_if: IF PAROUVR expression PARFERM instrv ELSE instrv .
+
+    $défaut  réduction par utilisation de la règle 56 (bloc_if)
+
+
+État 121
+
+   33 expression: expression . AND expression
+   34           | expression . OR expression
+   35           | expression . INF expression
+   36           | expression . SUP expression
+   37           | expression . INFEGAL expression
+   38           | expression . SUPEGAL expression
+   39           | expression . EGALEGAL expression
+   40           | expression . DIFF expression
+   41           | expression . PLUS expression
+   42           | expression . MOINS expression
+   43           | expression . MULT expression
+   44           | expression . DIV expression
+   45           | expression . DIVEUCL expression
+   60 bloc_for: FOR PAROUVR expression PV expression PV expression . PV PARFERM instrv
+
+    PV        décalage et aller à l'état 122
+    EGALEGAL  décalage et aller à l'état 59
+    AND       décalage et aller à l'état 60
+    OR        décalage et aller à l'état 61
+    INF       décalage et aller à l'état 62
+    SUP       décalage et aller à l'état 63
+    INFEGAL   décalage et aller à l'état 64
+    SUPEGAL   décalage et aller à l'état 65
+    DIFF      décalage et aller à l'état 66
+    PLUS      décalage et aller à l'état 67
+    MOINS     décalage et aller à l'état 68
+    MULT      décalage et aller à l'état 69
+    DIV       décalage et aller à l'état 70
+    DIVEUCL   décalage et aller à l'état 71
+
+
+État 122
+
+   60 bloc_for: FOR PAROUVR expression PV expression PV expression PV . PARFERM instrv
+
+    PARFERM  décalage et aller à l'état 123
+
+
+État 123
+
+   60 bloc_for: FOR PAROUVR expression PV expression PV expression PV PARFERM . instrv
+
+    IDENTIFIANT  décalage et aller à l'état 20
+    PAROUVR      décalage et aller à l'état 21
+    PV           décalage et aller à l'état 22
+    RETURN       décalage et aller à l'état 23
+    ACCOLOUVR    décalage et aller à l'état 15
+    IF           décalage et aller à l'état 24
+    WHILE        décalage et aller à l'état 25
+    FOR          décalage et aller à l'état 26
+    VAL          décalage et aller à l'état 27
+    CARACTERE    décalage et aller à l'état 28
+    NOT          décalage et aller à l'état 29
+
+    appel_fonction         aller à l'état 30
+    instrv                 aller à l'état 124
+    expression             aller à l'état 33
+    valeur_variable        aller à l'état 34
+    affectation            aller à l'état 35
+    structure_de_controle  aller à l'état 36
+    bloc_if                aller à l'état 37
+    bloc_boucle            aller à l'état 38
+    bloc_for               aller à l'état 39
+    bloc_while             aller à l'état 40
+    bloc                   aller à l'état 41
+
+
+État 124
+
+   60 bloc_for: FOR PAROUVR expression PV expression PV expression PV PARFERM instrv .
+
+    $défaut  réduction par utilisation de la règle 60 (bloc_for)

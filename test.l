@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Expression.h"
+#include "Structure.h"
+#include "Fonction.h"
 #include "test.tab.h"
 
 

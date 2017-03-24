@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "Expression.h"
 #include "Fonction.h"
-
+#include "Structure.h"
 void yyerror(int *, const char *);
 int yylex(void);
 %}
@@ -14,12 +14,13 @@ int yylex(void);
    void* type;
    //void* proto;
    void* instr;
-   void* instrv;
+   InstructionV* instrv;
    void* prog;
  //  void* dirprepro;
    void* blocboucle;
-   void* blocif;
-   void* blocwhile;
+   BlocIf* blocif;
+   BlocWhile* blocwhile;
+   BlocFor* blocfor;
    void* expr;
    void* opebin;
 
@@ -94,7 +95,7 @@ int yylex(void);
 
 
 %type <type> type
-%type <TODO> instrv
+%type <instrv> instrv
 %type <TODO> instr
 %type <prog> programme
 %type <proto> prototype 
@@ -208,17 +209,20 @@ affectation : IDENTIFIANT EGAL_AFFECTATION expression;
 
 
 /**** QUENTIN ****/
-structure_de_controle : bloc_if | bloc_boucle;
+structure_de_controle : bloc_if 
+                      | bloc_boucle;
 
 bloc_if : IF PAROUVR expression PARFERM instrv ELSE instrv 
-        | IF PAROUVR expression PARFERM instrv;
+        | IF PAROUVR expression PARFERM instrv { $$ = new BlocIf($3,$5);} ;
 
 bloc_boucle : bloc_for | bloc_while;
+/* pas dans la structure de données
 expression_for : expression
-              | ;
-bloc_for : FOR PAROUVR expression_for PV expression_for PV expression_for PV PARFERM instrv;
+               | ;
+*/
+bloc_for : FOR PAROUVR expression PV expression PV expression PV PARFERM instrv { $$ = new BlocFor($3,$5,$7,$10);};
 
-bloc_while : WHILE PAROUVR expression PARFERM instrv;
+bloc_while : WHILE PAROUVR expression PARFERM instrv { $$ = new BlocWhile($3,$5);};
 ////*******/////
 
 
