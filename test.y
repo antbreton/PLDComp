@@ -23,11 +23,11 @@ int yylex(void);
    BlocIf* blocif;
    BlocWhile* blocwhile;
    BlocFor* blocfor;
-   void* expr;
+  // void* expr;
    void* opebin;
 
    void* TODO;
-   void* affect;
+   Affectation* affect;
    void* valvar;
    int* inutile;
    Not *non;
@@ -39,6 +39,8 @@ int yylex(void);
    Prototype* proto;
    ParametreDeclar* paramDeclar;
    std::vector<string>* listeIdentifiants;
+   AppelFonction* app_fonction;
+   std::vector<Expression*>* liste_expr;
 }
 
 /*
@@ -119,9 +121,10 @@ int yylex(void);
 %type <valvar> valeur_variable
 %type <fonc> fonction
 %type <paramDeclar> parametre_declaration
-%type <TODO> appel_fonction
-%type <TODO> liste_expression
+%type <app_fonction> appel_fonction
+%type <liste_expr> liste_expression
 %type <listeIdentifiants> separateur_decl
+
 
 //%left IDENTIFIANT PAROUVR PARFERM INT32 INT64 CHAR VOID
 %parse-param { int * resultat }
@@ -155,10 +158,11 @@ parametre_declaration : parametre_declaration VIRGULE declaration_droite
 
 prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM;
 
-appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM;
+appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { /* $$->setIdentifiant($1); */ $$->setParametres($3); };
 
-liste_expression : expression VIRGULE liste_expression
-                | expression;
+liste_expression : liste_expression VIRGULE expression { $$->push_back($3); }   // On push l'expression dans la liste d'expressions
+                | expression { $$ = new std::vector<Expression*>(); $$->push_back($1); };
+                        // On a pas encore trouve de liste_expression. On en cree une et on y mets l'expression courante
 
 
 type : INT32 { $$ = new string("INT32");}
@@ -186,32 +190,32 @@ parametres_declaration : type;
 
 
 expression : NOT expression { $$ = new Not($2); }
-           | expression AND expression
-           | expression OR expression {/* $$ = new OperationOR($1, $3);*/}
-           | expression INF expression
-           | expression SUP expression
-           | expression INFEGAL expression
-           | expression SUPEGAL expression
-           | expression EGALEGAL expression
-           | expression DIFF expression
-           | expression PLUS expression
-           | expression MOINS expression
-           | expression MULT expression
-           | expression DIV expression
-           | expression DIVEUCL expression
-           | PAROUVR expression PARFERM 
-           | appel_fonction
-           | affectation
+           | expression AND expression { $$ = new OperateurAND($1, $3); }
+           | expression OR expression { $$ = new OperateurOR($1, $3); }
+           | expression INF expression { $$ = new OperateurInf($1, $3); }
+           | expression SUP expression { $$ = new OperateurSup($1, $3); }
+           | expression INFEGAL expression { $$ = new OperateurInfEgal($1, $3); }
+           | expression SUPEGAL expression { $$ = new OperateurSupEgal($1, $3); }
+           | expression EGALEGAL expression { $$ = new OperateurEgal($1, $3); }
+           | expression DIFF expression { $$ = new OperateurDifferent($1, $3); }
+           | expression PLUS expression { $$ = new OperateurPlus($1, $3); }
+           | expression MOINS expression { $$ = new OperateurMoins($1, $3); }
+           | expression MULT expression { $$ = new OperateurMultiplier($1, $3); }
+           | expression DIV expression { $$ = new OperateurDivise($1, $3); }
+           | expression DIVEUCL expression { $$ = new OperateurModulo($1, $3); }
+           | PAROUVR expression PARFERM { /* $$ = new Expression($2); */}
+           | appel_fonction { $$ = new AppelFonction(); }
+           | affectation { $$ = new Affectation(); }
            | IDENTIFIANT
            | valeur_variable;
 
 
            
 valeur_variable : VAL
-                | CARACTERE
+                | CARACTERE;
 
 
-affectation : IDENTIFIANT EGAL_AFFECTATION expression;
+affectation : IDENTIFIANT EGAL_AFFECTATION expression { $$->setValeur($3); };
 
 
 
