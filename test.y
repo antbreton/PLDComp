@@ -25,6 +25,7 @@ int yylex(void);
    BlocFor* blocfor;
   // void* expr;
    void* opebin;
+   Bloc* bloc;
 
    void* TODO;
    Affectation* affect;
@@ -37,10 +38,11 @@ int yylex(void);
 	 Declaration* declaration;
    Fonction* fonc;
    Prototype* proto;
-   ParametreDeclar* paramDeclar;
+   ParamDeclar* paramDeclar;
    std::vector<string>* listeIdentifiants;
    AppelFonction* app_fonction;
    std::vector<Expression*>* liste_expr;
+   std::vector<Declaration*>* parametres_declaration;
 }
 
 /*
@@ -111,7 +113,7 @@ int yylex(void);
 %type <blocfor> bloc_for
 %type <blocwhile> bloc_while
 %type <TODO> suffixe_tab
-%type <TODO> bloc
+%type <bloc> bloc
 %type <TODO> contenu_bloc
 %type <expression> expression
 %type <TODO> declaration_droite
@@ -120,10 +122,11 @@ int yylex(void);
 %type <affect> affectation
 %type <valvar> valeur_variable
 %type <fonc> fonction
-%type <paramDeclar> parametre_declaration
+%type <parametres_declaration> parametre_declaration
 %type <app_fonction> appel_fonction
 %type <liste_expr> liste_expression
 %type <listeIdentifiants> separateur_decl
+%type <declaration> declaration_param_fonction
 
 
 //%left IDENTIFIANT PAROUVR PARFERM INT32 INT64 CHAR VOID
@@ -149,14 +152,20 @@ declaration : declaration_droite separateur_decl { $$->setIdentifiants($2);}
             | declaration_droite separateur_decl EGAL_AFFECTATION expression;
 
 //fonction
-fonction : prototype PV
-         | prototype bloc;
-
-parametre_declaration : parametre_declaration VIRGULE declaration_droite
-                    | declaration_droite;
+fonction : prototype PV {new Fonction($1);}
+         | prototype bloc {$$ = new Fonction($1,$2);};
 
 
-prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM;
+
+declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1);}
+                            | type IDENTIFIANT EGAL_AFFECTATION expression;
+
+parametre_declaration : parametre_declaration VIRGULE declaration_param_fonction {$$->push_back($3);}
+                      | declaration_param_fonction {$$ = new std::vector<Declaration*>(); $$->push_back($1);}
+                      | {$$ = new std::vector<Declaration*>();};
+
+prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Prototype($1,$4,yyval.identifiant);};
+
 
 appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { /* $$->setIdentifiant($1); */ $$->setParametres($3); };
 
@@ -182,10 +191,6 @@ programme : programme fonction
           | programme declaration
           |;
 
-
-prototype : type IDENTIFIANT PAROUVR parametres_declaration PARFERM;
-
-parametres_declaration : type;
 
 
 

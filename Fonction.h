@@ -3,9 +3,12 @@
 
 #include <string> 
 #include <list>
+#include <vector>
+
  
 using namespace std;
  
+class Declaration;
 
 class Bloc {
 	public:
@@ -19,28 +22,29 @@ class Type {
 		virtual ~Type() {}
 };
 
-class ParametreDeclar {
-	public:	
-		ParametreDeclar(Type type, string identifiant): type(type), identifiant(identifiant) {}
-		Type type;
-		string identifiant;
-		virtual ~ParametreDeclar() {}
+
+class ParamDeclar {
+	public:
+		ParamDeclar(vector<Declaration*>* params): params(params) {}
+		vector<Declaration*>* params;
 };
+
 
 class Prototype {
 	public:
-		Prototype(Type type, list<ParametreDeclar> param, string identifiant): type(type), identifiant(identifiant), param(param) {}
-		Type type;
-		string identifiant;
-		list<ParametreDeclar> param;
-		virtual ~Prototype() {}
+		Prototype(Type* type, vector<Declaration*>* params, string* identifiant) : type(type), params(params), identifiant(identifiant) {}
+		Type* type;
+		vector<Declaration*>* params;
+		string* identifiant;
 };
+
+
 
 class Fonction {
 	public:
-		Fonction(Prototype proto, Bloc bloc): proto(proto), bloc(bloc) {}
-		Prototype proto;
-		Bloc bloc;
+		Fonction(Prototype* proto, Bloc* bloc = NULL): proto(proto), bloc(bloc) {}
+		Prototype* proto;
+		Bloc* bloc;
 		virtual ~Fonction() {}
 };
 
