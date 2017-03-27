@@ -15,7 +15,7 @@ int yylex(void);
 	 string* identifiant;
    string* type;
    //void* proto;
-   void* instr;
+   Instruction* instr;
    InstructionV* instrv;
    void* prog;
  //  void* dirprepro;
@@ -104,7 +104,7 @@ int yylex(void);
 
 %type <type> type
 %type <instrv> instrv
-%type <TODO> instr
+%type <instr> instr
 %type <prog> programme
 %type <proto> prototype 
 //%type <dirprepro> dirpreprocesseur
@@ -116,7 +116,7 @@ int yylex(void);
 %type <blocwhile> bloc_while
 %type <TODO> suffixe_tab
 %type <bloc> bloc
-%type <TODO> contenu_bloc
+%type <bloc> contenu_bloc
 %type <expression> expression
 %type <TODO> declaration_droite
 %type <declaration> declaration
@@ -142,8 +142,7 @@ int yylex(void);
 axiome : programme;
 
 suffixe_tab : CROCHOUVR valeur_variable CROCHFERM
-            | {$$ = NULL;}
-            ;
+            | {$$ = NULL;};
 
 declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1);};
 
@@ -246,9 +245,9 @@ bloc_while : WHILE PAROUVR expression PARFERM instrv { $$ = new BlocWhile($3,$5)
 
 
 
-bloc : ACCOLOUVR contenu_bloc ACCOLFERM;
-contenu_bloc : contenu_bloc instr 
-             | instr;
+bloc : ACCOLOUVR contenu_bloc ACCOLFERM {$$ = $2;};
+contenu_bloc : contenu_bloc instr {$$->AjouterInstr($2);}
+             | instr {$$ = new Bloc($1);};
 
 %%
 void yyerror(int * res, const char * msg) {

@@ -5,6 +5,8 @@
 #include <string> 
 #include <list>
 #include <vector>
+#include <iostream>
+
 
  
 using namespace std;
@@ -14,8 +16,21 @@ class Declaration;
 
 class Bloc : public InstructionV  {
 	public:
-		Bloc() {}
+		Bloc(Instruction* instr) {instrs = new vector <Instruction*>; this->AjouterInstr(instr);}
 		virtual ~Bloc() {}
+		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);};
+		vector<Instruction*>* instrs;
+		void Afficher () {
+			cout<<"BLOC"<<endl;
+			for(int i=0;i<instrs->size();i++)
+			{
+				(*instrs)[i]->Afficher();
+				cout<<";";
+			}
+			cout<<endl;
+		}
+		
+
 };
 /*
 class Type {
@@ -38,6 +53,16 @@ class Prototype {
 		string* type;
 		vector<Declaration*>* params;
 		string* identifiant;
+		void Afficher() {
+			cout<<"PROTOTYPE"<<endl;;
+			cout<<*type<<" "<<*identifiant;
+			for(int i=0;i<params->size();i++)
+			{
+				(*params)[i]->Afficher();
+				cout<<",";
+			}
+			cout<<endl;
+		}
 };
 
 
@@ -48,6 +73,11 @@ class Fonction {
 		Prototype* proto;
 		Bloc* bloc;
 		virtual ~Fonction() {}
+		void Afficher () {
+			cout<<"FONCTION";
+			proto->Afficher();
+			bloc->Afficher();
+		}
 };
 
 
