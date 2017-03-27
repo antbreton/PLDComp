@@ -15,6 +15,5 @@
 	
 Programme::Programme()
 {
-	decls = new vector<Declaration*>();
-	fonctions = new vector<Fonction*> ();
+	instructions = new vector<InstructionProgramme*>();
 }

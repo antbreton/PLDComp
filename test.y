@@ -17,7 +17,7 @@ int yylex(void);
    //void* proto;
    Instruction* instr;
    InstructionV* instrv;
-   void* prog;
+   Programme* prog;
  //  void* dirprepro;
    void* blocboucle;
    StructureControle* structctrl;
@@ -148,14 +148,12 @@ declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3)
 separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back(*yyval.identifiant);}	// A chaque appel on push l'identifiant courant dans la liste
                 | /* vide */ { $$ = new std::vector<string>();};			// On crée la liste d'identifiant quand on est sur vide
 
-declaration : declaration_droite separateur_decl { $$->addAllIdentifiants($2);}
-            | declaration_droite separateur_decl EGAL_AFFECTATION expression;
+declaration : declaration_droite separateur_decl { $$ = $1; $$->addAllIdentifiants($2);}
+            | declaration_droite separateur_decl EGAL_AFFECTATION expression { $$ = $1; $$->addAllIdentifiants($2); } ; /* TODO gerer l'affectation */
 
 //fonction
 fonction : prototype PV {new Fonction($1);}
          | prototype bloc {$$ = new Fonction($1,$2);};
-
-
 
 declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3);}
                             | type IDENTIFIANT EGAL_AFFECTATION expression;
@@ -186,9 +184,9 @@ instrv : expression PV {$$ = $1;}
        
 instr : instrv declaration PV;
 
-programme : programme fonction
-          | programme declaration
-          |;
+programme : programme fonction {$$=$1; $$->ajouterInstruction($2);}
+          | programme declaration {$$=$1; $$->ajouterInstruction($2);}
+          |{ $$ = new Programme();};
 
 expression : NOT expression { $$ = new Not($2); }
            | expression AND expression { $$ = new OperateurAND($1, $3); }

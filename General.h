@@ -25,15 +25,23 @@ class InstructionV : public Instruction {
 		virtual ~InstructionV() {}
 };
 
+class InstructionProgramme // Cette classe est dérivée par decls et fonction
+{
+	public :
+		InstructionProgramme() {}
+		bool compiler(); // TODO devront être virtuelles pure
+		void afficher(); //	""
+};
+
 /** Déclaration Class */
-class Declaration : public Instruction
+class Declaration : public Instruction, public InstructionProgramme
 {
 	public :
 		Declaration(string type, Val * taille);
 		virtual ~Declaration() {}
 		void ajouterIdentifiant(string id) {identifiants->push_back(id);}
 		void addAllIdentifiants(std::vector<string>* identifiants) { this->identifiants->insert(this->identifiants->end(), identifiants->begin(), identifiants->end());}
-		void Affiche () {
+		void affiche () {
 			cout<<"DECLARATION"<<endl;;
 			cout<<type<<endl;
 			for(int i=0;i<identifiants->size();i++)
@@ -48,16 +56,17 @@ class Declaration : public Instruction
 		vector<string>* identifiants;
 };
 
+
 class Programme {
 	public:
 		Programme();
 		virtual ~Programme() {}
-		void Affiche () {
+		void ajouterInstruction(InstructionProgramme* instr) {instructions->push_back(instr);}
+		void affiche () {
 			// ici il faut appeler le affiche de chaque element de la futur dequeu
 		}
 	private :
-		vector<Declaration*> *decls;
-		vector<Fonction*> *fonctions;
+		vector<InstructionProgramme*> *instructions;
 };
 
 

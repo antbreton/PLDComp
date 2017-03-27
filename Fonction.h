@@ -67,7 +67,7 @@ class Prototype {
 
 
 
-class Fonction {
+class Fonction : public InstructionProgramme {
 	public:
 		Fonction(Prototype* proto, Bloc* bloc = NULL): proto(proto), bloc(bloc) {}
 		Prototype* proto;
