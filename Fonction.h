@@ -1,13 +1,15 @@
 #ifndef _FONCTION_H
 #define _FONCTION_H
 
+#include "General.h"
 #include <string> 
 #include <list>
  
 using namespace std;
  
 
-class Bloc {
+
+class Bloc : public InstructionV  {
 	public:
 		Bloc() {}
 		virtual ~Bloc() {}

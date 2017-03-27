@@ -3,7 +3,7 @@
 #include "General.h"
 
 
-class StructureControle {
+class StructureControle : public InstructionV {
 	public:
 		StructureControle(InstructionV * instrv): instrv(instrv){}
 		virtual ~StructureControle() {}	
@@ -11,8 +11,9 @@ class StructureControle {
 };
 class BlocIf : public StructureControle {
 	public:
-		BlocIf(Expression * expr, InstructionV * instrv):StructureControle(instrv), exprCondition(expr) {}
+		BlocIf(Expression * expr, InstructionV * instrv, InstructionV * blocElse = NULL):StructureControle(instrv), exprCondition(expr), blocElse(blocElse){}
 		Expression* exprCondition;
+		InstructionV * blocElse;
 };
 
 class BlocWhile : public StructureControle {

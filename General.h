@@ -1,12 +1,13 @@
 #ifndef _GENERAL_H
 #define _GENERAL_H
 
-#include "Fonction.h"
+//#include "Fonction.h"
 #include <string> 
 #include <vector>
  
 using namespace std;
 
+class Fonction;
 
 class Instruction {
 	public:

@@ -20,6 +20,7 @@ int yylex(void);
    void* prog;
  //  void* dirprepro;
    void* blocboucle;
+   StructureControle* structctrl;
    BlocIf* blocif;
    BlocWhile* blocwhile;
    BlocFor* blocfor;
@@ -34,7 +35,7 @@ int yylex(void);
    Val* valeur;
    Caractere* cval;
    Expression* expression;
-	 Declaration* declaration;
+   Declaration* declaration;
    Fonction* fonc;
    Prototype* proto;
    ParametreDeclar* paramDeclar;
@@ -106,17 +107,18 @@ int yylex(void);
 %type <proto> prototype 
 //%type <dirprepro> dirpreprocesseur
 %type <inutile> axiome
+%type <structctrl> structure_de_controle
 %type <blocif> bloc_if
-%type <blocboucle> bloc_boucle
+%type <structctrl> bloc_boucle
 %type <blocfor> bloc_for
 %type <blocwhile> bloc_while
 %type <TODO> suffixe_tab
-%type <TODO> bloc
+%type <instrv> bloc
 %type <TODO> contenu_bloc
 %type <expression> expression
 %type <TODO> declaration_droite
 %type <declaration> declaration
-%type <TODO> expression_for
+%type <expression> expression_for
 %type <affect> affectation
 %type <valvar> valeur_variable
 %type <fonc> fonction
@@ -170,10 +172,10 @@ type : INT32 { $$ = new string("INT32");}
 		 | CHAR { $$ = new string("CHAR");}
 		 | VOID { $$ = new string("VOID");};
 
-instrv : expression PV 
-       | structure_de_controle
-       | bloc
-       | RETURN CROCHOUVR expression CROCHFERM PV
+instrv : expression PV {$$ = $1;}
+       | structure_de_controle {$$ = $1;}
+       | bloc {$$ = $1;}
+       | RETURN CROCHOUVR expression CROCHFERM PV {$$ = $3;}
        | PV;
        
 instr : instrv declaration PV;
@@ -220,18 +222,19 @@ affectation : IDENTIFIANT EGAL_AFFECTATION expression { $$->setValeur($3); };
 
 
 /**** QUENTIN ****/
-structure_de_controle : bloc_if 
-                      | bloc_boucle;
+structure_de_controle : bloc_if {$$ = $1;}
+                      | bloc_boucle {$$ = $1;};
 
-bloc_if : IF PAROUVR expression PARFERM instrv ELSE instrv 
+bloc_if : IF PAROUVR expression PARFERM instrv ELSE instrv {$$ = new BlocIf($3,$5,$7);}
         | IF PAROUVR expression PARFERM instrv { $$ = new BlocIf($3,$5);} ;
 
-bloc_boucle : bloc_for | bloc_while;
+bloc_boucle : bloc_for {$$ = $1;}
+            | bloc_while{$$ = $1;};
 
 expression_for : expression { $$ = $1;}
                | {$$ = new Val(1);};
 
-bloc_for : FOR PAROUVR expression_for PV expression_for PV expression_for PV PARFERM instrv { $$ = new BlocFor(new Val(1),new Val(1),new Val(1),$10);};
+bloc_for : FOR PAROUVR expression_for PV expression_for PV expression_for PV PARFERM instrv { $$ = new BlocFor($3,$5,$7,$10);};
 
 bloc_while : WHILE PAROUVR expression PARFERM instrv { $$ = new BlocWhile($3,$5);};
 ////*******/////
