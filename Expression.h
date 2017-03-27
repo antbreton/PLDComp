@@ -19,6 +19,9 @@ class Val : public Expression {
 	public:
 		Val(int valeur):Expression(), valeur(valeur) {}
 		int valeur;
+		void Afficher () {
+			 cerr<<"VAL"<< valeur <<endl;
+		 }
 };
 
 class Caractere : public Expression {
@@ -26,7 +29,7 @@ class Caractere : public Expression {
 		Caractere(char c):Expression(), c(c) {}
 		char c;
 		void Afficher () {
-			 cout<<"CARACTERE"<< c<<endl;
+			 cerr<<"CARACTERE"<< c<<endl;
 		 }
 };
 
@@ -36,9 +39,9 @@ class Not : public Expression {
 	private:
 		Expression * membre;
 		 void Afficher () {
-			 cout<<"NOT ";
+			 cerr<<"NOT ";
 			 membre->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -56,11 +59,11 @@ class OperateurOR : public ExpreOpeBinaire {
 	public:
 		OperateurOR(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 			void Afficher () {
-			 cout<<"OR ";
+			 cerr<<"OR ";
 			 membreGauche->Afficher();
-			 cout<<" || ";
+			 cerr<<" || ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -68,11 +71,11 @@ class OperateurAND : public ExpreOpeBinaire {
 public:
 	OperateurAND(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher () {
-			 cout<<"AND ";
+			 cerr<<"AND ";
 			 membreGauche->Afficher();
-			 cout<<" && ";
+			 cerr<<" && ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -80,11 +83,11 @@ class OperateurSup : public ExpreOpeBinaire {
 public:
 	OperateurSup(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher () {
-			 cout<<"SUP ";
+			 cerr<<"SUP ";
 			 membreGauche->Afficher();
-			 cout<<" > ";
+			 cerr<<" > ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -92,11 +95,11 @@ class OperateurInf : public ExpreOpeBinaire {
 public:
 	OperateurInf(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher () {
-			 cout<<"INF ";
+			 cerr<<"INF ";
 			 membreGauche->Afficher();
-			 cout<<" < ";
+			 cerr<<" < ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -104,11 +107,11 @@ class OperateurSupEgal : public ExpreOpeBinaire {
 public:
 	OperateurSupEgal(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher () {
-			 cout<<"SUPEGAL ";
+			 cerr<<"SUPEGAL ";
 			 membreGauche->Afficher();
-			 cout<<" >= ";
+			 cerr<<" >= ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -116,11 +119,11 @@ class OperateurInfEgal : public ExpreOpeBinaire {
 public:
 	OperateurInfEgal(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher () {
-			 cout<<"INFEGAL ";
+			 cerr<<"INFEGAL ";
 			 membreGauche->Afficher();
-			 cout<<" <= ";
+			 cerr<<" <= ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -128,11 +131,11 @@ class OperateurEgal : public ExpreOpeBinaire {
 public:
 	OperateurEgal(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cout<<"EGAL ";
+			 cerr<<"EGAL ";
 			 membreGauche->Afficher();
-			 cout<<" == ";
+			 cerr<<" == ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -140,11 +143,11 @@ class OperateurDifferent : public ExpreOpeBinaire {
 public:
 	OperateurDifferent(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cout<<"DIFF ";
+			 cerr<<"DIFF ";
 			 membreGauche->Afficher();
-			 cout<<" != ";
+			 cerr<<" != ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -152,11 +155,11 @@ class OperateurPlus : public ExpreOpeBinaire {
 public:
 	OperateurPlus(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cout<<"ADD ";
+			 cerr<<"ADD ";
 			 membreGauche->Afficher();
-			 cout<<" + ";
+			 cerr<<" + ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -164,11 +167,11 @@ class OperateurMoins : public ExpreOpeBinaire {
 public:
 	OperateurMoins(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cout<<"MOINS ";
+			 cerr<<"MOINS ";
 			 membreGauche->Afficher();
-			 cout<<" - ";
+			 cerr<<" - ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -176,11 +179,11 @@ class OperateurMultiplier : public ExpreOpeBinaire {
 public:
 	OperateurMultiplier(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cout<<"MULT ";
+			 cerr<<"MULT ";
 			 membreGauche->Afficher();
-			 cout<<" * ";
+			 cerr<<" * ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -188,11 +191,11 @@ class OperateurModulo : public ExpreOpeBinaire {
 public:
 	OperateurModulo(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cout<<"MODULO ";
+			 cerr<<"MODULO ";
 			 membreGauche->Afficher();
-			 cout<<" % ";
+			 cerr<<" % ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -200,11 +203,11 @@ class OperateurDivise : public ExpreOpeBinaire {
 public:
 	OperateurDivise(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cout<<"DIVISE ";
+			 cerr<<"DIVISE ";
 			 membreGauche->Afficher();
-			 cout<<" / ";
+			 cerr<<" / ";
 			 membreDroit->Afficher();
-			 cout<<endl;
+			 cerr<<endl;
 		 }
 };
 
@@ -216,13 +219,13 @@ public:
 	void setIdentifiant(std::string* id) {this->identifiant = id;}
 	virtual ~AppelFonction() {delete this->parametres; }
 	void Afficher () {
-		cout<<"APPEL FONCTION"<<endl;
-		cout<<identifiant<<"(";
+		cerr<<"APPEL FONCTION"<<endl;
+		cerr<<identifiant<<"(";
 		for(int i=0;i<parametres->size();i++)
 		{
-			cout<<(*parametres)[i]<<", ";
+			cerr<<(*parametres)[i]<<", ";
 		}
-		cout<<endl;
+		cerr<<endl;
 		
 	}
 private:
@@ -236,8 +239,8 @@ public:
 	void setValeur(Expression* expression) {this->valeur = expression;}
 	void setIdentifiant(std::string* id) {this->identifiant = id;}
 	void Afficher () {
-		cout<<"AFFECTATION";
-		cout<< *identifiant <<" = "<< valeur<<endl;		
+		cerr<<"AFFECTATION";
+		cerr<< *identifiant <<" = "<< valeur<<endl;		
 	}
 
 private:

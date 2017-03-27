@@ -21,13 +21,12 @@ class Bloc : public InstructionV  {
 		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);};
 		vector<Instruction*>* instrs;
 		void Afficher () {
-			cout<<"BLOC"<<endl;
+			cerr<<"BLOC"<<endl;
 			for(int i=0;i<instrs->size();i++)
 			{
 				(*instrs)[i]->Afficher();
-				cout<<";";
 			}
-			cout<<endl;
+			cerr<<endl;
 		}
 		
 
@@ -54,14 +53,14 @@ class Prototype {
 		vector<Declaration*>* params;
 		string* identifiant;
 		void Afficher() {
-			cout<<"PROTOTYPE"<<endl;;
-			cout<<*type<<" "<<*identifiant;
+			cerr<<"PROTOTYPE"<<endl<<"	";
+			cerr<<*type<<" "<<*identifiant<<" ";
 			for(int i=0;i<params->size();i++)
 			{
 				(*params)[i]->Afficher();
-				cout<<",";
+				cerr<<",";
 			}
-			cout<<endl;
+			cerr<<endl;
 		}
 };
 
@@ -74,7 +73,7 @@ class Fonction : public InstructionProgramme {
 		Bloc* bloc;
 		virtual ~Fonction() {}
 		void Afficher () {
-			cout<<"FONCTION";
+			cerr<<"FONCTION"<<endl<<"	";
 			proto->Afficher();
 			bloc->Afficher();
 		}

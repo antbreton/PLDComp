@@ -5,6 +5,7 @@
 #include "Expression.h"
 #include "Fonction.h"
 #include "Structure.h"
+#define YYDEBUG 1
 
 void yyerror(int *, const char *);
 int yylex(void);
@@ -107,7 +108,7 @@ int yylex(void);
 %type <prog> programme
 %type <proto> prototype 
 //%type <dirprepro> dirpreprocesseur
-%type <inutile> axiome
+%type <prog> axiome
 %type <structctrl> structure_de_controle
 %type <blocif> bloc_if
 %type <structctrl> bloc_boucle
@@ -138,7 +139,7 @@ int yylex(void);
 /*** ANTOINE *****/
 //déclaration Variables
 
-axiome : programme;
+axiome : programme { $$->Afficher();};
 
 suffixe_tab : CROCHOUVR valeur_variable CROCHFERM {$$ = $2;}
             | {$$ = NULL;};
@@ -179,10 +180,11 @@ type : INT32 { $$ = new string("INT32");}
 instrv : expression PV {$$ = $1;}
        | structure_de_controle {$$ = $1;}
        | bloc {$$ = $1;}
-       | RETURN CROCHOUVR expression CROCHFERM PV {$$ = $3;}
+       | RETURN expression PV {$$ = $2;}
        | PV;
        
-instr : instrv declaration PV;
+instr : instrv {$$ = $1;}
+      | declaration PV {$$ = $1;};
 
 programme : programme fonction {$$=$1; $$->ajouterInstruction($2);}
           | programme declaration {$$=$1; $$->ajouterInstruction($2);}
@@ -248,6 +250,7 @@ void yyerror(int * res, const char * msg) {
 }
 
 int main(void) {
+yydebug =1;
    int res = 0;
    yyparse(&res);
    printf("Résutlat : %d\n",res);

@@ -16,7 +16,7 @@ class Instruction {
 	public:
 		Instruction() {}
 		virtual ~Instruction() {}
-		void Afficher();
+		virtual void Afficher(){}
 };
 
 class InstructionV : public Instruction {
@@ -30,7 +30,7 @@ class InstructionProgramme // Cette classe est dérivée par decls et fonction
 	public :
 		InstructionProgramme() {}
 		bool compiler(); // TODO devront être virtuelles pure
-		void afficher(); //	""
+		virtual void Afficher(){} //	""
 };
 
 /** Déclaration Class */
@@ -41,14 +41,14 @@ class Declaration : public Instruction, public InstructionProgramme
 		virtual ~Declaration() {}
 		void ajouterIdentifiant(string id) {identifiants->push_back(id);}
 		void addAllIdentifiants(std::vector<string>* identifiants) { this->identifiants->insert(this->identifiants->end(), identifiants->begin(), identifiants->end());}
-		void affiche () {
-			cout<<"DECLARATION"<<endl;;
-			cout<<type<<endl;
+		void Afficher () {
+			cerr<<"DECLARATION"<<endl;;
+			cerr<<type<<endl;
 			for(int i=0;i<identifiants->size();i++)
 			{
-				cout<<(*identifiants)[i]<<",";
+				cerr<<(*identifiants)[i]<<",";
 			}
-			cout<<endl;
+			cerr<<endl;
 		}
 	private :
 		string type;
@@ -62,8 +62,12 @@ class Programme {
 		Programme();
 		virtual ~Programme() {}
 		void ajouterInstruction(InstructionProgramme* instr) {instructions->push_back(instr);}
-		void affiche () {
-			// ici il faut appeler le affiche de chaque element de la futur dequeu
+		void Afficher () {
+			cerr<<"PROGRAMME"<<endl<<"	";
+			for(int i=0;i<instructions->size();i++)
+			{
+				(*instructions)[i]->Afficher();
+			}
 		}
 	private :
 		vector<InstructionProgramme*> *instructions;
