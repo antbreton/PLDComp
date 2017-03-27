@@ -15,6 +15,12 @@ class Instruction {
 
 };
 
+class InstructionV : public Instruction {
+	public:
+		InstructionV(){}
+		virtual ~InstructionV() {}	
+};
+
 class Declaration : public Instruction
 {
 	public :

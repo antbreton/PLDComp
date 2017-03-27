@@ -2,11 +2,6 @@
 #define _STRUCTURE_H
 #include "General.h"
 
-class InstructionV : public Instruction {
-	public:
-		InstructionV(){}
-		virtual ~InstructionV() {}	
-};
 
 class StructureControle {
 	public:

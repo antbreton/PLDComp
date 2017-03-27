@@ -1,0 +1,9 @@
+test.output
+test.tab.c
+test.tab.h
+test.output
+test
+lex.yy.c
+CMakeLists.txt
+.idea
+cmake-build-debug
