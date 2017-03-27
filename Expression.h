@@ -121,6 +121,7 @@ class Affectation : public Expression {
 public:
 	Affectation():Expression() {}
 	void setValeur(Expression* expression) {this->valeur = expression;}
+	void setIdentifiant(std::string* id) {this->identifiant = id;}
 private:
 	std::string* identifiant;
 	Expression* valeur;
