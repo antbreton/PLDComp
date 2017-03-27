@@ -1,10 +1,10 @@
 %{
 #include <stdio.h>
 #include <stdint.h>
+#include "General.h"
 #include "Expression.h"
 #include "Fonction.h"
 #include "Structure.h"
-#include "General.h"
 
 void yyerror(int *, const char *);
 int yylex(void);
@@ -26,10 +26,10 @@ int yylex(void);
    BlocFor* blocfor;
   // void* expr;
    void* opebin;
-
+	 int* suffixetab;
    void* TODO;
    Affectation* affect;
-   Expression* valvar;
+   Val* valvar;
    int* inutile;
    Not *non;
    Val* valeur;
@@ -112,7 +112,7 @@ int yylex(void);
 %type <structctrl> bloc_boucle
 %type <blocfor> bloc_for
 %type <blocwhile> bloc_while
-%type <TODO> suffixe_tab
+%type <valvar> suffixe_tab
 %type <instrv> bloc
 %type <TODO> contenu_bloc
 %type <expression> expression
@@ -138,11 +138,11 @@ int yylex(void);
 
 axiome : programme;
 
-suffixe_tab : CROCHOUVR valeur_variable CROCHFERM
+suffixe_tab : CROCHOUVR valeur_variable CROCHFERM {$$ = $2;}
             | {$$ = NULL;}
             ;
 
-declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1);};
+declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3);};
 
 separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back("test");}	// A chaque appel on push l'identifiant courant dans la liste
                 | /* vide */ { $$ = new std::vector<string>();};			// On crée la liste d'identifiant quand on est sur vide

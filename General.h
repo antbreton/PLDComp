@@ -1,13 +1,14 @@
 #ifndef _GENERAL_H
 #define _GENERAL_H
 
-//#include "Fonction.h"
 #include <string> 
 #include <vector>
  
 using namespace std;
 
 class Fonction;
+class Val;
+
 
 class Instruction {
 	public:
@@ -22,25 +23,27 @@ class InstructionV : public Instruction {
 		virtual ~InstructionV() {}	
 };
 
+/** Déclaration Class */
 class Declaration : public Instruction
 {
 	public :
-		Declaration(string type):Instruction(), type(type){ identifiants = new vector<string>();}
+		Declaration(string type, Val * taille);
 		virtual ~Declaration() {}
 		void ajouterIdentifiant(string id) {identifiants->push_back(id);}
 		void setIdentifiants(std::vector<string>* identifiants) { this->identifiants = identifiants;}
 	private :
 		string type;
+		int taille;
 		vector<string>* identifiants;
 };
 
 class Programme {
 	public:
-		Programme() { decls = new vector<Declaration>(); fonctions = new vector<Fonction> ();}
-		virtual ~Programme() { delete(decls); delete(fonctions);}
+		Programme();
+		virtual ~Programme() {}
 	private :
-		vector<Declaration> *decls;
-		vector<Fonction> *fonctions;
+		vector<Declaration*> *decls;
+		vector<Fonction*> *fonctions;
 };
 
 

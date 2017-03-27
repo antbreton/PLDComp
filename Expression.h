@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 
+
 class Expression : public InstructionV {
 	public:
 		Expression(){}
@@ -15,7 +16,7 @@ class Expression : public InstructionV {
 class Val : public Expression {
 	public:
 		Val(int valeur):Expression(), valeur(valeur) {}
-		 int valeur;
+		int valeur;
 };
 
 class Caractere : public Expression {
