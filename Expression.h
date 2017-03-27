@@ -10,12 +10,7 @@ class Expression {
 		virtual ~Expression() {}	
 };
 
-/* a voir si on implémente ou pas, actuellement pas dans la structure de donnée, donc interdit les for(;;)
-class ExpressionFor : public Expression {
-	public :
-		ExpressionFor():Expression(){}
-};
-*/
+
 class Val : public Expression {
 	public:
 		Val(int valeur):Expression(), valeur(valeur) {}

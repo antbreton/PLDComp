@@ -28,7 +28,7 @@ int yylex(void);
 
    void* TODO;
    Affectation* affect;
-   void* valvar;
+   Expression* valvar;
    int* inutile;
    Not *non;
    Val* valeur;
@@ -170,7 +170,7 @@ type : INT32 { $$ = new string("INT32");}
 		 | CHAR { $$ = new string("CHAR");}
 		 | VOID { $$ = new string("VOID");};
 
-instrv : expression PV
+instrv : expression PV 
        | structure_de_controle
        | bloc
        | RETURN CROCHOUVR expression CROCHFERM PV
@@ -203,11 +203,11 @@ expression : NOT expression { $$ = new Not($2); }
            | expression MULT expression { $$ = new OperateurMultiplier($1, $3); }
            | expression DIV expression { $$ = new OperateurDivise($1, $3); }
            | expression DIVEUCL expression { $$ = new OperateurModulo($1, $3); }
-           | PAROUVR expression PARFERM { /* $$ = new Expression($2); */}
+           | PAROUVR expression PARFERM { $$ = $2; }
            | appel_fonction { $$ = new AppelFonction(); }
            | affectation { $$ = new Affectation(); }
            | IDENTIFIANT
-           | valeur_variable;
+           | valeur_variable { $$ = $1; };
 
 
            
@@ -227,11 +227,11 @@ bloc_if : IF PAROUVR expression PARFERM instrv ELSE instrv
         | IF PAROUVR expression PARFERM instrv { $$ = new BlocIf($3,$5);} ;
 
 bloc_boucle : bloc_for | bloc_while;
-/* pas dans la structure de données
-expression_for : expression
-               | ;
-*/
-bloc_for : FOR PAROUVR expression PV expression PV expression PV PARFERM instrv { $$ = new BlocFor($3,$5,$7,$10);};
+
+expression_for : expression { $$ = $1;}
+               | {$$ = new Val(1);};
+
+bloc_for : FOR PAROUVR expression_for PV expression_for PV expression_for PV PARFERM instrv { $$ = new BlocFor(new Val(1),new Val(1),new Val(1),$10);};
 
 bloc_while : WHILE PAROUVR expression PARFERM instrv { $$ = new BlocWhile($3,$5);};
 ////*******/////
