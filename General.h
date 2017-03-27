@@ -53,7 +53,6 @@ class Programme {
 		Programme();
 		virtual ~Programme() {}
 		void Affiche () {
-			printf("PROGRAMME");
 			// ici il faut appeler le affiche de chaque element de la futur dequeu
 		}
 	private :

@@ -113,15 +113,9 @@ int yylex(void);
 %type <structctrl> bloc_boucle
 %type <blocfor> bloc_for
 %type <blocwhile> bloc_while
-<<<<<<< HEAD
 %type <valvar> suffixe_tab
-%type <instrv> bloc
-%type <TODO> contenu_bloc
-=======
-%type <TODO> suffixe_tab
 %type <bloc> bloc
 %type <bloc> contenu_bloc
->>>>>>> 4b47c2ca83dfefb0f5c85ab436026fdde2017690
 %type <expression> expression
 %type <TODO> declaration_droite
 %type <declaration> declaration
@@ -163,7 +157,7 @@ fonction : prototype PV {new Fonction($1);}
 
 
 
-declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1);}
+declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3);}
                             | type IDENTIFIANT EGAL_AFFECTATION expression;
 
 parametre_declaration : parametre_declaration VIRGULE declaration_param_fonction {$$->push_back($3);}
