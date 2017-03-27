@@ -208,7 +208,7 @@ expression : NOT expression { $$ = new Not($2); }
            | PAROUVR expression PARFERM { $$ = $2; }
            | appel_fonction { $$ = new AppelFonction(); }
            | affectation { $$ = new Affectation(); }
-           | IDENTIFIANT
+           | IDENTIFIANT { /* TODO */ }
            | valeur_variable { $$ = $1; };
 
 
