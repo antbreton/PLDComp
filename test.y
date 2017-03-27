@@ -117,7 +117,7 @@ int yylex(void);
 %type <bloc> bloc
 %type <bloc> contenu_bloc
 %type <expression> expression
-%type <TODO> declaration_droite
+%type <declaration> declaration_droite
 %type <declaration> declaration
 %type <expression> expression_for
 %type <affect> affectation
@@ -143,12 +143,12 @@ axiome : programme;
 suffixe_tab : CROCHOUVR valeur_variable CROCHFERM {$$ = $2;}
             | {$$ = NULL;};
 
-declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3);};
+declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3); $$->ajouterIdentifiant(*yyval.identifiant);};
 
-separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back("test");}	// A chaque appel on push l'identifiant courant dans la liste
+separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back(*yyval.identifiant);}	// A chaque appel on push l'identifiant courant dans la liste
                 | /* vide */ { $$ = new std::vector<string>();};			// On crée la liste d'identifiant quand on est sur vide
 
-declaration : declaration_droite separateur_decl { $$->setIdentifiants($2);}
+declaration : declaration_droite separateur_decl { $$->addAllIdentifiants($2);}
             | declaration_droite separateur_decl EGAL_AFFECTATION expression;
 
 //fonction
@@ -173,7 +173,6 @@ liste_expression : liste_expression VIRGULE expression { $$->push_back($3); }   
                 | expression {$$->push_back($1); };
                         // On a pas encore trouve de liste_expression. On en cree une et on y mets l'expression courante
 
-
 type : INT32 { $$ = new string("INT32");}
 		 | INT64 { $$ = new string("INT64");}
 		 | CHAR { $$ = new string("CHAR");}
@@ -190,9 +189,6 @@ instr : instrv declaration PV;
 programme : programme fonction
           | programme declaration
           |;
-
-
-
 
 expression : NOT expression { $$ = new Not($2); }
            | expression AND expression { $$ = new OperateurAND($1, $3); }

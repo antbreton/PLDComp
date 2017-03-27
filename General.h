@@ -32,7 +32,7 @@ class Declaration : public Instruction
 		Declaration(string type, Val * taille);
 		virtual ~Declaration() {}
 		void ajouterIdentifiant(string id) {identifiants->push_back(id);}
-		void setIdentifiants(std::vector<string>* identifiants) { this->identifiants = identifiants;}
+		void addAllIdentifiants(std::vector<string>* identifiants) { this->identifiants->insert(this->identifiants->end(), identifiants->begin(), identifiants->end());}
 		void Affiche () {
 			cout<<"DECLARATION"<<endl;;
 			cout<<type<<endl;
