@@ -145,7 +145,7 @@ declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1);};
 separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back("test");}	// A chaque appel on push l'identifiant courant dans la liste
                 | /* vide */ { $$ = new std::vector<string>();};			// On crée la liste d'identifiant quand on est sur vide
 
-declaration : declaration_droite separateur_decl { $$->setIdentifiants($2);}
+declaration : declaration_droite separateur_decl { $$=$1; $1->setIdentifiants($2);}
             | declaration_droite separateur_decl EGAL_AFFECTATION expression;
 
 //fonction
@@ -160,8 +160,8 @@ prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM;
 
 appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { /* $$->setIdentifiant($1); */ $$->setParametres($3); };
 
-liste_expression : liste_expression VIRGULE expression { $$->push_back($3); }   // On push l'expression dans la liste d'expressions
-                | expression { $$ = new std::vector<Expression*>(); $$->push_back($1); };
+liste_expression : liste_expression VIRGULE expression { $$->ajouterParametre($3); }   // On push l'expression dans la liste d'expressions
+                | expression {$$->ajouterParametre($1); };
                         // On a pas encore trouve de liste_expression. On en cree une et on y mets l'expression courante
 
 
