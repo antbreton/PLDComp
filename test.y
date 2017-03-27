@@ -160,7 +160,7 @@ parametre_declaration : parametre_declaration VIRGULE declaration_droite
 
 prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM;
 
-appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { /* $$->setIdentifiant($1); */ $$->setParametres($3); };
+appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { $$->setIdentifiant(yyval.identifiant); $$->setParametres($3); };
 
 liste_expression : liste_expression VIRGULE expression { $$->push_back($3); }   // On push l'expression dans la liste d'expressions
                 | expression {$$->push_back($1); };
@@ -208,7 +208,7 @@ expression : NOT expression { $$ = new Not($2); }
            | PAROUVR expression PARFERM { $$ = $2; }
            | appel_fonction { $$ = new AppelFonction(); }
            | affectation { $$ = new Affectation(); }
-           | IDENTIFIANT
+           | IDENTIFIANT { /* TODO */ }
            | valeur_variable { $$ = $1; };
 
 
@@ -217,7 +217,7 @@ valeur_variable : VAL
                 | CARACTERE;
 
 
-affectation : IDENTIFIANT EGAL_AFFECTATION expression { $$->setValeur($3); };
+affectation : IDENTIFIANT EGAL_AFFECTATION expression { $$->setValeur($3); $$->setIdentifiant(yyval.identifiant); };
 
 
 
