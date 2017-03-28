@@ -3,6 +3,8 @@
 #include "General.h"
 #include <iostream>
 
+using namespace std;
+
 class StructureControle : public InstructionV {
 	public:
 		StructureControle(InstructionV * instrv): instrv(instrv){}

@@ -21,12 +21,12 @@ class Bloc : public InstructionV  {
 		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);};
 		vector<Instruction*>* instrs;
 		void Afficher () {
-			cerr<<"BLOC"<<endl;
+			cerr<<"BEGIN_BLOC"<<endl;
 			for(int i=0;i<instrs->size();i++)
 			{
 				(*instrs)[i]->Afficher();
 			}
-			cerr<<endl;
+			cerr<<"END_BLOC"<<endl;
 		}
 		
 
@@ -48,17 +48,18 @@ class ParamDeclar {
 
 class Prototype {
 	public:
-		Prototype(string* type, vector<Declaration*>* params, string* identifiant) : type(type), params(params), identifiant(identifiant) {}
+		Prototype(string* type, vector<Declaration*>* params, Identifiant* identifiant) : type(type), params(params), identifiant(identifiant) {}
 		string* type;
 		vector<Declaration*>* params;
-		string* identifiant;
+		Identifiant* identifiant;
 		void Afficher() {
 			cerr<<"PROTOTYPE"<<endl<<"	";
-			cerr<<*type<<" "<<*identifiant<<" ";
+			cerr<<*type<<" ";
+			identifiant->Afficher();
 			for(int i=0;i<params->size();i++)
 			{
 				(*params)[i]->Afficher();
-				cerr<<",";
+				cerr<<" ";
 			}
 			cerr<<endl;
 		}

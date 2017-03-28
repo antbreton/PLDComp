@@ -15,6 +15,7 @@ int yylex(void);
    Val* val64;
 	 string* identifiant;
    string* type;
+   RetourExpr* retour;//return reservé
    //void* proto;
    Instruction* instr;
    InstructionV* instrv;
@@ -40,7 +41,7 @@ int yylex(void);
    Fonction* fonc;
    Prototype* proto;
    ParamDeclar* paramDeclar;
-   std::vector<string>* listeIdentifiants;
+   std::vector<Identifiant*>* listeIdentifiants;
    AppelFonction* app_fonction;
    std::vector<Expression*>* liste_expr;
    std::vector<Declaration*>* parametres_declaration;
@@ -55,14 +56,14 @@ int yylex(void);
 
 
 
-%token IDENTIFIANT
+%token <identifiant> IDENTIFIANT
 %token PAROUVR PARFERM
 %token <val32> INT32
 %token <val64> INT64 
 %token <cval> CHAR 
 %token VOID
 %token PV                   // ;
-%token RETURN
+%token <retour> RETURN
 %token CROCHOUVR
 %token CROCHFERM
 %token ACCOLOUVR
@@ -144,10 +145,10 @@ axiome : programme { $$->Afficher();};
 suffixe_tab : CROCHOUVR valeur_variable CROCHFERM {$$ = $2;}
             | {$$ = NULL;};
 
-declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3); $$->ajouterIdentifiant(*yyval.identifiant);};
+declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3,new Identifiant($2));};
 
-separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back(*yyval.identifiant);}	// A chaque appel on push l'identifiant courant dans la liste
-                | /* vide */ { $$ = new std::vector<string>();};			// On crée la liste d'identifiant quand on est sur vide
+separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back(new Identifiant($3));}	// A chaque appel on push l'identifiant courant dans la liste
+                | /* vide */ { $$ = new std::vector<Identifiant*>();};			// On crée la liste d'identifiant quand on est sur vide
 
 declaration : declaration_droite separateur_decl { $$ = $1; $$->addAllIdentifiants($2);}
             | declaration_droite separateur_decl EGAL_AFFECTATION expression { $$ = $1; $$->addAllIdentifiants($2); } ; /* TODO gerer l'affectation */
@@ -156,17 +157,18 @@ declaration : declaration_droite separateur_decl { $$ = $1; $$->addAllIdentifian
 fonction : prototype PV {new Fonction($1);}
          | prototype bloc {$$ = new Fonction($1,$2);};
 
-declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3);}
+declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3,new Identifiant($2));}
                             | type IDENTIFIANT EGAL_AFFECTATION expression;
 
 parametre_declaration : parametre_declaration VIRGULE declaration_param_fonction {$$->push_back($3);}
                       | declaration_param_fonction {$$ = new std::vector<Declaration*>(); $$->push_back($1);}
                       | {$$ = new std::vector<Declaration*>();};
 
-prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Prototype($1,$4,yyval.identifiant);};
+prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Prototype($1,$4,new Identifiant($2));};
+         // A REVOIR | type IDENTIFIANT PAROUVR VOID PARFERM {$$ = new Prototype($1,NULL,new Identifiant($2));};
 
 
-appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { $$->setIdentifiant(yyval.identifiant); $$->setParametres($3); };
+appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { $$->setIdentifiant(new Identifiant($1)); $$->setParametres($3); };
 
 liste_expression : liste_expression VIRGULE expression { $$->push_back($3); }   // On push l'expression dans la liste d'expressions
                 | expression {$$->push_back($1); };
@@ -180,7 +182,7 @@ type : INT32 { $$ = new string("INT32");}
 instrv : expression PV {$$ = $1;}
        | structure_de_controle {$$ = $1;}
        | bloc {$$ = $1;}
-       | RETURN expression PV {$$ = $2;}
+       | RETURN expression PV {$$ = new RetourExpr($2);}
        | PV;
        
 instr : instrv {$$ = $1;}
@@ -207,16 +209,16 @@ expression : NOT expression { $$ = new Not($2); }
            | PAROUVR expression PARFERM { $$ = $2; }
            | appel_fonction { $$ = new AppelFonction(); }
            | affectation { $$ = new Affectation(); }
-           | IDENTIFIANT { /* TODO */ }
+           | IDENTIFIANT { $$ = new Identifiant(yylval.identifiant); }
            | valeur_variable { $$ = $1; };
 
 
            
 valeur_variable : VAL
-                | CARACTERE;
+                | CARACTERE ;
 
 
-affectation : IDENTIFIANT EGAL_AFFECTATION expression { $$->setValeur($3); $$->setIdentifiant(yyval.identifiant); };
+affectation : IDENTIFIANT EGAL_AFFECTATION expression { $$->setValeur($3); $$->setIdentifiant(new Identifiant($1));};
 
 
 
