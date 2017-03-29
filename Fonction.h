@@ -36,6 +36,9 @@ class ParamDeclar {
 		vector<Declaration*>* params;
 };
 
+
+/*
+>>>>>>> Nico5
 class Prototype {
 	public:
 		Prototype(string* type, vector<Declaration*>* params, Identifiant* identifiant) : type(type), params(params), identifiant(identifiant) {}
@@ -53,7 +56,7 @@ class Prototype {
 			}
 			cerr<<endl;
 		}
-};
+};*/
 
 
 
@@ -67,6 +70,13 @@ class Fonction : public InstructionProgramme, public Identifiable {
 		virtual ~Fonction() {}
 		void Afficher () {
 			cerr<<"FONCTION"<<endl<<"	";
+			cerr<<type<<" "<<id<<" ";
+			for(int i=0;i<declarations->size();i++)
+			{
+				(*declarations)[i]->Afficher();
+				cerr<<" ";
+			}
+			cerr<<endl;
 			bloc->Afficher();
 		}
 		void RajouterBloc (Bloc* bloc){

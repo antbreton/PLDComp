@@ -325,11 +325,11 @@ public:
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
 	virtual ~AppelFonction() {delete this->parametres; }
 	void Afficher () {
-		cerr<<"APPEL FONCTION"<<endl;
+		cerr<<"APPEL FONCTION ";
 		identifiant->Afficher();
 		for(int i=0;i<parametres->size();i++)
 		{
-			cerr<<(*parametres)[i]<<", ";
+			(*parametres)[i]->Afficher();
 		}
 		cerr<<endl;
 		
