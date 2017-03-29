@@ -78,6 +78,7 @@ class Caractere : public Expression {
 		 }
 };
 
+/* TODO enelver InstructionProgramme vu que maintenant on a plus que des fonctions comme instruction */
 class InstructionProgramme // Cette classe est dérivée par decls et fonction
 {
 	public :
