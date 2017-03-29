@@ -1,4 +1,10 @@
+
 int32_t main(int32_t z, int64_t t) {
-	int32_t h = 17;
+	myFunc(8);
 	return 7;
 }
+
+
+
+
+

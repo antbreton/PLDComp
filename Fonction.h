@@ -66,18 +66,31 @@ class Prototype {
 };
 
 
+class Identifiable {
+		public : 
+			Identifiable(string id):id(id){}
+			string id;
+	
+	
+};
 
-class Fonction : public InstructionProgramme {
+class Fonction : public InstructionProgramme, public Identifiable {
 	public:
-		Fonction(Prototype* proto, Bloc* bloc = NULL): proto(proto), bloc(bloc) {}
-		Prototype* proto;
+		Fonction(string type, string id, vector<Declaration*>* declarations, Bloc* bloc = NULL): Identifiable(id), type(type), declarations(declarations), bloc(bloc) {}
 		Bloc* bloc;
+		string type;
+		vector<Declaration*>* declarations;
 		virtual ~Fonction() {}
 		void Afficher () {
 			cerr<<"FONCTION"<<endl<<"	";
-			proto->Afficher();
 			bloc->Afficher();
 		}
+		void RajouterBloc (Bloc* bloc){
+			this->bloc=bloc;
+			
+		}
+
+		
 };
 
 

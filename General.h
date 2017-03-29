@@ -331,9 +331,11 @@ public:
 	void setValeur(Expression* expression) {this->valeur = expression;}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
 	void Afficher () {
-		cerr<<"AFFECTATION";
+		cerr<<"AFFECTATION ";
 		identifiant->Afficher();
-		cerr<<" = "<< valeur<<endl;		
+		cerr<<" = ";
+		valeur->Afficher();
+		cerr<<" ";		
 	}
 
 private:

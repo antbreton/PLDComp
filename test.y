@@ -13,7 +13,7 @@ int yylex(void);
 %union {
    Val* val32;
    Val* val64;
-	 string* identifiant;
+   string* identifiant;
    string* type;
    RetourExpr* retour;//return reservé
    //void* proto;
@@ -39,7 +39,6 @@ int yylex(void);
    Expression* expression;
    Declaration* declaration;
    Fonction* fonc;
-   Prototype* proto;
    ParamDeclar* paramDeclar;
    std::vector<Identifiant*>* listeIdentifiants;
    AppelFonction* app_fonction;
@@ -107,7 +106,7 @@ int yylex(void);
 %type <instrv> instrv
 %type <instr> instr
 %type <prog> programme
-%type <proto> prototype 
+%type <fonc> prototype 
 //%type <dirprepro> dirpreprocesseur
 %type <prog> axiome
 %type <structctrl> structure_de_controle
@@ -154,8 +153,8 @@ declaration : declaration_droite separateur_decl { $$ = $1; $$->addAllIdentifian
             | declaration_droite separateur_decl EGAL_AFFECTATION expression { $$ = $1; $$->addAllIdentifiants($2); } ; /* TODO gerer l'affectation */
 
 //fonction
-fonction : prototype PV {new Fonction($1);}
-         | prototype bloc {$$ = new Fonction($1,$2);};
+fonction : prototype PV {$$ = $1;}
+         | prototype bloc {$$=$1; $$->RajouterBloc($2);};
 
 declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3,new Identifiant($2));}
                             | type IDENTIFIANT EGAL_AFFECTATION expression;
@@ -164,14 +163,15 @@ parametre_declaration : parametre_declaration VIRGULE declaration_param_fonction
                       | declaration_param_fonction {$$ = new std::vector<Declaration*>(); $$->push_back($1);}
                       | {$$ = new std::vector<Declaration*>();};
 
-prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Prototype($1,$4,new Identifiant($2));};
+prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Fonction (*$1, *$2, $4);}
+//$$ = new Prototype($1,$4,new Identifiant($2));};
          // A REVOIR | type IDENTIFIANT PAROUVR VOID PARFERM {$$ = new Prototype($1,NULL,new Identifiant($2));};
 
 
 appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { $$->setIdentifiant(new Identifiant($1)); $$->setParametres($3); };
 
 liste_expression : liste_expression VIRGULE expression { $$->push_back($3); }   // On push l'expression dans la liste d'expressions
-                | expression {$$->push_back($1); };
+                | expression {$$ = new std::vector<Expression*>(); $$->push_back($1); };
                         // On a pas encore trouve de liste_expression. On en cree une et on y mets l'expression courante
 
 type : INT32 { $$ = new string("INT32");}
@@ -208,7 +208,7 @@ expression : NOT expression { $$ = new Not($2); }
            | expression DIVEUCL expression { $$ = new OperateurModulo($1, $3); }
            | PAROUVR expression PARFERM { $$ = $2; }
            | appel_fonction { $$ = new AppelFonction(); }
-           | affectation { $$ = new Affectation(); }
+           | affectation { $$ = $1; }
            | IDENTIFIANT { $$ = new Identifiant(yylval.identifiant); }
            | valeur_variable { $$ = $1; };
 
@@ -218,7 +218,7 @@ valeur_variable : VAL
                 | CARACTERE ;
 
 
-affectation : IDENTIFIANT EGAL_AFFECTATION expression { $$->setValeur($3); $$->setIdentifiant(new Identifiant($1));};
+affectation : IDENTIFIANT EGAL_AFFECTATION expression { $$ = new Affectation(); $$->setValeur($3); $$->setIdentifiant(new Identifiant($1));};
 
 
 
