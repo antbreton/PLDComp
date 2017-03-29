@@ -58,9 +58,9 @@ class Identifiant : public Expression {
 			cerr<<*id<<" ";
 		}
 };
-class RetourExpr : public Expression {
+class RetourExpr : public InstructionV {
 	public:
-	RetourExpr(Expression * expr):Expression(), expr(expr){}
+	RetourExpr(Expression * expr):InstructionV(), expr(expr){}
 	Expression * expr;
 	void Afficher() {
 		cerr<<"RETURN ";
