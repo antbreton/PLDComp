@@ -38,7 +38,7 @@ Variable::Variable(string type, string id):Identifiable(id), type(type), initial
 
 }
 
-Variable::Variable(string type, string id, int valeur):Identifiable(id), type(type), valeur(valeur),initialisation (true)
+Variable::Variable(string type, string id, Expression * expr):Identifiable(id), type(type), expr(expr),initialisation (true)
 {
 	
 }

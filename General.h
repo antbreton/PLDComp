@@ -11,6 +11,7 @@ using namespace std;
 
 class Fonction;
 class Val;
+class Variable;
 
 class Identifiable {
 		public : 
@@ -25,14 +26,14 @@ class Instruction {
 		virtual ~Instruction() {}
 		virtual void Afficher(){}
 };
-
+/*
 class InstructionV : public Instruction {
 	public:
 		InstructionV(){}
 		virtual ~InstructionV() {}
-};
+};*/
 
-class Expression : public InstructionV {
+class Expression : public Instruction {
 	public:
 		Expression(){}
 		virtual ~Expression() {}	
@@ -49,9 +50,9 @@ class Identifiant : public Expression {
 			cerr<<*id<<" ";
 		}
 };
-class RetourExpr : public InstructionV {
+class RetourExpr : public Instruction {
 	public:
-	RetourExpr(Expression * expr):InstructionV(), expr(expr){}
+	RetourExpr(Expression * expr):Instruction(), expr(expr){}
 	Expression * expr;
 	void Afficher() {
 		cerr<<"RETURN ";
@@ -122,6 +123,9 @@ class Programme {
 			}
 			cerr<<"END_PROGRAMME"<<endl;
 		}
+		
+		// Cette méthode ajoute la liste de variable passée en paramètre à la table de symbole du programme
+		void ajouterListeVariable(vector<Variable*>* listeVariable){} /* TODO */
 	private :
 		map<string,Identifiable*>* tableSymboles; // Cet attribut correspond à la table de symbole : mapping entre un identifiant et un identifiable
 		vector<InstructionProgramme*> *instructions;
@@ -329,7 +333,7 @@ private:
 	std::vector<Expression *> *parametres;
 	Identifiant* identifiant;
 };
-/*
+
 class Affectation : public Expression {
 public:
 	Affectation():Expression() {}
@@ -346,7 +350,7 @@ public:
 private:
 	Identifiant* identifiant;
 	Expression* valeur;
-};*/
+};
 
 class Variable : public Identifiable
 {

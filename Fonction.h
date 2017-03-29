@@ -14,7 +14,7 @@ using namespace std;
 class Variable;
 
 
-class Bloc : public InstructionV  {
+class Bloc : public Instruction  {
 	public:
 		Bloc(Instruction* instr) {instrs = new vector <Instruction*>; this->AjouterInstr(instr);}
 		virtual ~Bloc() {}

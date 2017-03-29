@@ -5,18 +5,18 @@
 
 using namespace std;
 
-class StructureControle : public InstructionV {
+class StructureControle : public Instruction {
 	public:
-		StructureControle(InstructionV * instrv): instrv(instrv){}
+		StructureControle(Instruction * instrv): instrv(instrv){}
 		virtual ~StructureControle() {}	
-		InstructionV* instrv;
+		Instruction* instrv;
 		virtual void Afficher (){}
 };
 class BlocIf : public StructureControle {
 	public:
-		BlocIf(Expression * expr, InstructionV * instrv, InstructionV * blocElse = NULL):StructureControle(instrv), exprCondition(expr), blocElse(blocElse){}
+		BlocIf(Expression * expr, Instruction * instrv, Instruction * blocElse = NULL):StructureControle(instrv), exprCondition(expr), blocElse(blocElse){}
 		Expression* exprCondition;
-		InstructionV * blocElse;
+		Instruction * blocElse;
 		void Afficher () {
 			cerr<<"BLOC_IF ( "; exprCondition->Afficher(); cerr<<" ) {"<<endl;
 			instrv->Afficher();
@@ -30,7 +30,7 @@ class BlocIf : public StructureControle {
 
 class BlocWhile : public StructureControle {
 	public:
-		BlocWhile(Expression * expr, InstructionV * instrv):StructureControle(instrv), exprCondition(expr) {}
+		BlocWhile(Expression * expr, Instruction * instrv):StructureControle(instrv), exprCondition(expr) {}
 		Expression* exprCondition;
 		void Afficher () {
 			cerr<<"BLOC_WHILE ( "; exprCondition->Afficher(); cerr<<" ) {"<<endl;
@@ -41,7 +41,7 @@ class BlocWhile : public StructureControle {
 
 class BlocFor : public StructureControle {
 	public:
-		BlocFor(Expression * exprInit, Expression * exprCondition, Expression * exprIncrementation, InstructionV * instrv):StructureControle(instrv), exprInit(exprInit), exprCondition(exprCondition), exprIncrementation(exprIncrementation) {}
+		BlocFor(Expression * exprInit, Expression * exprCondition, Expression * exprIncrementation, Instruction * instrv):StructureControle(instrv), exprInit(exprInit), exprCondition(exprCondition), exprIncrementation(exprIncrementation) {}
 		Expression* exprInit;
 		Expression* exprCondition;
 		Expression* exprIncrementation;

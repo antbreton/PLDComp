@@ -29,7 +29,7 @@ int yylex(void);
    void* opebin;
    Bloc* bloc;
    void* TODO;
-   Variable* affect;
+   Affectation* affect;
    Val* valvar;
    int* inutile;
    Not *non;
@@ -123,11 +123,11 @@ int yylex(void);
 %type <affect> affectation
 %type <valvar> valeur_variable
 %type <fonc> fonction
-%type <parametres_declaration> parametre_declaration
+%type <declaration> parametre_declaration
 %type <app_fonction> appel_fonction
 %type <liste_expr> liste_expression
 %type <declaration> separateur_decl
-%type <declaration> declaration_param_fonction
+%type <variable> declaration_param_fonction
 
 
 //%left IDENTIFIANT PAROUVR PARFERM INT32 INT64 CHAR VOID
@@ -155,13 +155,16 @@ declaration : declaration_droite separateur_decl { $$ = $2; $$->push_back($1); f
 fonction : prototype PV {$$ = $1;}
          | prototype bloc {$$=$1; $$->RajouterBloc($2);};
 
-declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$1,$3,new Identifiant($2));}
-                            | type IDENTIFIANT EGAL_AFFECTATION expression;
+declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$1,*$2);}; /* TODO gerer les tabs */
+                           // | type IDENTIFIANT EGAL_AFFECTATION expression;
 
-parametre_declaration : parametre_declaration VIRGULE declaration_param_fonction {$$->push_back($3);}
-                      | declaration_param_fonction {$$ = new std::vector<Declaration*>(); $$->push_back($1);}
-                      | {$$ = new std::vector<Declaration*>();};
+// Crée une liste de variable
+parametre_declaration : parametre_declaration VIRGULE declaration_param_fonction {$$->push_back($3);} // on ajoute la variable
+                      | declaration_param_fonction { $$->push_back($1);} // on ajoute la variable correspondante
+                      | {$$ = new std::vector<Variable*>();}; // on crée le vecteur de variable
 
+
+// Instancie la fonction avec son type, son ID et en lui ajoutant sa liste de variable. 
 prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Fonction (*$1, *$2, $4);}
 //$$ = new Prototype($1,$4,new Identifiant($2));};
          // A REVOIR | type IDENTIFIANT PAROUVR VOID PARFERM {$$ = new Prototype($1,NULL,new Identifiant($2));};
@@ -206,7 +209,7 @@ expression : NOT expression { $$ = new Not($2); }
            | expression DIVEUCL expression { $$ = new OperateurModulo($1, $3); }
            | PAROUVR expression PARFERM { $$ = $2; }
            | appel_fonction { $$ = $1; }
-           | affectation { $$ = $1; }
+           | affectation/* TODO { $$ = $1; }*/
            | IDENTIFIANT { $$ = new Identifiant(yylval.identifiant); }
            | valeur_variable { $$ = $1; };
 
