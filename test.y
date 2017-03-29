@@ -150,7 +150,8 @@ separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back(new Identi
                 | /* vide */ { $$ = new std::vector<Identifiant*>();};			// On crée la liste d'identifiant quand on est sur vide
 
 declaration : declaration_droite separateur_decl { $$ = $1; $$->addAllIdentifiants($2);}
-            | declaration_droite separateur_decl EGAL_AFFECTATION expression { $$ = $1; $$->addAllIdentifiants($2); } ; /* TODO gerer l'affectation */
+            | declaration_droite separateur_decl EGAL_AFFECTATION expression { 
+$$ = $1; $$->addAllIdentifiants($2); } ; /* TODO gerer l'affectation */
 
 //fonction
 fonction : prototype PV {$$ = $1;}
@@ -168,7 +169,7 @@ prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Fon
          // A REVOIR | type IDENTIFIANT PAROUVR VOID PARFERM {$$ = new Prototype($1,NULL,new Identifiant($2));};
 
 
-appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { $$->setIdentifiant(new Identifiant($1)); $$->setParametres($3); };
+appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { $$ = new AppelFonction(); $$->setIdentifiant(new Identifiant($1)); $$->setParametres($3); };
 
 liste_expression : liste_expression VIRGULE expression { $$->push_back($3); }   // On push l'expression dans la liste d'expressions
                 | expression {$$ = new std::vector<Expression*>(); $$->push_back($1); };
@@ -207,7 +208,7 @@ expression : NOT expression { $$ = new Not($2); }
            | expression DIV expression { $$ = new OperateurDivise($1, $3); }
            | expression DIVEUCL expression { $$ = new OperateurModulo($1, $3); }
            | PAROUVR expression PARFERM { $$ = $2; }
-           | appel_fonction { $$ = new AppelFonction(); }
+           | appel_fonction { $$ = $1; }
            | affectation { $$ = $1; }
            | IDENTIFIANT { $$ = new Identifiant(yylval.identifiant); }
            | valeur_variable { $$ = $1; };
