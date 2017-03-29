@@ -1,4 +1,4 @@
 int32_t main(int32_t z, int64_t t) {
-	int32_t h;
+	int32_t h = 17;
 	return 7;
 }
