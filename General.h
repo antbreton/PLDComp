@@ -31,6 +31,7 @@ class Expression : public InstructionV {
 		Expression(){}
 		virtual ~Expression() {}	
 		virtual void Afficher() {}
+		virtual int Reduire() {}
 };
 
 
@@ -42,6 +43,9 @@ class Identifiant : public Expression {
 			cerr<<"ID ";
 			cerr<<*id<<" ";
 		}
+		int Reduire () {
+			return (int) id;
+		}
 };
 class RetourExpr : public Expression {
 	public:
@@ -50,6 +54,9 @@ class RetourExpr : public Expression {
 	void Afficher() {
 		cerr<<"RETURN ";
 		expr->Afficher();
+	}
+	int Reduire () {
+		return expr->Reduire();
 	}
 	
 	
@@ -62,6 +69,9 @@ class Val : public Expression {
 		void Afficher () {
 			 cerr<<"VAL "<< valeur <<endl;
 		 }
+		 int Reduire () {
+			 return valeur;
+		 }
 };
 
 class Caractere : public Expression {
@@ -70,6 +80,9 @@ class Caractere : public Expression {
 		char c;
 		void Afficher () {
 			 cerr<<"CARACTERE"<< c<<endl;
+		 }
+		 	int Reduire() {
+			 return (int) c;
 		 }
 };
 
@@ -135,6 +148,9 @@ class Not : public Expression {
 			 membre->Afficher();
 			 cerr<<endl;
 		 }
+		 int Reduire() {
+			 return !membre;
+		 }
 };
 
 class ExpreOpeBinaire : public Expression {
@@ -157,6 +173,9 @@ class OperateurOR : public ExpreOpeBinaire {
 			 membreDroit->Afficher();
 			 cerr<<endl;
 		 }
+		 	int Reduire() {
+			 return (membreG->Reduire()!=0 || membreD->Reduire()!=0);
+		 }
 };
 
 class OperateurAND : public ExpreOpeBinaire {
@@ -168,6 +187,9 @@ public:
 			 cerr<<" && ";
 			 membreDroit->Afficher();
 			 cerr<<endl;
+		 }
+		 	int Reduire() {
+			 return (membreG->Reduire()!=0 && membreD->Reduire()!=0);
 		 }
 };
 
@@ -181,6 +203,9 @@ public:
 			 membreDroit->Afficher();
 			 cerr<<endl;
 		 }
+		 	int Reduire() {
+			 return (membreG->Reduire()>membreD->Reduire());
+		 }
 };
 
 class OperateurInf : public ExpreOpeBinaire {
@@ -192,6 +217,9 @@ public:
 			 cerr<<" < ";
 			 membreDroit->Afficher();
 			 cerr<<endl;
+		 }
+		 	int Reduire() {
+			 return (membreG->Reduire()<membreD->Reduire());
 		 }
 };
 
@@ -205,6 +233,9 @@ public:
 			 membreDroit->Afficher();
 			 cerr<<endl;
 		 }
+		 	int Reduire() {
+			 return (membreG->Reduire()>=membreD->Reduire());
+		 }
 };
 
 class OperateurInfEgal : public ExpreOpeBinaire {
@@ -216,6 +247,9 @@ public:
 			 cerr<<" <= ";
 			 membreDroit->Afficher();
 			 cerr<<endl;
+		 }
+		 	int Reduire() {
+			 return (membreG->Reduire()<=membreD->Reduire());
 		 }
 };
 
@@ -229,6 +263,9 @@ public:
 			 membreDroit->Afficher();
 			 cerr<<endl;
 		 }
+		 	int Reduire() {
+			 return (membreG->Reduire()==membreD->Reduire());
+		 }
 };
 
 class OperateurDifferent : public ExpreOpeBinaire {
@@ -240,6 +277,9 @@ public:
 			 cerr<<" != ";
 			 membreDroit->Afficher();
 			 cerr<<endl;
+		 }
+		 	int Reduire() {
+			 return (membreG->Reduire()!=membreD->Reduire());
 		 }
 };
 
@@ -253,6 +293,9 @@ public:
 			 membreDroit->Afficher();
 			 cerr<<endl;
 		 }
+		 int Reduire () {
+			 return (membreG->Reduire() + membreD->Reduire())
+		 }
 };
 
 class OperateurMoins : public ExpreOpeBinaire {
@@ -264,6 +307,9 @@ public:
 			 cerr<<" - ";
 			 membreDroit->Afficher();
 			 cerr<<endl;
+		 }
+		 int Reduire () {
+			 return (membreG->Reduire() - membreD->Reduire())
 		 }
 };
 
@@ -277,6 +323,9 @@ public:
 			 membreDroit->Afficher();
 			 cerr<<endl;
 		 }
+		 int Reduire () {
+			 return (membreG->Reduire() * membreD->Reduire())
+		 }
 };
 
 class OperateurModulo : public ExpreOpeBinaire {
@@ -289,6 +338,9 @@ public:
 			 membreDroit->Afficher();
 			 cerr<<endl;
 		 }
+		 int Reduire () {
+			 return (membreG->Reduire() % membreD->Reduire())
+		 }
 };
 
 class OperateurDivise : public ExpreOpeBinaire {
@@ -300,6 +352,9 @@ public:
 			 cerr<<" / ";
 			 membreDroit->Afficher();
 			 cerr<<endl;
+		 }
+		 int Reduire () {
+			 return (membreG->Reduire() / membreD->Reduire())
 		 }
 };
 
