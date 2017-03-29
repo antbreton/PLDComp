@@ -18,15 +18,6 @@ class Identifiable {
 			string id;	
 };
 
-class Variable : public Identifiable
-{
-	public :
-		Variable(string id);
-		Variable(string id, int valeur);
-	private:
-		bool initialisation;
-		int valeur;
-};
 
 class Instruction {
 	public:
@@ -94,7 +85,7 @@ class InstructionProgramme // Cette classe est dérivée par decls et fonction
 		virtual void Afficher(){} //	""
 };
 
-/** Déclaration Class */
+/** Déclaration Class *//*
 class Declaration : public Instruction, public InstructionProgramme
 {
 	public :
@@ -115,7 +106,7 @@ class Declaration : public Instruction, public InstructionProgramme
 		Identifiant * id;
 		int taille;
 		vector<Identifiant*>* identifiants;
-};
+};*/
 
 
 class Programme {
@@ -338,7 +329,7 @@ private:
 	std::vector<Expression *> *parametres;
 	Identifiant* identifiant;
 };
-
+/*
 class Affectation : public Expression {
 public:
 	Affectation():Expression() {}
@@ -355,7 +346,28 @@ public:
 private:
 	Identifiant* identifiant;
 	Expression* valeur;
-};
+};*/
 
+class Variable : public Identifiable
+{
+	public :
+		Variable(string id);
+		Variable(string type , string id);
+		Variable(string type, string id, Expression * expr);
+		void setValeur(Expression * expr){
+			this->expr=expr;
+		}
+		void Afficher(){}
+		string getType() {
+				return type;
+		}
+		void setType(string type){
+				this->type=type;
+		}
+	private:
+		string type;
+		bool initialisation;
+		Expression * expr;
+};
 
 #endif

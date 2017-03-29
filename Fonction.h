@@ -11,7 +11,7 @@
  
 using namespace std;
  
-class Declaration;
+class Variable;
 
 
 class Bloc : public InstructionV  {
@@ -32,8 +32,8 @@ class Bloc : public InstructionV  {
 
 class ParamDeclar {
 	public:
-		ParamDeclar(vector<Declaration*>* params): params(params) {}
-		vector<Declaration*>* params;
+		ParamDeclar(vector<Variable*>* params): params(params) {}
+		vector<Variable*>* params;
 };
 
 
@@ -41,9 +41,9 @@ class ParamDeclar {
 >>>>>>> Nico5
 class Prototype {
 	public:
-		Prototype(string* type, vector<Declaration*>* params, Identifiant* identifiant) : type(type), params(params), identifiant(identifiant) {}
+		Prototype(string* type, vector<*>* params, Identifiant* identifiant) : type(type), params(params), identifiant(identifiant) {}
 		string* type;
-		vector<Declaration*>* params;
+		vector<*>* params;
 		Identifiant* identifiant;
 		void Afficher() {
 			cerr<<"PROTOTYPE"<<endl<<"	";
@@ -63,17 +63,17 @@ class Prototype {
 
 class Fonction : public InstructionProgramme, public Identifiable {
 	public:
-		Fonction(string type, string id, vector<Declaration*>* declarations, Bloc* bloc = NULL): Identifiable(id), type(type), declarations(declarations), bloc(bloc) {}
+		Fonction(string type, string id, vector<Variable*>* s, Bloc* bloc = NULL): Identifiable(id), type(type), s(s), bloc(bloc) {}
 		Bloc* bloc;
 		string type;
-		vector<Declaration*>* declarations;
+		vector<Variable*>* s;
 		virtual ~Fonction() {}
 		void Afficher () {
 			cerr<<"FONCTION"<<endl<<"	";
 			cerr<<type<<" "<<id<<" ";
-			for(int i=0;i<declarations->size();i++)
+			for(int i=0;i<s->size();i++)
 			{
-				(*declarations)[i]->Afficher();
+				(*s)[i]->Afficher();
 				cerr<<" ";
 			}
 			cerr<<endl;

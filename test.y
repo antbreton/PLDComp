@@ -18,7 +18,6 @@ int yylex(void);
    RetourExpr* retour;//return reservé
    //void* proto;
    Instruction* instr;
-   InstructionV* instrv;
    Programme* prog;
  //  void* dirprepro;
    void* blocboucle;
@@ -30,20 +29,21 @@ int yylex(void);
    void* opebin;
    Bloc* bloc;
    void* TODO;
-   Affectation* affect;
+   Variable* affect;
    Val* valvar;
    int* inutile;
    Not *non;
    Val* valeur;
    Caractere* cval;
    Expression* expression;
-   Declaration* declaration;
+   std::vector<Variable*>* declaration;
+   Variable* variable;
    Fonction* fonc;
    ParamDeclar* paramDeclar;
    std::vector<Identifiant*>* listeIdentifiants;
    AppelFonction* app_fonction;
    std::vector<Expression*>* liste_expr;
-   std::vector<Declaration*>* parametres_declaration;
+   std::vector<Variable*>* parametres_declaration;
 }
 
 /*
@@ -103,7 +103,6 @@ int yylex(void);
 
 
 %type <type> type
-%type <instrv> instrv
 %type <instr> instr
 %type <prog> programme
 %type <fonc> prototype 
@@ -118,7 +117,7 @@ int yylex(void);
 %type <bloc> bloc
 %type <bloc> contenu_bloc
 %type <expression> expression
-%type <declaration> declaration_droite
+%type <variable> declaration_droite
 %type <declaration> declaration
 %type <expression> expression_for
 %type <affect> affectation
@@ -127,7 +126,7 @@ int yylex(void);
 %type <parametres_declaration> parametre_declaration
 %type <app_fonction> appel_fonction
 %type <liste_expr> liste_expression
-%type <listeIdentifiants> separateur_decl
+%type <declaration> separateur_decl
 %type <declaration> declaration_param_fonction
 
 
@@ -144,20 +143,19 @@ axiome : programme { $$->Afficher();};
 suffixe_tab : CROCHOUVR valeur_variable CROCHFERM {$$ = $2;}
             | {$$ = NULL;};
 
-declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3,new Identifiant($2));};
+declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$1,*$2);};
 
-separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back(new Identifiant($3));}	// A chaque appel on push l'identifiant courant dans la liste
-                | /* vide */ { $$ = new std::vector<Identifiant*>();};			// On crée la liste d'identifiant quand on est sur vide
+separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back(new Variable(*$3));}	// A chaque appel on push l'identifiant courant dans la liste
+                | /* vide */ { $$ = new std::vector<Variable*>();};			// On crée la liste d'identifiant quand on est sur vide
 
-declaration : declaration_droite separateur_decl { $$ = $1; $$->addAllIdentifiants($2);}
-            | declaration_droite separateur_decl EGAL_AFFECTATION expression { 
-$$ = $1; $$->addAllIdentifiants($2); } ; /* TODO gerer l'affectation */
+declaration : declaration_droite separateur_decl { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());}} // On crée un vecteur de variables qui auront toutes le type de la première déclaration
+            | declaration_droite separateur_decl EGAL_AFFECTATION expression { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());} (*$$)[$$->size()-2]->setValeur($4);  } ; /* TODO gerer l'affectation */
 
 //fonction
 fonction : prototype PV {$$ = $1;}
          | prototype bloc {$$=$1; $$->RajouterBloc($2);};
 
-declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Declaration(*$1,$3,new Identifiant($2));}
+declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$1,$3,new Identifiant($2));}
                             | type IDENTIFIANT EGAL_AFFECTATION expression;
 
 parametre_declaration : parametre_declaration VIRGULE declaration_param_fonction {$$->push_back($3);}
@@ -180,17 +178,16 @@ type : INT32 { $$ = new string("INT32");}
 		 | CHAR { $$ = new string("CHAR");}
 		 | VOID { $$ = new string("VOID");};
 
-instrv : expression PV {$$ = $1;}
+instr : expression PV {$$ = $1;}
        | structure_de_controle {$$ = $1;}
        | bloc {$$ = $1;}
        | RETURN expression PV {$$ = new RetourExpr($2);}
        | PV;
        
-instr : instrv {$$ = $1;}
-      | declaration PV {$$ = $1;};
+
 
 programme : programme fonction {$$=$1; $$->ajouterInstruction($2);}
-          | programme declaration {$$=$1; $$->ajouterInstruction($2);}
+          | programme declaration {$$=$1; $$->ajouterListeVariable($2);}
           |{ $$ = new Programme();};
 
 expression : NOT expression { $$ = new Not($2); }
@@ -227,8 +224,8 @@ affectation : IDENTIFIANT EGAL_AFFECTATION expression { $$ = new Affectation(); 
 structure_de_controle : bloc_if {$$ = $1;}
                       | bloc_boucle {$$ = $1;};
 
-bloc_if : IF PAROUVR expression PARFERM instrv ELSE instrv {$$ = new BlocIf($3,$5,$7);}
-        | IF PAROUVR expression PARFERM instrv { $$ = new BlocIf($3,$5);} ;
+bloc_if : IF PAROUVR expression PARFERM instr ELSE instr {$$ = new BlocIf($3,$5,$7);}
+        | IF PAROUVR expression PARFERM instr { $$ = new BlocIf($3,$5);} ;
 
 bloc_boucle : bloc_for {$$ = $1;}
             | bloc_while {$$ = $1;};
@@ -236,16 +233,17 @@ bloc_boucle : bloc_for {$$ = $1;}
 expression_for : expression { $$ = $1;}
                | {$$ = new Val(1);};
 
-bloc_for : FOR PAROUVR expression_for PV expression_for PV expression_for PV PARFERM instrv { $$ = new BlocFor($3,$5,$7,$10);};
+bloc_for : FOR PAROUVR expression_for PV expression_for PV expression_for PV PARFERM instr { $$ = new BlocFor($3,$5,$7,$10);};
 
-bloc_while : WHILE PAROUVR expression PARFERM instrv { $$ = new BlocWhile($3,$5);};
+bloc_while : WHILE PAROUVR expression PARFERM instr { $$ = new BlocWhile($3,$5);};
 ////*******/////
 
 
 
 bloc : ACCOLOUVR contenu_bloc ACCOLFERM {$$ = $2;};
 contenu_bloc : contenu_bloc instr {$$->AjouterInstr($2);}
-             | instr {$$ = new Bloc($1);};
+             | instr {$$ = new Bloc($1);}
+             | declaration
 
 %%
 void yyerror(int * res, const char * msg) {

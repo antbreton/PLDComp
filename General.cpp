@@ -6,6 +6,7 @@
  
 using namespace std;
 // Réalisation Declaration
+/*
  Declaration::Declaration(string type, Val * taille ,Identifiant * id):Instruction(), type(type), id(id)
 {
 	//cerr<<"     TEST       "<<type<<id;
@@ -16,7 +17,7 @@ using namespace std;
 		this->taille = taille->valeur;
 	identifiants->push_back(id);
 }		
-	
+	*/
 	
 	// Réalisation Programme
 	
@@ -28,13 +29,16 @@ Programme::Programme()
 
 
  	// Réalisation Variable
- 	
 Variable::Variable(string id):Identifiable(id), initialisation (false)
 {
 
 }
+Variable::Variable(string type, string id):Identifiable(id), type(type), initialisation (false)
+{
 
-Variable::Variable(string id, int valeur):Identifiable(id), valeur(valeur),initialisation (true)
+}
+
+Variable::Variable(string type, string id, int valeur):Identifiable(id), type(type), valeur(valeur),initialisation (true)
 {
 	
 }
