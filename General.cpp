@@ -23,4 +23,18 @@ using namespace std;
 Programme::Programme()
 {
 	instructions = new vector<InstructionProgramme*>();
+	tableSymboles = new map<string,Identifiable*>();
+}
+
+
+ 	// Réalisation Variable
+ 	
+Variable::Variable(string id):Identifiable(id), initialisation (false)
+{
+
+}
+
+Variable::Variable(string id, int valeur):Identifiable(id), valeur(valeur),initialisation (true)
+{
+	
 }

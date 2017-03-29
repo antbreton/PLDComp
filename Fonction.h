@@ -28,23 +28,13 @@ class Bloc : public InstructionV  {
 			}
 			cerr<<"END_BLOC"<<endl;
 		}
-		
-
 };
-/*
-class Type {
-	public:
-		Type() {}
-		virtual ~Type() {}
-};
-*/
 
 class ParamDeclar {
 	public:
 		ParamDeclar(vector<Declaration*>* params): params(params) {}
 		vector<Declaration*>* params;
 };
-
 
 class Prototype {
 	public:
@@ -66,13 +56,7 @@ class Prototype {
 };
 
 
-class Identifiable {
-		public : 
-			Identifiable(string id):id(id){}
-			string id;
-	
-	
-};
+
 
 class Fonction : public InstructionProgramme, public Identifiable {
 	public:

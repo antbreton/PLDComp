@@ -230,7 +230,7 @@ bloc_if : IF PAROUVR expression PARFERM instrv ELSE instrv {$$ = new BlocIf($3,$
         | IF PAROUVR expression PARFERM instrv { $$ = new BlocIf($3,$5);} ;
 
 bloc_boucle : bloc_for {$$ = $1;}
-            | bloc_while{$$ = $1;};
+            | bloc_while {$$ = $1;};
 
 expression_for : expression { $$ = $1;}
                | {$$ = new Val(1);};

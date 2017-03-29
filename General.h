@@ -4,7 +4,7 @@
 #include <string> 
 #include <vector>
 #include <iostream>
-
+#include <map>
 
  
 using namespace std;
@@ -12,6 +12,21 @@ using namespace std;
 class Fonction;
 class Val;
 
+class Identifiable {
+		public : 
+			Identifiable(string id):id(id){}
+			string id;	
+};
+
+class Variable : public Identifiable
+{
+	public :
+		Variable(string id);
+		Variable(string id, int valeur);
+	private:
+		bool initialisation;
+		int valeur;
+};
 
 class Instruction {
 	public:
@@ -51,8 +66,6 @@ class RetourExpr : public Expression {
 		cerr<<"RETURN ";
 		expr->Afficher();
 	}
-	
-	
 };
 
 class Val : public Expression {
@@ -119,6 +132,7 @@ class Programme {
 			cerr<<"END_PROGRAMME"<<endl;
 		}
 	private :
+		map<string,Identifiable*>* tableSymboles; // Cet attribut correspond à la table de symbole : mapping entre un identifiant et un identifiable
 		vector<InstructionProgramme*> *instructions;
 };
 
