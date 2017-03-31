@@ -140,7 +140,7 @@ int yylex(void);
 /*** ANTOINE *****/
 //déclaration Variables
 
-axiome : programme { $$->Afficher();};
+axiome : programme { $$->Afficher(0);};
 
 suffixe_tab : CROCHOUVR valeur_variable CROCHFERM {$$ = $2;}
             | {$$ = NULL;};

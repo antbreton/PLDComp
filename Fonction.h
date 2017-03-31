@@ -20,13 +20,15 @@ class Bloc : public Instruction  {
 		virtual ~Bloc() {}
 		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);};
 		vector<Instruction*>* instrs;
-		void Afficher () {
-			cout<<"BEGIN_BLOC - nb instr : "<<instrs->size()<< " - tableSymb size : "<< tableSymboles->size() <<endl;
+		
+		void Afficher (int nbtab) {
+			string tab = getTabPrefix(nbtab);
+			cout<<tab<<"BEGIN_BLOC // nb instr : "<<instrs->size()<< " - tableSymb size : "<< tableSymboles->size() <<endl;
 			for(int i=0;i<instrs->size();i++)
 			{
-				(*instrs)[i]->Afficher();
+				(*instrs)[i]->Afficher(nbtab);
 			}
-			cout<<"END_BLOC"<<endl;
+			cout<<tab<<"END_BLOC"<<endl;
 		}
 				void ajouterListeVariable(vector<Variable*>* listeVariable);
 	private :
@@ -39,31 +41,6 @@ class ParamDeclar {
 		vector<Variable*>* params;
 };
 
-
-/*
->>>>>>> Nico5
-class Prototype {
-	public:
-		Prototype(string* type, vector<*>* params, Identifiant* identifiant) : type(type), params(params), identifiant(identifiant) {}
-		string* type;
-		vector<*>* params;
-		Identifiant* identifiant;
-		void Afficher() {
-			cout<<"PROTOTYPE"<<endl<<"	";
-			cout<<*type<<" ";
-			identifiant->Afficher();
-			for(int i=0;i<params->size();i++)
-			{
-				(*params)[i]->Afficher();
-				cout<<" ";
-			}
-			cout<<endl;
-		}
-};*/
-
-
-
-
 class Fonction : public InstructionProgramme, public Identifiable {
 	public:
 		Fonction(string type, string id, vector<Variable*>* s, Bloc* bloc = NULL): Identifiable(id), type(type), s(s), bloc(bloc) {}
@@ -71,26 +48,25 @@ class Fonction : public InstructionProgramme, public Identifiable {
 		string type;
 		vector<Variable*>* s;
 		virtual ~Fonction() {}
-		void Afficher () {
-			cout<<"FONCTION"<<endl<<"	";
+		void Afficher (int nbtab) {
+			cout<<"FONCTION"<<"	";
 			cout<<type<<" "<<id<<" ";
-			cout<<"SIZE : "<<s->size();
+			cout<<"// size : "<<s->size();
+			
 			for(int i=0;i<s->size();i++)
 			{
-				(*s)[i]->Afficher();
+				(*s)[i]->Afficher(nbtab);
 
 				cout<<" ";
 			}
 
 			cout<<endl;
-			bloc->Afficher();
+			bloc->Afficher(nbtab);
 		}
 		void RajouterBloc (Bloc* bloc){
 			this->bloc=bloc;
 			
 		}
-
-		
 };
 
 

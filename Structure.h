@@ -10,20 +10,24 @@ class StructureControle : public Instruction {
 		StructureControle(Instruction * instrv): instrv(instrv){}
 		virtual ~StructureControle() {}	
 		Instruction* instrv;
-		virtual void Afficher (){}
+		virtual void Afficher (int nbtab){}
 };
 class BlocIf : public StructureControle {
 	public:
 		BlocIf(Expression * expr, Instruction * instrv, Instruction * blocElse = NULL):StructureControle(instrv), exprCondition(expr), blocElse(blocElse){}
 		Expression* exprCondition;
 		Instruction * blocElse;
-		void Afficher () {
-			cout<<"BLOC_IF ( "; exprCondition->Afficher(); cout<<" ) {"<<endl;
-			instrv->Afficher();
-			cout<<"}"<<endl;	
+		void Afficher (int nbtab) {
+			nbtab++;
+			string tab = getTabPrefix(nbtab);
+			
+			cout<<tab<<"BLOC_IF ( "; 
+			exprCondition->Afficher(nbtab);
+			cout <<")" << endl;
+			instrv->Afficher(nbtab);
 			if(blocElse!=NULL)
 			{
-				blocElse->Afficher();
+				blocElse->Afficher(nbtab);
 			}
 		}
 };
@@ -32,10 +36,9 @@ class BlocWhile : public StructureControle {
 	public:
 		BlocWhile(Expression * expr, Instruction * instrv):StructureControle(instrv), exprCondition(expr) {}
 		Expression* exprCondition;
-		void Afficher () {
-			cout<<"BLOC_WHILE ( "; exprCondition->Afficher(); cout<<" ) {"<<endl;
-			instrv->Afficher();
-			cout<<"}"<<endl;	
+		void Afficher (int nbtab) {
+			cout<<"BLOC_WHILE ( "; exprCondition->Afficher(nbtab); cout<<" ) ";
+			instrv->Afficher(nbtab);
 		}
 };
 
@@ -45,10 +48,9 @@ class BlocFor : public StructureControle {
 		Expression* exprInit;
 		Expression* exprCondition;
 		Expression* exprIncrementation;
-		void Afficher () {
-			cout<<"BLOC_FOR ( "; exprInit->Afficher(); cout<<", "; exprCondition->Afficher(); cout<<", "; exprIncrementation->Afficher(); cout<<") {"<<endl;
-			instrv->Afficher();
-			cout<<"}"<<endl;	
+		void Afficher (int nbtab) {
+			cout<<"BLOC_FOR ( "; exprInit->Afficher(nbtab); cout<<", "; exprCondition->Afficher(nbtab); cout<<", "; exprIncrementation->Afficher(nbtab); cout<<")";
+			instrv->Afficher(nbtab);
 		}
 };
 

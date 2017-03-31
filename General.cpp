@@ -5,22 +5,20 @@
 
  
 using namespace std;
-// Réalisation Declaration
-/*
- Declaration::Declaration(string type, Val * taille ,Identifiant * id):Instruction(), type(type), id(id)
+
+// Méthodes utils
+string getTabPrefix(int n)
 {
-	//cerr<<"     TEST       "<<type<<id;
-	//id->Afficher();
-	this->taille = -1;
-	identifiants = new vector<Identifiant*>();
-	if(taille != NULL)
-		this->taille = taille->valeur;
-	identifiants->push_back(id);
-}		
-	*/
-	
-	// Réalisation Programme
-	
+	string tab ="";
+	for(int i=0; i<n; i++)
+	{
+		tab+="\t";
+	}
+	return tab;
+}
+
+
+// Réalisation Programme
 Programme::Programme()
 {
 	instructions = new vector<InstructionProgramme*>();

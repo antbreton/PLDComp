@@ -13,6 +13,15 @@ class Fonction;
 class Val;
 class Variable;
 
+
+// ---- méthodes Utils --------
+
+// Cette méthode crée une string de préfixes
+string getTabPrefix(int n);
+
+// ---- méthodes Utils --------
+
+
 class Identifiable {
 		public : 
 			Identifiable(string id):id(id){}
@@ -25,7 +34,7 @@ class Instruction {
 	public:
 		Instruction() {}
 		virtual ~Instruction() {}
-		virtual void Afficher(){}
+		virtual void Afficher(int nbtab) = 0;
 };
 /*
 class InstructionV : public Instruction {
@@ -38,7 +47,7 @@ class Expression : public Instruction {
 	public:
 		Expression(){}
 		virtual ~Expression() {}	
-		virtual void Afficher() {}
+		virtual void Afficher(int nbtab) {}
 };
 
 
@@ -46,7 +55,8 @@ class Identifiant : public Expression {
 	public:
 		Identifiant(string * id):Expression(),id(id){}
 		string * id;
-		void Afficher() {
+		void Afficher(int nbtab) {
+
 			cout<<"ID ";
 			cout<<*id<<" ";
 		}
@@ -55,9 +65,9 @@ class RetourExpr : public Instruction {
 	public:
 	RetourExpr(Expression * expr):Instruction(), expr(expr){}
 	Expression * expr;
-	void Afficher() {
+	void Afficher(int nbtab) {
 		cout<<"RETURN ";
-		expr->Afficher();
+		expr->Afficher(nbtab);
 	}
 };
 
@@ -65,8 +75,8 @@ class Val : public Expression {
 	public:
 		Val(int valeur):Expression(), valeur(valeur) {}
 		int valeur;
-		void Afficher () {
-			 cout<<"VAL "<< valeur <<endl;
+		void Afficher (int nbtab) {
+			 cout<<"VAL "<< valeur<<" ";
 		 }
 };
 
@@ -74,8 +84,8 @@ class Caractere : public Expression {
 	public:
 		Caractere(char c):Expression(), c(c) {}
 		char c;
-		void Afficher () {
-			 cout<<"CARACTERE"<< c<<endl;
+		void Afficher (int nbtab) {
+			 cout<<"CARACTERE"<< c;
 		 }
 };
 
@@ -85,43 +95,19 @@ class InstructionProgramme // Cette classe est dérivée par decls et fonction
 	public :
 		InstructionProgramme() {}
 		bool compiler(); // TODO devront être virtuelles pure
-		virtual void Afficher(){} //	""
+		virtual void Afficher(int nbtab){} //	""
 };
-
-/** Déclaration Class *//*
-class Declaration : public Instruction, public InstructionProgramme
-{
-	public :
-		Declaration(string type, Val * taille, Identifiant * id=NULL); //Je vois pas l'utilité du null
-		virtual ~Declaration() {}
-		void ajouterIdentifiant(Identifiant *id) {identifiants->push_back(id);}
-		void addAllIdentifiants(std::vector<Identifiant*>* identifiants) { this->identifiants->insert(this->identifiants->end(), identifiants->begin(), identifiants->end());}
-		void Afficher () {
-			cout<<"DECLARATION ";
-			cout<<type<<" ";
-			for(int i=0;i<identifiants->size();i++)
-			{
-				(*identifiants)[i]->Afficher();
-			}	
-		}
-	private :
-		string type;
-		Identifiant * id;
-		int taille;
-		vector<Identifiant*>* identifiants;
-};*/
-
 
 class Programme {
 	public:
 		Programme();
 		virtual ~Programme() {}
 		void ajouterInstruction(InstructionProgramme* instr) {instructions->push_back(instr);}
-		void Afficher () {
-			cout<< endl << endl << endl <<"PROGRAMME - tableSymb size : "<< tableSymboles->size() <<endl<<"	";
+		void Afficher (int nbtab) {
+			cout<< endl << endl << endl <<"PROGRAMME // tableSymb size : "<< tableSymboles->size() <<endl<<"	";
 			for(int i=0;i<instructions->size();i++)
 			{
-				(*instructions)[i]->Afficher();
+				(*instructions)[i]->Afficher(1);
 			}
 			cout<<"END_PROGRAMME"<<endl << endl << endl <<endl;
 		}
@@ -133,18 +119,14 @@ class Programme {
 		vector<InstructionProgramme*> *instructions; // /* TODO Virer IntructionProgramme */
 };
 
-
-
-
 class Not : public Expression {
 	public:
 		Not(Expression * membre):Expression(), membre(membre) {}
 	private:
 		Expression * membre;
-		 void Afficher () {
+		 void Afficher (int nbtab) {
 			 cout<<"NOT ";
-			 membre->Afficher();
-			 cout<<endl;
+			 membre->Afficher(nbtab);
 		 }
 };
 
@@ -161,156 +143,143 @@ class ExpreOpeBinaire : public Expression {
 class OperateurOR : public ExpreOpeBinaire {
 	public:
 		OperateurOR(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-			void Afficher () {
+			void Afficher (int nbtab) {
 			 cout<<"OR ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" || ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
 class OperateurAND : public ExpreOpeBinaire {
 public:
 	OperateurAND(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-		void Afficher () {
+		void Afficher (int nbtab) {
 			 cout<<"AND ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" && ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
 class OperateurSup : public ExpreOpeBinaire {
 public:
 	OperateurSup(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-		void Afficher () {
+		void Afficher (int nbtab) {
 			 cout<<"SUP ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" > ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
 class OperateurInf : public ExpreOpeBinaire {
 public:
 	OperateurInf(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-		void Afficher () {
+		void Afficher (int nbtab) {
 			 cout<<"INF ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" < ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
 class OperateurSupEgal : public ExpreOpeBinaire {
 public:
 	OperateurSupEgal(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-		void Afficher () {
+		void Afficher (int nbtab) {
 			 cout<<"SUPEGAL ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" >= ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
 class OperateurInfEgal : public ExpreOpeBinaire {
 public:
 	OperateurInfEgal(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-		void Afficher () {
+		void Afficher (int nbtab) {
 			 cout<<"INFEGAL ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" <= ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
 class OperateurEgal : public ExpreOpeBinaire {
 public:
 	OperateurEgal(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-	void Afficher () {
+	void Afficher (int nbtab) {
 			 cout<<"EGAL ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" == ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
 class OperateurDifferent : public ExpreOpeBinaire {
 public:
 	OperateurDifferent(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-	void Afficher () {
+	void Afficher (int nbtab) {
 			 cout<<"DIFF ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" != ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
 class OperateurPlus : public ExpreOpeBinaire {
 public:
 	OperateurPlus(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-	void Afficher () {
+	void Afficher (int nbtab) {
 			 cout<<"ADD ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" + ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
 class OperateurMoins : public ExpreOpeBinaire {
 public:
 	OperateurMoins(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-	void Afficher () {
+	void Afficher (int nbtab) {
 			 cout<<"MOINS ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" - ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
 class OperateurMultiplier : public ExpreOpeBinaire {
 public:
 	OperateurMultiplier(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-	void Afficher () {
+	void Afficher (int nbtab) {
 			 cout<<"MULT ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" * ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
 class OperateurModulo : public ExpreOpeBinaire {
 public:
 	OperateurModulo(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-	void Afficher () {
+	void Afficher (int nbtab) {
 			 cout<<"MODULO ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" % ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
 class OperateurDivise : public ExpreOpeBinaire {
 public:
 	OperateurDivise(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
-	void Afficher () {
+	void Afficher (int nbtab) {
 			 cout<<"DIVISE ";
-			 membreGauche->Afficher();
+			 membreGauche->Afficher(nbtab);
 			 cout<<" / ";
-			 membreDroit->Afficher();
-			 cout<<endl;
+			 membreDroit->Afficher(nbtab);
 		 }
 };
 
@@ -321,15 +290,13 @@ public:
 	void setParametres(std::vector<Expression*>* liste_expressions) {this->parametres = liste_expressions;}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
 	virtual ~AppelFonction() {delete this->parametres; }
-	void Afficher () {
+	void Afficher (int nbtab) {
 		cout<<"APPEL FONCTION ";
-		identifiant->Afficher();
+		identifiant->Afficher(nbtab);
 		for(int i=0;i<parametres->size();i++)
 		{
-			(*parametres)[i]->Afficher();
-		}
-		cout<<endl;
-		
+			(*parametres)[i]->Afficher(nbtab);
+		}		
 	}
 private:
 	std::vector<Expression *> *parametres;
@@ -341,11 +308,11 @@ public:
 	Affectation():Expression() {}
 	void setValeur(Expression* expression) {this->valeur = expression;}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
-	void Afficher () {
+	void Afficher (int nbtab) {
 		cout<<"AFFECTATION ";
-		identifiant->Afficher();
+		identifiant->Afficher(nbtab);
 		cout<<" = ";
-		valeur->Afficher();
+		valeur->Afficher(nbtab);
 		cout<<" ";		
 	}
 
@@ -363,12 +330,10 @@ class Variable : public Identifiable
 		void setValeur(Expression * expr){
 			this->expr=expr;
 		}
-		void Afficher(){
-		//	cout<<"VAR type : "<<type<<" id :"<<id;
-			
-			
-			
-			}
+		void Afficher(int nbtab)
+		{
+			cout<<"VAR "<<type<<" "<<id;	
+		}
 		string getType() {
 				return type;
 		}
