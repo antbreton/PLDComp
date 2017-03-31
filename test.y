@@ -149,7 +149,7 @@ separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back(new Variab
                 | /* vide */ { $$ = new std::vector<Variable*>();};			// On crée la liste d'identifiant quand on est sur vide
 
 declaration : declaration_droite separateur_decl { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());}} // On crée un vecteur de variables qui auront toutes le type de la première déclaration
-            | declaration_droite separateur_decl EGAL_AFFECTATION expression { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());} (*$$)[$$->size()-2]->setValeur($4);  } ; /* TODO gerer l'affectation */
+            | declaration_droite separateur_decl EGAL_AFFECTATION expression { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());} if($$->size()==1) {(*$$)[0]->setValeur($4);} else {(*$$)[$$->size()-2]->setValeur($4);}  } ; /* on recupere la liste dans $2 et on rajoute le premier $1 en dernier. Ensuite on recupere le type de $1 et on l'affecte a tout ceux de la liste. Ensuite on affecte la valeur au dernier de la liste(donc l'avant dernier du vecteur) ou bien a la seul variable*/
 
 //fonction
 fonction : prototype PV {$$ = $1;}
@@ -160,7 +160,7 @@ declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$
 
 // Crée une liste de variable
 parametre_declaration : parametre_declaration VIRGULE declaration_param_fonction {$$->push_back($3);} // on ajoute la variable
-                      | declaration_param_fonction { $$->push_back($1);} // on ajoute la variable correspondante
+                      | parametre_declaration declaration_param_fonction { $$->push_back($2);} // on ajoute la variable correspondante
                       | {$$ = new std::vector<Variable*>();}; // on crée le vecteur de variable
 
 
@@ -209,7 +209,7 @@ expression : NOT expression { $$ = new Not($2); }
            | expression DIVEUCL expression { $$ = new OperateurModulo($1, $3); }
            | PAROUVR expression PARFERM { $$ = $2; }
            | appel_fonction { $$ = $1; }
-           | affectation/* TODO { $$ = $1; }*/
+           | affectation { $$ = new Val(1); }
            | IDENTIFIANT { $$ = new Identifiant(yylval.identifiant); }
            | valeur_variable { $$ = $1; };
 
@@ -246,7 +246,7 @@ bloc_while : WHILE PAROUVR expression PARFERM instr { $$ = new BlocWhile($3,$5);
 bloc : ACCOLOUVR contenu_bloc ACCOLFERM {$$ = $2;};
 contenu_bloc : contenu_bloc instr {$$->AjouterInstr($2);}
              | instr {$$ = new Bloc($1);}
-             | declaration
+             | declaration {$$ = new Bloc();}
 
 %%
 void yyerror(int * res, const char * msg) {

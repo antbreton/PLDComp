@@ -17,11 +17,12 @@ class Variable;
 class Bloc : public Instruction  {
 	public:
 		Bloc(Instruction* instr) {instrs = new vector <Instruction*>; this->AjouterInstr(instr);}
+		Bloc () {instrs = new vector <Instruction*>;}//a revoir, fait pour la relge 66 contenu_bloc : declaration
 		virtual ~Bloc() {}
 		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);};
 		vector<Instruction*>* instrs;
 		void Afficher () {
-			cerr<<"BEGIN_BLOC"<<endl;
+			cerr<<"BEGIN_BLOC size : "<<instrs->size()<<endl;
 			for(int i=0;i<instrs->size();i++)
 			{
 				(*instrs)[i]->Afficher();
@@ -71,12 +72,17 @@ class Fonction : public InstructionProgramme, public Identifiable {
 		void Afficher () {
 			cerr<<"FONCTION"<<endl<<"	";
 			cerr<<type<<" "<<id<<" ";
+			cerr<<"SIZE : "<<s->size();
 			for(int i=0;i<s->size();i++)
 			{
 				(*s)[i]->Afficher();
+
 				cerr<<" ";
 			}
+
 			cerr<<endl;
+			cerr<<bloc<<endl;;
+
 			bloc->Afficher();
 		}
 		void RajouterBloc (Bloc* bloc){

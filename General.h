@@ -362,7 +362,12 @@ class Variable : public Identifiable
 		void setValeur(Expression * expr){
 			this->expr=expr;
 		}
-		void Afficher(){}
+		void Afficher(){
+		//	cerr<<"VAR type : "<<type<<" id :"<<id;
+			
+			
+			
+			}
 		string getType() {
 				return type;
 		}

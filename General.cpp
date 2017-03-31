@@ -35,7 +35,7 @@ Variable::Variable(string id):Identifiable(id), initialisation (false)
 }
 Variable::Variable(string type, string id):Identifiable(id), type(type), initialisation (false)
 {
-
+cerr<< "type : "<<type<<" id : "<<id<<endl;;
 }
 
 Variable::Variable(string type, string id, Expression * expr):Identifiable(id), type(type), expr(expr),initialisation (true)
