@@ -16,19 +16,21 @@ class Variable;
 
 class Bloc : public Instruction  {
 	public:
-		Bloc(Instruction* instr) {instrs = new vector <Instruction*>; this->AjouterInstr(instr);}
-		Bloc () {instrs = new vector <Instruction*>;}//a revoir, fait pour la relge 66 contenu_bloc : declaration
+		Bloc();
 		virtual ~Bloc() {}
 		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);};
 		vector<Instruction*>* instrs;
 		void Afficher () {
-			cerr<<"BEGIN_BLOC size : "<<instrs->size()<<endl;
+			cerr<<"BEGIN_BLOC - nb instr : "<<instrs->size()<< " - tableSymb size : "<< tableSymboles->size() <<endl;
 			for(int i=0;i<instrs->size();i++)
 			{
 				(*instrs)[i]->Afficher();
 			}
 			cerr<<"END_BLOC"<<endl;
 		}
+				void ajouterListeVariable(vector<Variable*>* listeVariable);
+	private :
+		map<string,Identifiable*>* tableSymboles;
 };
 
 class ParamDeclar {
@@ -81,8 +83,6 @@ class Fonction : public InstructionProgramme, public Identifiable {
 			}
 
 			cerr<<endl;
-			cerr<<bloc<<endl;;
-
 			bloc->Afficher();
 		}
 		void RajouterBloc (Bloc* bloc){

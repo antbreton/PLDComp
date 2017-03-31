@@ -5,6 +5,8 @@
 #include "Expression.h"
 #include "Fonction.h"
 #include "Structure.h"
+#include <iostream>
+
 #define YYDEBUG 1
 
 void yyerror(int *, const char *);
@@ -148,8 +150,8 @@ declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$1,*$2);}
 separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back(new Variable(*$3));}	// A chaque appel on push l'identifiant courant dans la liste
                 | /* vide */ { $$ = new std::vector<Variable*>();};			// On crée la liste d'identifiant quand on est sur vide
 
-declaration : declaration_droite separateur_decl { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());}} // On crée un vecteur de variables qui auront toutes le type de la première déclaration
-            | declaration_droite separateur_decl EGAL_AFFECTATION expression { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());} if($$->size()==1) {(*$$)[0]->setValeur($4);} else {(*$$)[$$->size()-2]->setValeur($4);}  } ; /* on recupere la liste dans $2 et on rajoute le premier $1 en dernier. Ensuite on recupere le type de $1 et on l'affecte a tout ceux de la liste. Ensuite on affecte la valeur au dernier de la liste(donc l'avant dernier du vecteur) ou bien a la seul variable*/
+declaration : declaration_droite separateur_decl PV { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());}} // On crée un vecteur de variables qui auront toutes le type de la première déclaration
+            | declaration_droite separateur_decl EGAL_AFFECTATION expression PV { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());} if($$->size()==1) {(*$$)[0]->setValeur($4);} else {(*$$)[$$->size()-2]->setValeur($4);}  } ; /* on recupere la liste dans $2 et on rajoute le premier $1 en dernier. Ensuite on recupere le type de $1 et on l'affecte a tout ceux de la liste. Ensuite on affecte la valeur au dernier de la liste(donc l'avant dernier du vecteur) ou bien a la seul variable*/
 
 //fonction
 fonction : prototype PV {$$ = $1;}
@@ -244,17 +246,17 @@ bloc_while : WHILE PAROUVR expression PARFERM instr { $$ = new BlocWhile($3,$5);
 
 
 bloc : ACCOLOUVR contenu_bloc ACCOLFERM {$$ = $2;};
-contenu_bloc : contenu_bloc instr {$$->AjouterInstr($2);}
-             | instr {$$ = new Bloc($1);}
-             | declaration {$$ = new Bloc();}
 
+contenu_bloc :contenu_bloc declaration {$$->ajouterListeVariable($2);} // On ajoute la liste des variables résultantes de la déclaration dans le bloc
+						 | contenu_bloc instr { $$->AjouterInstr($2);}
+						 | {$$ = new Bloc();};
 %%
 void yyerror(int * res, const char * msg) {
    printf("Syntax error : %s\n",msg);
 }
 
 int main(void) {
-yydebug =1;
+	 yydebug =1;
    int res = 0;
    yyparse(&res);
    printf("Résutlat : %d\n",res);

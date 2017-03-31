@@ -17,6 +17,7 @@ class Identifiable {
 		public : 
 			Identifiable(string id):id(id){}
 			string id;	
+			string getIdentifiant() {return id;}
 };
 
 
@@ -117,19 +118,19 @@ class Programme {
 		virtual ~Programme() {}
 		void ajouterInstruction(InstructionProgramme* instr) {instructions->push_back(instr);}
 		void Afficher () {
-			cerr<<"PROGRAMME"<<endl<<"	";
+			cerr<< endl << endl << endl <<"PROGRAMME - tableSymb size : "<< tableSymboles->size() <<endl<<"	";
 			for(int i=0;i<instructions->size();i++)
 			{
 				(*instructions)[i]->Afficher();
 			}
-			cerr<<"END_PROGRAMME"<<endl;
+			cerr<<"END_PROGRAMME"<<endl << endl << endl <<endl;
 		}
 		
 		// Cette méthode ajoute la liste de variable passée en paramètre à la table de symbole du programme
 		void ajouterListeVariable(vector<Variable*>* listeVariable){} /* TODO */
 	private :
 		map<string,Identifiable*>* tableSymboles; // Cet attribut correspond à la table de symbole : mapping entre un identifiant et un identifiable
-		vector<InstructionProgramme*> *instructions;
+		vector<InstructionProgramme*> *instructions; // /* TODO Virer IntructionProgramme */
 };
 
 
@@ -374,6 +375,8 @@ class Variable : public Identifiable
 		void setType(string type){
 				this->type=type;
 		}
+		
+		
 	private:
 		string type;
 		bool initialisation;
