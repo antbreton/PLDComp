@@ -47,8 +47,8 @@ class Identifiant : public Expression {
 		Identifiant(string * id):Expression(),id(id){}
 		string * id;
 		void Afficher() {
-			cerr<<"ID ";
-			cerr<<*id<<" ";
+			cout<<"ID ";
+			cout<<*id<<" ";
 		}
 };
 class RetourExpr : public Instruction {
@@ -56,7 +56,7 @@ class RetourExpr : public Instruction {
 	RetourExpr(Expression * expr):Instruction(), expr(expr){}
 	Expression * expr;
 	void Afficher() {
-		cerr<<"RETURN ";
+		cout<<"RETURN ";
 		expr->Afficher();
 	}
 };
@@ -66,7 +66,7 @@ class Val : public Expression {
 		Val(int valeur):Expression(), valeur(valeur) {}
 		int valeur;
 		void Afficher () {
-			 cerr<<"VAL "<< valeur <<endl;
+			 cout<<"VAL "<< valeur <<endl;
 		 }
 };
 
@@ -75,7 +75,7 @@ class Caractere : public Expression {
 		Caractere(char c):Expression(), c(c) {}
 		char c;
 		void Afficher () {
-			 cerr<<"CARACTERE"<< c<<endl;
+			 cout<<"CARACTERE"<< c<<endl;
 		 }
 };
 
@@ -97,8 +97,8 @@ class Declaration : public Instruction, public InstructionProgramme
 		void ajouterIdentifiant(Identifiant *id) {identifiants->push_back(id);}
 		void addAllIdentifiants(std::vector<Identifiant*>* identifiants) { this->identifiants->insert(this->identifiants->end(), identifiants->begin(), identifiants->end());}
 		void Afficher () {
-			cerr<<"DECLARATION ";
-			cerr<<type<<" ";
+			cout<<"DECLARATION ";
+			cout<<type<<" ";
 			for(int i=0;i<identifiants->size();i++)
 			{
 				(*identifiants)[i]->Afficher();
@@ -118,12 +118,12 @@ class Programme {
 		virtual ~Programme() {}
 		void ajouterInstruction(InstructionProgramme* instr) {instructions->push_back(instr);}
 		void Afficher () {
-			cerr<< endl << endl << endl <<"PROGRAMME - tableSymb size : "<< tableSymboles->size() <<endl<<"	";
+			cout<< endl << endl << endl <<"PROGRAMME - tableSymb size : "<< tableSymboles->size() <<endl<<"	";
 			for(int i=0;i<instructions->size();i++)
 			{
 				(*instructions)[i]->Afficher();
 			}
-			cerr<<"END_PROGRAMME"<<endl << endl << endl <<endl;
+			cout<<"END_PROGRAMME"<<endl << endl << endl <<endl;
 		}
 		
 		// Cette méthode ajoute la liste de variable passée en paramètre à la table de symbole du programme
@@ -142,9 +142,9 @@ class Not : public Expression {
 	private:
 		Expression * membre;
 		 void Afficher () {
-			 cerr<<"NOT ";
+			 cout<<"NOT ";
 			 membre->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -162,11 +162,11 @@ class OperateurOR : public ExpreOpeBinaire {
 	public:
 		OperateurOR(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 			void Afficher () {
-			 cerr<<"OR ";
+			 cout<<"OR ";
 			 membreGauche->Afficher();
-			 cerr<<" || ";
+			 cout<<" || ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -174,11 +174,11 @@ class OperateurAND : public ExpreOpeBinaire {
 public:
 	OperateurAND(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher () {
-			 cerr<<"AND ";
+			 cout<<"AND ";
 			 membreGauche->Afficher();
-			 cerr<<" && ";
+			 cout<<" && ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -186,11 +186,11 @@ class OperateurSup : public ExpreOpeBinaire {
 public:
 	OperateurSup(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher () {
-			 cerr<<"SUP ";
+			 cout<<"SUP ";
 			 membreGauche->Afficher();
-			 cerr<<" > ";
+			 cout<<" > ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -198,11 +198,11 @@ class OperateurInf : public ExpreOpeBinaire {
 public:
 	OperateurInf(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher () {
-			 cerr<<"INF ";
+			 cout<<"INF ";
 			 membreGauche->Afficher();
-			 cerr<<" < ";
+			 cout<<" < ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -210,11 +210,11 @@ class OperateurSupEgal : public ExpreOpeBinaire {
 public:
 	OperateurSupEgal(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher () {
-			 cerr<<"SUPEGAL ";
+			 cout<<"SUPEGAL ";
 			 membreGauche->Afficher();
-			 cerr<<" >= ";
+			 cout<<" >= ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -222,11 +222,11 @@ class OperateurInfEgal : public ExpreOpeBinaire {
 public:
 	OperateurInfEgal(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher () {
-			 cerr<<"INFEGAL ";
+			 cout<<"INFEGAL ";
 			 membreGauche->Afficher();
-			 cerr<<" <= ";
+			 cout<<" <= ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -234,11 +234,11 @@ class OperateurEgal : public ExpreOpeBinaire {
 public:
 	OperateurEgal(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cerr<<"EGAL ";
+			 cout<<"EGAL ";
 			 membreGauche->Afficher();
-			 cerr<<" == ";
+			 cout<<" == ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -246,11 +246,11 @@ class OperateurDifferent : public ExpreOpeBinaire {
 public:
 	OperateurDifferent(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cerr<<"DIFF ";
+			 cout<<"DIFF ";
 			 membreGauche->Afficher();
-			 cerr<<" != ";
+			 cout<<" != ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -258,11 +258,11 @@ class OperateurPlus : public ExpreOpeBinaire {
 public:
 	OperateurPlus(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cerr<<"ADD ";
+			 cout<<"ADD ";
 			 membreGauche->Afficher();
-			 cerr<<" + ";
+			 cout<<" + ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -270,11 +270,11 @@ class OperateurMoins : public ExpreOpeBinaire {
 public:
 	OperateurMoins(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cerr<<"MOINS ";
+			 cout<<"MOINS ";
 			 membreGauche->Afficher();
-			 cerr<<" - ";
+			 cout<<" - ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -282,11 +282,11 @@ class OperateurMultiplier : public ExpreOpeBinaire {
 public:
 	OperateurMultiplier(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cerr<<"MULT ";
+			 cout<<"MULT ";
 			 membreGauche->Afficher();
-			 cerr<<" * ";
+			 cout<<" * ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -294,11 +294,11 @@ class OperateurModulo : public ExpreOpeBinaire {
 public:
 	OperateurModulo(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cerr<<"MODULO ";
+			 cout<<"MODULO ";
 			 membreGauche->Afficher();
-			 cerr<<" % ";
+			 cout<<" % ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -306,11 +306,11 @@ class OperateurDivise : public ExpreOpeBinaire {
 public:
 	OperateurDivise(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher () {
-			 cerr<<"DIVISE ";
+			 cout<<"DIVISE ";
 			 membreGauche->Afficher();
-			 cerr<<" / ";
+			 cout<<" / ";
 			 membreDroit->Afficher();
-			 cerr<<endl;
+			 cout<<endl;
 		 }
 };
 
@@ -322,13 +322,13 @@ public:
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
 	virtual ~AppelFonction() {delete this->parametres; }
 	void Afficher () {
-		cerr<<"APPEL FONCTION ";
+		cout<<"APPEL FONCTION ";
 		identifiant->Afficher();
 		for(int i=0;i<parametres->size();i++)
 		{
 			(*parametres)[i]->Afficher();
 		}
-		cerr<<endl;
+		cout<<endl;
 		
 	}
 private:
@@ -342,11 +342,11 @@ public:
 	void setValeur(Expression* expression) {this->valeur = expression;}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
 	void Afficher () {
-		cerr<<"AFFECTATION ";
+		cout<<"AFFECTATION ";
 		identifiant->Afficher();
-		cerr<<" = ";
+		cout<<" = ";
 		valeur->Afficher();
-		cerr<<" ";		
+		cout<<" ";		
 	}
 
 private:
@@ -364,7 +364,7 @@ class Variable : public Identifiable
 			this->expr=expr;
 		}
 		void Afficher(){
-		//	cerr<<"VAR type : "<<type<<" id :"<<id;
+		//	cout<<"VAR type : "<<type<<" id :"<<id;
 			
 			
 			

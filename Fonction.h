@@ -21,12 +21,12 @@ class Bloc : public Instruction  {
 		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);};
 		vector<Instruction*>* instrs;
 		void Afficher () {
-			cerr<<"BEGIN_BLOC - nb instr : "<<instrs->size()<< " - tableSymb size : "<< tableSymboles->size() <<endl;
+			cout<<"BEGIN_BLOC - nb instr : "<<instrs->size()<< " - tableSymb size : "<< tableSymboles->size() <<endl;
 			for(int i=0;i<instrs->size();i++)
 			{
 				(*instrs)[i]->Afficher();
 			}
-			cerr<<"END_BLOC"<<endl;
+			cout<<"END_BLOC"<<endl;
 		}
 				void ajouterListeVariable(vector<Variable*>* listeVariable);
 	private :
@@ -49,15 +49,15 @@ class Prototype {
 		vector<*>* params;
 		Identifiant* identifiant;
 		void Afficher() {
-			cerr<<"PROTOTYPE"<<endl<<"	";
-			cerr<<*type<<" ";
+			cout<<"PROTOTYPE"<<endl<<"	";
+			cout<<*type<<" ";
 			identifiant->Afficher();
 			for(int i=0;i<params->size();i++)
 			{
 				(*params)[i]->Afficher();
-				cerr<<" ";
+				cout<<" ";
 			}
-			cerr<<endl;
+			cout<<endl;
 		}
 };*/
 
@@ -72,17 +72,17 @@ class Fonction : public InstructionProgramme, public Identifiable {
 		vector<Variable*>* s;
 		virtual ~Fonction() {}
 		void Afficher () {
-			cerr<<"FONCTION"<<endl<<"	";
-			cerr<<type<<" "<<id<<" ";
-			cerr<<"SIZE : "<<s->size();
+			cout<<"FONCTION"<<endl<<"	";
+			cout<<type<<" "<<id<<" ";
+			cout<<"SIZE : "<<s->size();
 			for(int i=0;i<s->size();i++)
 			{
 				(*s)[i]->Afficher();
 
-				cerr<<" ";
+				cout<<" ";
 			}
 
-			cerr<<endl;
+			cout<<endl;
 			bloc->Afficher();
 		}
 		void RajouterBloc (Bloc* bloc){

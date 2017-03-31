@@ -18,9 +18,9 @@ class BlocIf : public StructureControle {
 		Expression* exprCondition;
 		Instruction * blocElse;
 		void Afficher () {
-			cerr<<"BLOC_IF ( "; exprCondition->Afficher(); cerr<<" ) {"<<endl;
+			cout<<"BLOC_IF ( "; exprCondition->Afficher(); cout<<" ) {"<<endl;
 			instrv->Afficher();
-			cerr<<"}"<<endl;	
+			cout<<"}"<<endl;	
 			if(blocElse!=NULL)
 			{
 				blocElse->Afficher();
@@ -33,9 +33,9 @@ class BlocWhile : public StructureControle {
 		BlocWhile(Expression * expr, Instruction * instrv):StructureControle(instrv), exprCondition(expr) {}
 		Expression* exprCondition;
 		void Afficher () {
-			cerr<<"BLOC_WHILE ( "; exprCondition->Afficher(); cerr<<" ) {"<<endl;
+			cout<<"BLOC_WHILE ( "; exprCondition->Afficher(); cout<<" ) {"<<endl;
 			instrv->Afficher();
-			cerr<<"}"<<endl;	
+			cout<<"}"<<endl;	
 		}
 };
 
@@ -46,9 +46,9 @@ class BlocFor : public StructureControle {
 		Expression* exprCondition;
 		Expression* exprIncrementation;
 		void Afficher () {
-			cerr<<"BLOC_FOR ( "; exprInit->Afficher(); cerr<<", "; exprCondition->Afficher(); cerr<<", "; exprIncrementation->Afficher(); cerr<<") {"<<endl;
+			cout<<"BLOC_FOR ( "; exprInit->Afficher(); cout<<", "; exprCondition->Afficher(); cout<<", "; exprIncrementation->Afficher(); cout<<") {"<<endl;
 			instrv->Afficher();
-			cerr<<"}"<<endl;	
+			cout<<"}"<<endl;	
 		}
 };
 
