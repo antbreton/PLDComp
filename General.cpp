@@ -1,5 +1,6 @@
 #include "General.h"
 #include "Expression.h"
+#include "Fonction.h"
 #include <iostream>
 
 
@@ -21,10 +22,18 @@ string getTabPrefix(int n)
 // Réalisation Programme
 Programme::Programme()
 {
-	instructions = new vector<InstructionProgramme*>();
+	fonctions = new vector<Fonction*>();
 	tableSymboles = new map<string,Identifiable*>();
 }
-
+void Programme::Afficher (int nbtab) 
+{
+	cout<< endl << endl << endl <<"PROGRAMME // tableSymb size : "<< tableSymboles->size() <<endl;
+	for(int i=0;i<fonctions->size();i++)
+	{
+		(*fonctions)[i]->Afficher(1);
+	}
+	cout<<"END_PROGRAMME"<<endl << endl << endl <<endl;
+}
 
  	// Réalisation Variable
 Variable::Variable(string id):Identifiable(id), initialisation (false)

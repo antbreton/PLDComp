@@ -30,7 +30,7 @@ class Bloc : public Instruction  {
 			}
 			cout<<tab<<"END_BLOC"<<endl;
 		}
-				void ajouterListeVariable(vector<Variable*>* listeVariable);
+			void ajouterListeVariable(vector<Variable*>* listeVariable);
 	private :
 		map<string,Identifiable*>* tableSymboles;
 };
@@ -41,7 +41,7 @@ class ParamDeclar {
 		vector<Variable*>* params;
 };
 
-class Fonction : public InstructionProgramme, public Identifiable {
+class Fonction : public Identifiable {
 	public:
 		Fonction(string type, string id, vector<Variable*>* s, Bloc* bloc = NULL): Identifiable(id), type(type), s(s), bloc(bloc) {}
 		Bloc* bloc;
@@ -49,7 +49,9 @@ class Fonction : public InstructionProgramme, public Identifiable {
 		vector<Variable*>* s;
 		virtual ~Fonction() {}
 		void Afficher (int nbtab) {
-			cout<<"FONCTION"<<"	";
+			string tab = getTabPrefix(nbtab);
+			
+			cout<<tab<<"FONCTION"<<"	";
 			cout<<type<<" "<<id<<" ";
 			cout<<"// size : "<<s->size();
 			
@@ -61,7 +63,8 @@ class Fonction : public InstructionProgramme, public Identifiable {
 			}
 
 			cout<<endl;
-			bloc->Afficher(nbtab);
+			if(bloc != NULL )
+				bloc->Afficher(nbtab);
 		}
 		void RajouterBloc (Bloc* bloc){
 			this->bloc=bloc;

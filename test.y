@@ -157,20 +157,15 @@ declaration : declaration_droite separateur_decl PV { $$ = $2; $$->push_back($1)
 fonction : prototype PV {$$ = $1;}
          | prototype bloc {$$=$1; $$->RajouterBloc($2);};
 
-declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$1,*$2);}; /* TODO gerer les tabs */
-                           // | type IDENTIFIANT EGAL_AFFECTATION expression;
+// Instancie la fonction avec son type, son ID et en lui ajoutant sa liste de variable. 
+prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Fonction (*$1, *$2, $4);};
+
+declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$1,*$2); }; /* TODO gerer les tabs */
 
 // Crée une liste de variable
 parametre_declaration : parametre_declaration VIRGULE declaration_param_fonction {$$->push_back($3);} // on ajoute la variable
                       | parametre_declaration declaration_param_fonction { $$->push_back($2);} // on ajoute la variable correspondante
                       | {$$ = new std::vector<Variable*>();}; // on crée le vecteur de variable
-
-
-// Instancie la fonction avec son type, son ID et en lui ajoutant sa liste de variable. 
-prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Fonction (*$1, *$2, $4);}
-//$$ = new Prototype($1,$4,new Identifiant($2));};
-         // A REVOIR | type IDENTIFIANT PAROUVR VOID PARFERM {$$ = new Prototype($1,NULL,new Identifiant($2));};
-
 
 appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { $$ = new AppelFonction(); $$->setIdentifiant(new Identifiant($1)); $$->setParametres($3); };
 
@@ -191,7 +186,7 @@ instr : expression PV {$$ = $1;}
        
 
 
-programme : programme fonction {$$=$1; $$->ajouterInstruction($2);}
+programme : programme fonction {$$=$1; $$->ajouterFonction($2);}
           | programme declaration {$$=$1; $$->ajouterListeVariable($2);}
           |{ $$ = new Programme();};
 
@@ -242,7 +237,6 @@ bloc_for : FOR PAROUVR expression_for PV expression_for PV expression_for PV PAR
 
 bloc_while : WHILE PAROUVR expression PARFERM instr { $$ = new BlocWhile($3,$5);};
 ////*******/////
-
 
 
 bloc : ACCOLOUVR contenu_bloc ACCOLFERM {$$ = $2;};

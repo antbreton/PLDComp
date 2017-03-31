@@ -66,7 +66,10 @@ class RetourExpr : public Instruction {
 	RetourExpr(Expression * expr):Instruction(), expr(expr){}
 	Expression * expr;
 	void Afficher(int nbtab) {
-		cout<<"RETURN ";
+		nbtab++;
+		string tab = getTabPrefix(nbtab);
+		
+		cout<<tab<<"RETURN ";
 		expr->Afficher(nbtab);
 	}
 };
@@ -89,34 +92,18 @@ class Caractere : public Expression {
 		 }
 };
 
-/* TODO enelver InstructionProgramme vu que maintenant on a plus que des fonctions comme instruction */
-class InstructionProgramme // Cette classe est dérivée par decls et fonction
-{
-	public :
-		InstructionProgramme() {}
-		bool compiler(); // TODO devront être virtuelles pure
-		virtual void Afficher(int nbtab){} //	""
-};
-
 class Programme {
 	public:
 		Programme();
 		virtual ~Programme() {}
-		void ajouterInstruction(InstructionProgramme* instr) {instructions->push_back(instr);}
-		void Afficher (int nbtab) {
-			cout<< endl << endl << endl <<"PROGRAMME // tableSymb size : "<< tableSymboles->size() <<endl<<"	";
-			for(int i=0;i<instructions->size();i++)
-			{
-				(*instructions)[i]->Afficher(1);
-			}
-			cout<<"END_PROGRAMME"<<endl << endl << endl <<endl;
-		}
+		void ajouterFonction(Fonction* fonc) {fonctions->push_back(fonc);}
+		void Afficher (int nbtab);
 		
 		// Cette méthode ajoute la liste de variable passée en paramètre à la table de symbole du programme
 		void ajouterListeVariable(vector<Variable*>* listeVariable){} /* TODO */
 	private :
 		map<string,Identifiable*>* tableSymboles; // Cet attribut correspond à la table de symbole : mapping entre un identifiant et un identifiable
-		vector<InstructionProgramme*> *instructions; // /* TODO Virer IntructionProgramme */
+		vector<Fonction*> *fonctions; // /* TODO Virer IntructionProgramme */
 };
 
 class Not : public Expression {
