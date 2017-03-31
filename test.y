@@ -178,7 +178,7 @@ type : INT32 { $$ = new string("INT32");}
 		 | CHAR { $$ = new string("CHAR");}
 		 | VOID { $$ = new string("VOID");};
 
-instr : expression PV {$$ = $1;}
+instr : expression PV {$$ = $1; $1->setIsInline(1);}
        | structure_de_controle {$$ = $1;}
        | bloc {$$ = $1;}
        | RETURN expression PV {$$ = new RetourExpr($2);}

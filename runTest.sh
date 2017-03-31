@@ -1,7 +1,7 @@
 #!/bin/bash
 
 nSuccesfulTests=0
-nombreTest=4
+nombreTest=`ls ./test | wc -l`
 
 # Boucle de test #
 for ((i=1; i<=$nombreTest; i++)) # On parcours les différents Tests

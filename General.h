@@ -36,18 +36,23 @@ class Instruction {
 		virtual ~Instruction() {}
 		virtual void Afficher(int nbtab) = 0;
 };
-/*
-class InstructionV : public Instruction {
-	public:
-		InstructionV(){}
-		virtual ~InstructionV() {}
-};*/
 
 class Expression : public Instruction {
 	public:
 		Expression(){}
-		virtual ~Expression() {}	
-		virtual void Afficher(int nbtab) {}
+		virtual ~Expression() {isInline = 0;}
+		
+		void setIsInline(int v) {isInline =v;}
+		virtual void Afficher(int nbtab) { 
+				if(isInline)
+				{
+					nbtab++;
+					string tab = getTabPrefix(nbtab);
+					cout << endl << tab;
+				}
+		}
+	private :
+		int isInline;
 };
 
 
@@ -56,7 +61,7 @@ class Identifiant : public Expression {
 		Identifiant(string * id):Expression(),id(id){}
 		string * id;
 		void Afficher(int nbtab) {
-
+			Expression::Afficher(nbtab);
 			cout<<"ID ";
 			cout<<*id<<" ";
 		}
@@ -219,6 +224,7 @@ class OperateurPlus : public ExpreOpeBinaire {
 public:
 	OperateurPlus(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"ADD ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" + ";

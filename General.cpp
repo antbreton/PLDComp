@@ -27,12 +27,12 @@ Programme::Programme()
 }
 void Programme::Afficher (int nbtab) 
 {
-	cout<< endl << endl << endl <<"PROGRAMME // tableSymb size : "<< tableSymboles->size() <<endl;
+	cout<< endl << endl << endl <<"PROGRAMME // tableSymb size : "<< tableSymboles->size();
 	for(int i=0;i<fonctions->size();i++)
 	{
 		(*fonctions)[i]->Afficher(1);
 	}
-	cout<<"END_PROGRAMME"<<endl << endl << endl <<endl;
+	cout<<endl<<"END_PROGRAMME"<<endl;
 }
 
  	// Réalisation Variable

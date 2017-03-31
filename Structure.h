@@ -21,7 +21,7 @@ class BlocIf : public StructureControle {
 			nbtab++;
 			string tab = getTabPrefix(nbtab);
 			
-			cout<<tab<<"BLOC_IF ( "; 
+			cout<<endl<<tab<<"BLOC_IF ( "; 
 			exprCondition->Afficher(nbtab);
 			cout <<")" << endl;
 			instrv->Afficher(nbtab);

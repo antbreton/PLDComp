@@ -23,12 +23,12 @@ class Bloc : public Instruction  {
 		
 		void Afficher (int nbtab) {
 			string tab = getTabPrefix(nbtab);
-			cout<<tab<<"BEGIN_BLOC // nb instr : "<<instrs->size()<< " - tableSymb size : "<< tableSymboles->size() <<endl;
+			cout<<endl<<tab<<"BEGIN_BLOC // nb instr : "<<instrs->size()<< " - tableSymb size : "<< tableSymboles->size();
 			for(int i=0;i<instrs->size();i++)
 			{
 				(*instrs)[i]->Afficher(nbtab);
 			}
-			cout<<tab<<"END_BLOC"<<endl;
+			cout<<endl<<tab<<"END_BLOC";
 		}
 			void ajouterListeVariable(vector<Variable*>* listeVariable);
 	private :
@@ -51,7 +51,7 @@ class Fonction : public Identifiable {
 		void Afficher (int nbtab) {
 			string tab = getTabPrefix(nbtab);
 			
-			cout<<tab<<"FONCTION"<<"	";
+			cout<<endl<<tab<<"FONCTION"<<"	";
 			cout<<type<<" "<<id<<" ";
 			cout<<"// size : "<<s->size();
 			
@@ -61,9 +61,7 @@ class Fonction : public Identifiable {
 
 				cout<<" ";
 			}
-
-			cout<<endl;
-			if(bloc != NULL )
+			if(bloc != NULL)
 				bloc->Afficher(nbtab);
 		}
 		void RajouterBloc (Bloc* bloc){
