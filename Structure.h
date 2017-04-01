@@ -27,6 +27,7 @@ class BlocIf : public StructureControle {
 			instrv->Afficher(nbtab);
 			if(blocElse!=NULL)
 			{
+				cout<<endl<<tab<<"BLOC_ELSE"; 
 				blocElse->Afficher(nbtab);
 			}
 		}

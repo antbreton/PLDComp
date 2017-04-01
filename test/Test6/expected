@@ -1,4 +1,5 @@
 PROGRAMME // tableSymb size : 0
+
 	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 0BLOC_FOR ( VAL 1 , INF ID a  < ID z , VAL 1 )
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 0VAL 1 

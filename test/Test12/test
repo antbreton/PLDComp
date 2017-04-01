@@ -2,5 +2,13 @@ void fonction1(int32_t z);
 
 int32_t main(int32_t z, int64_t t) {
 	int32_t f;
-	1+1;
+
+	if(f==2)
+	{
+		fonction1(2);
+	}
+	else
+	{
+		f = fonction1(2);
+	}
 }

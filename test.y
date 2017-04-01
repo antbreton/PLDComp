@@ -206,7 +206,7 @@ expression : NOT expression { $$ = new Not($2); }
            | expression DIVEUCL expression { $$ = new OperateurModulo($1, $3); }
            | PAROUVR expression PARFERM { $$ = $2; }
            | appel_fonction { $$ = $1; }
-           | affectation { $$ = new Val(1); }
+           | affectation { $$ = $1; }
            | IDENTIFIANT { $$ = new Identifiant(yylval.identifiant); }
            | valeur_variable { $$ = $1; };
 
