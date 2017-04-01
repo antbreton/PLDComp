@@ -3,6 +3,19 @@
 nSuccesfulTests=0
 nombreTest=`ls ./test | wc -l`
 
+#Gestion paramètres
+for ((o=1; $#; o++))
+	do
+		case $1 in
+  		-st) cat test/Test$2/test
+        	exit;;
+			-h|--help) 
+        	echo -e "COMMANDS : \t./runTests.sh executes all tests\n\t\t-st <testN> show the C code of the testN"
+        	exit;;
+    esac
+    shift;
+done
+
 # Boucle de test #
 for ((i=1; i<=$nombreTest; i++)) # On parcours les différents Tests
  do
