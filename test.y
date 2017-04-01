@@ -233,7 +233,7 @@ bloc_boucle : bloc_for {$$ = $1;}
 expression_for : expression { $$ = $1;}
                | {$$ = new Val(1);};
 
-bloc_for : FOR PAROUVR expression_for PV expression_for PV expression_for PV PARFERM instr { $$ = new BlocFor($3,$5,$7,$10);};
+bloc_for : FOR PAROUVR expression_for PV expression_for PV expression_for PARFERM instr { $$ = new BlocFor($3,$5,$7,$9);};
 
 bloc_while : WHILE PAROUVR expression PARFERM instr { $$ = new BlocWhile($3,$5);};
 ////*******/////

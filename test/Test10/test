@@ -1,0 +1,13 @@
+
+int32_t main(int32_t z, int64_t t) {
+	char a;
+	a='i';
+	a='k';
+	char b='j';
+
+}
+
+
+
+
+

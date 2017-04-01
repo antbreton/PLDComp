@@ -1,0 +1,14 @@
+
+int32_t main(int32_t z, int64_t t) {
+	z=5;
+	t=0;	
+	while(z!=t)
+	{
+		t=t+1;
+	}
+}
+
+
+
+
+
