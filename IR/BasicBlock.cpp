@@ -13,8 +13,8 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc)
 	this->cfg = cfg;
 	
 	// TODO : POur chaque instruction dans le bloc : 
-	// On regarde son type 
-	// Et on recupere le code IR associee (on appelle le getIR de chaque classe) 
+	// On regarde son type, et selon celui-ci
+	// on recupere le code IR associee (on appelle le getIR de chaque classe) 
 }
 
 BasicBlock::~BasicBlock()

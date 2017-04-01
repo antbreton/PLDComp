@@ -10,7 +10,11 @@ CFG::CFG()
 
 CFG::~CFG()
 {
-
+    list<BasicBlock*>::iterator ite;
+    for(ite = basicBlocks.begin(); ite!=basicBlocks.end(); ++ite)
+    {
+        delete *it;
+	}
 }
 
 
