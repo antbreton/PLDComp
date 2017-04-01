@@ -117,6 +117,7 @@ class Not : public Expression {
 	private:
 		Expression * membre;
 		 void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"NOT ";
 			 membre->Afficher(nbtab);
 		 }
@@ -136,6 +137,7 @@ class OperateurOR : public ExpreOpeBinaire {
 	public:
 		OperateurOR(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 			void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"OR ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" || ";
@@ -147,6 +149,7 @@ class OperateurAND : public ExpreOpeBinaire {
 public:
 	OperateurAND(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"AND ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" && ";
@@ -158,6 +161,7 @@ class OperateurSup : public ExpreOpeBinaire {
 public:
 	OperateurSup(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"SUP ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" > ";
@@ -169,6 +173,7 @@ class OperateurInf : public ExpreOpeBinaire {
 public:
 	OperateurInf(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"INF ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" < ";
@@ -180,6 +185,7 @@ class OperateurSupEgal : public ExpreOpeBinaire {
 public:
 	OperateurSupEgal(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"SUPEGAL ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" >= ";
@@ -191,6 +197,7 @@ class OperateurInfEgal : public ExpreOpeBinaire {
 public:
 	OperateurInfEgal(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 		void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"INFEGAL ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" <= ";
@@ -202,6 +209,7 @@ class OperateurEgal : public ExpreOpeBinaire {
 public:
 	OperateurEgal(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"EGAL ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" == ";
@@ -213,6 +221,7 @@ class OperateurDifferent : public ExpreOpeBinaire {
 public:
 	OperateurDifferent(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"DIFF ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" != ";
@@ -236,6 +245,7 @@ class OperateurMoins : public ExpreOpeBinaire {
 public:
 	OperateurMoins(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"MOINS ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" - ";
@@ -247,6 +257,7 @@ class OperateurMultiplier : public ExpreOpeBinaire {
 public:
 	OperateurMultiplier(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"MULT ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" * ";
@@ -258,6 +269,7 @@ class OperateurModulo : public ExpreOpeBinaire {
 public:
 	OperateurModulo(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"MODULO ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" % ";
@@ -269,6 +281,7 @@ class OperateurDivise : public ExpreOpeBinaire {
 public:
 	OperateurDivise(Expression * membreG, Expression * membreD):ExpreOpeBinaire(membreG, membreD) {}
 	void Afficher (int nbtab) {
+			 Expression::Afficher(nbtab);
 			 cout<<"DIVISE ";
 			 membreGauche->Afficher(nbtab);
 			 cout<<" / ";
@@ -284,6 +297,7 @@ public:
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
 	virtual ~AppelFonction() {delete this->parametres; }
 	void Afficher (int nbtab) {
+		Expression::Afficher(nbtab);
 		cout<<"APPEL FONCTION ";
 		identifiant->Afficher(nbtab);
 		for(int i=0;i<parametres->size();i++)
@@ -302,6 +316,7 @@ public:
 	void setValeur(Expression* expression) {this->valeur = expression;}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
 	void Afficher (int nbtab) {
+		Expression::Afficher(nbtab);
 		cout<<"AFFECTATION ";
 		identifiant->Afficher(nbtab);
 		cout<<" = ";
