@@ -10,7 +10,7 @@
 %}
 %option noyywrap
 entier [0-9]+
-string [a-zA-Z]+
+string [a-zA-Z0-9_]+
 texte "[a-zA-Z]+"
 caractere '[a-zA-Z]{1}' 
 

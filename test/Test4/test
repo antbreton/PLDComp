@@ -1,0 +1,6 @@
+void fonction1(int32_t z);
+
+void fonction2(int32_t z);
+
+void fonction3(int32_t z);
+

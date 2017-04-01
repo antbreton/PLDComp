@@ -16,18 +16,23 @@ class Variable;
 
 class Bloc : public Instruction  {
 	public:
-		Bloc(Instruction* instr) {instrs = new vector <Instruction*>; this->AjouterInstr(instr);}
+		Bloc();
 		virtual ~Bloc() {}
 		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);};
 		vector<Instruction*>* instrs;
-		void Afficher () {
-			cerr<<"BEGIN_BLOC"<<endl;
+		
+		void Afficher (int nbtab) {
+			string tab = getTabPrefix(nbtab);
+			cout<<endl<<tab<<"BEGIN_BLOC // nb instr : "<<instrs->size()<< " - tableSymb size : "<< tableSymboles->size();
 			for(int i=0;i<instrs->size();i++)
 			{
-				(*instrs)[i]->Afficher();
+				(*instrs)[i]->Afficher(nbtab);
 			}
-			cerr<<"END_BLOC"<<endl;
+			cout<<endl<<tab<<"END_BLOC";
 		}
+			void ajouterListeVariable(vector<Variable*>* listeVariable);
+	private :
+		map<string,Identifiable*>* tableSymboles;
 };
 
 class ParamDeclar {
@@ -36,55 +41,33 @@ class ParamDeclar {
 		vector<Variable*>* params;
 };
 
-
-/*
->>>>>>> Nico5
-class Prototype {
-	public:
-		Prototype(string* type, vector<*>* params, Identifiant* identifiant) : type(type), params(params), identifiant(identifiant) {}
-		string* type;
-		vector<*>* params;
-		Identifiant* identifiant;
-		void Afficher() {
-			cerr<<"PROTOTYPE"<<endl<<"	";
-			cerr<<*type<<" ";
-			identifiant->Afficher();
-			for(int i=0;i<params->size();i++)
-			{
-				(*params)[i]->Afficher();
-				cerr<<" ";
-			}
-			cerr<<endl;
-		}
-};*/
-
-
-
-
-class Fonction : public InstructionProgramme, public Identifiable {
+class Fonction : public Identifiable {
 	public:
 		Fonction(string type, string id, vector<Variable*>* s, Bloc* bloc = NULL): Identifiable(id), type(type), s(s), bloc(bloc) {}
 		Bloc* bloc;
 		string type;
 		vector<Variable*>* s;
 		virtual ~Fonction() {}
-		void Afficher () {
-			cerr<<"FONCTION"<<endl<<"	";
-			cerr<<type<<" "<<id<<" ";
+		void Afficher (int nbtab) {
+			string tab = getTabPrefix(nbtab);
+			
+			cout<<endl<<tab<<"FONCTION"<<"	";
+			cout<<type<<" "<<id<<" ";
+			cout<<"// size : "<<s->size();
+			
 			for(int i=0;i<s->size();i++)
 			{
-				(*s)[i]->Afficher();
-				cerr<<" ";
+				(*s)[i]->Afficher(nbtab);
+
+				cout<<" ";
 			}
-			cerr<<endl;
-			bloc->Afficher();
+			if(bloc != NULL)
+				bloc->Afficher(nbtab);
 		}
 		void RajouterBloc (Bloc* bloc){
 			this->bloc=bloc;
 			
 		}
-
-		
 };
 
 

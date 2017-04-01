@@ -5,6 +5,8 @@
 #include "Expression.h"
 #include "Fonction.h"
 #include "Structure.h"
+#include <iostream>
+
 #define YYDEBUG 1
 
 void yyerror(int *, const char *);
@@ -138,7 +140,7 @@ int yylex(void);
 /*** ANTOINE *****/
 //déclaration Variables
 
-axiome : programme { $$->Afficher();};
+axiome : programme { $$->Afficher(0);};
 
 suffixe_tab : CROCHOUVR valeur_variable CROCHFERM {$$ = $2;}
             | {$$ = NULL;};
@@ -148,27 +150,22 @@ declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$1,*$2);}
 separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back(new Variable(*$3));}	// A chaque appel on push l'identifiant courant dans la liste
                 | /* vide */ { $$ = new std::vector<Variable*>();};			// On crée la liste d'identifiant quand on est sur vide
 
-declaration : declaration_droite separateur_decl { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());}} // On crée un vecteur de variables qui auront toutes le type de la première déclaration
-            | declaration_droite separateur_decl EGAL_AFFECTATION expression { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());} (*$$)[$$->size()-2]->setValeur($4);  } ; /* TODO gerer l'affectation */
+declaration : declaration_droite separateur_decl PV { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());}} // On crée un vecteur de variables qui auront toutes le type de la première déclaration
+            | declaration_droite separateur_decl EGAL_AFFECTATION expression PV { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());} if($$->size()==1) {(*$$)[0]->setValeur($4);} else {(*$$)[$$->size()-2]->setValeur($4);}  } ; /* on recupere la liste dans $2 et on rajoute le premier $1 en dernier. Ensuite on recupere le type de $1 et on l'affecte a tout ceux de la liste. Ensuite on affecte la valeur au dernier de la liste(donc l'avant dernier du vecteur) ou bien a la seul variable*/
 
 //fonction
 fonction : prototype PV {$$ = $1;}
          | prototype bloc {$$=$1; $$->RajouterBloc($2);};
 
-declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$1,*$2);}; /* TODO gerer les tabs */
-                           // | type IDENTIFIANT EGAL_AFFECTATION expression;
+// Instancie la fonction avec son type, son ID et en lui ajoutant sa liste de variable. 
+prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Fonction (*$1, *$2, $4);};
+
+declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$1,*$2); }; /* TODO gerer les tabs */
 
 // Crée une liste de variable
 parametre_declaration : parametre_declaration VIRGULE declaration_param_fonction {$$->push_back($3);} // on ajoute la variable
-                      | declaration_param_fonction { $$->push_back($1);} // on ajoute la variable correspondante
+                      | parametre_declaration declaration_param_fonction { $$->push_back($2);} // on ajoute la variable correspondante
                       | {$$ = new std::vector<Variable*>();}; // on crée le vecteur de variable
-
-
-// Instancie la fonction avec son type, son ID et en lui ajoutant sa liste de variable. 
-prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Fonction (*$1, *$2, $4);}
-//$$ = new Prototype($1,$4,new Identifiant($2));};
-         // A REVOIR | type IDENTIFIANT PAROUVR VOID PARFERM {$$ = new Prototype($1,NULL,new Identifiant($2));};
-
 
 appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { $$ = new AppelFonction(); $$->setIdentifiant(new Identifiant($1)); $$->setParametres($3); };
 
@@ -181,7 +178,7 @@ type : INT32 { $$ = new string("INT32");}
 		 | CHAR { $$ = new string("CHAR");}
 		 | VOID { $$ = new string("VOID");};
 
-instr : expression PV {$$ = $1;}
+instr : expression PV {$$ = $1; $1->setIsInline(1);}
        | structure_de_controle {$$ = $1;}
        | bloc {$$ = $1;}
        | RETURN expression PV {$$ = new RetourExpr($2);}
@@ -189,7 +186,7 @@ instr : expression PV {$$ = $1;}
        
 
 
-programme : programme fonction {$$=$1; $$->ajouterInstruction($2);}
+programme : programme fonction {$$=$1; $$->ajouterFonction($2);}
           | programme declaration {$$=$1; $$->ajouterListeVariable($2);}
           |{ $$ = new Programme();};
 
@@ -209,7 +206,7 @@ expression : NOT expression { $$ = new Not($2); }
            | expression DIVEUCL expression { $$ = new OperateurModulo($1, $3); }
            | PAROUVR expression PARFERM { $$ = $2; }
            | appel_fonction { $$ = $1; }
-           | affectation/* TODO { $$ = $1; }*/
+           | affectation { $$ = $1; }
            | IDENTIFIANT { $$ = new Identifiant(yylval.identifiant); }
            | valeur_variable { $$ = $1; };
 
@@ -242,19 +239,18 @@ bloc_while : WHILE PAROUVR expression PARFERM instr { $$ = new BlocWhile($3,$5);
 ////*******/////
 
 
-
 bloc : ACCOLOUVR contenu_bloc ACCOLFERM {$$ = $2;};
-contenu_bloc : contenu_bloc instr {$$->AjouterInstr($2);}
-             | instr {$$ = new Bloc($1);}
-             | declaration
 
+contenu_bloc :contenu_bloc declaration {$$->ajouterListeVariable($2);} // On ajoute la liste des variables résultantes de la déclaration dans le bloc
+						 | contenu_bloc instr { $$->AjouterInstr($2);}
+						 | {$$ = new Bloc();};
 %%
 void yyerror(int * res, const char * msg) {
    printf("Syntax error : %s\n",msg);
 }
 
 int main(void) {
-yydebug =1;
+	 yydebug =1;
    int res = 0;
    yyparse(&res);
    printf("Résutlat : %d\n",res);

@@ -10,20 +10,25 @@ class StructureControle : public Instruction {
 		StructureControle(Instruction * instrv): instrv(instrv){}
 		virtual ~StructureControle() {}	
 		Instruction* instrv;
-		virtual void Afficher (){}
+		virtual void Afficher (int nbtab){}
 };
 class BlocIf : public StructureControle {
 	public:
 		BlocIf(Expression * expr, Instruction * instrv, Instruction * blocElse = NULL):StructureControle(instrv), exprCondition(expr), blocElse(blocElse){}
 		Expression* exprCondition;
 		Instruction * blocElse;
-		void Afficher () {
-			cerr<<"BLOC_IF ( "; exprCondition->Afficher(); cerr<<" ) {"<<endl;
-			instrv->Afficher();
-			cerr<<"}"<<endl;	
+		void Afficher (int nbtab) {
+			nbtab++;
+			string tab = getTabPrefix(nbtab);
+			
+			cout<<endl<<tab<<"BLOC_IF ( "; 
+			exprCondition->Afficher(nbtab);
+			cout <<")" << endl;
+			instrv->Afficher(nbtab);
 			if(blocElse!=NULL)
 			{
-				blocElse->Afficher();
+				cout<<endl<<tab<<"BLOC_ELSE"; 
+				blocElse->Afficher(nbtab);
 			}
 		}
 };
@@ -32,10 +37,9 @@ class BlocWhile : public StructureControle {
 	public:
 		BlocWhile(Expression * expr, Instruction * instrv):StructureControle(instrv), exprCondition(expr) {}
 		Expression* exprCondition;
-		void Afficher () {
-			cerr<<"BLOC_WHILE ( "; exprCondition->Afficher(); cerr<<" ) {"<<endl;
-			instrv->Afficher();
-			cerr<<"}"<<endl;	
+		void Afficher (int nbtab) {
+			cout<<"BLOC_WHILE ( "; exprCondition->Afficher(nbtab); cout<<" ) ";
+			instrv->Afficher(nbtab);
 		}
 };
 
@@ -45,10 +49,9 @@ class BlocFor : public StructureControle {
 		Expression* exprInit;
 		Expression* exprCondition;
 		Expression* exprIncrementation;
-		void Afficher () {
-			cerr<<"BLOC_FOR ( "; exprInit->Afficher(); cerr<<", "; exprCondition->Afficher(); cerr<<", "; exprIncrementation->Afficher(); cerr<<") {"<<endl;
-			instrv->Afficher();
-			cerr<<"}"<<endl;	
+		void Afficher (int nbtab) {
+			cout<<"BLOC_FOR ( "; exprInit->Afficher(nbtab); cout<<", "; exprCondition->Afficher(nbtab); cout<<", "; exprIncrementation->Afficher(nbtab); cout<<")";
+			instrv->Afficher(nbtab);
 		}
 };
 
