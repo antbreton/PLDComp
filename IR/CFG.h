@@ -13,9 +13,10 @@ class CFG {
 		~CFG();
 		
 		std::string genererAssembleur();
+		void addBasicBlock(BasicBlock* newBasicBlock);
 
 	private:
-		vector<BasicBlock* > listeBasicBlocks;
+		std::list<BasicBlock* > listeBasicBlocks;
 		// TODO : Table des symboles
 		Programme * programme;
 
