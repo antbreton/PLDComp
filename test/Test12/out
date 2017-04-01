@@ -3,9 +3,12 @@ PROGRAMME // tableSymb size : 0
 	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 1
 		BLOC_IF ( EGAL ID f  == VAL 2 )
-		BEGIN_BLOC // nb instr : 1 - tableSymb size : 0APPEL FONCTION ID fonction1 VAL 2 
+		BEGIN_BLOC // nb instr : 1 - tableSymb size : 0
+			APPEL FONCTION ID fonction1 VAL 2 
 		END_BLOC
-		BEGIN_BLOC // nb instr : 1 - tableSymb size : 0VAL 1 
+		BLOC_ELSE
+		BEGIN_BLOC // nb instr : 1 - tableSymb size : 0
+			AFFECTATION ID f  = APPEL FONCTION ID fonction1 VAL 2  
 		END_BLOC
 	END_BLOC
 END_PROGRAMME
