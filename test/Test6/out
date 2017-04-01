@@ -1,7 +1,8 @@
 PROGRAMME // tableSymb size : 0
 	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t 
-	BEGIN_BLOC // nb instr : 1 - tableSymb size : 0BLOC_FOR ( VAL 1 , INF ID a  < ID z , VAL 1 )
-	BEGIN_BLOC // nb instr : 1 - tableSymb size : 0VAL 1 
+	BEGIN_BLOC // nb instr : 1 - tableSymb size : 0BLOC_FOR ( AFFECTATION ID a  = VAL 0  , INF ID a  < ID z , AFFECTATION ID a  = ADD ID a  + VAL 1  )
+	BEGIN_BLOC // nb instr : 1 - tableSymb size : 0
+		AFFECTATION ID t  = ADD ID t  + VAL 1  
 	END_BLOC
 	END_BLOC
 END_PROGRAMME
