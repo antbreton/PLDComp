@@ -9,18 +9,22 @@
 #include <string>
 #include <vector>
 #include "General.h"
+
+
 class BasicBlock;
 
+// A CFG represente une fonction, contenant un BasicBlock de depart, un de fin
 class CFG {
 public:
-    CFG();
+    CFG(Fonction * f);
     ~CFG();
     std::string genererAssembleur();
+    void addBasicBlock(BasicBlock* bb);
 
 private:
     vector<BasicBlock* > listeBasicBlocks;
     // TODO : Table des symboles
-    Programme * programme;
+    Fonction * fonction;
 
 
 };

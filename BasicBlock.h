@@ -9,12 +9,14 @@
 
 class BasicBlock {
 public:
-    BasicBlock(CFG* cfg, BasicBlock* blocParent);
+    BasicBlock(CFG* cfg, BasicBlock* blocParent, std::string label);
     ~BasicBlock();
     std::string genererAssembleur();
 
+
 private:
-	std::vector<IRInstr * > listeInstructions;
+	std::string labelDebut;
+	std::vector<IRInstr *> listeInstructions;
     BasicBlock* succCond; // Son successeur conditionnel
     BasicBlock* succIncond; // Son sucesseur inconditionnel
     CFG* cfg;
