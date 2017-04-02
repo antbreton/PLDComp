@@ -5,12 +5,25 @@ using namespace std;
 // Constructeur et Destructeur
 IR::IR(Programme* programme)
 {
+	vector<Fonction*>::iterator fonction;
 	
+	// En supposant un getFonctions dans programme
+	
+	// Pour chaque fonction dans le programme (donc chaque AST), on cree son CFG.
+	for(fonction = programme->getFonctions().begin() ; fonction != programme->getFonctions().end() ; fonction++)
+	{
+		CFG* newCFG = new CFG(fonction,this);
+		this->addCFG(newCFG);
+	}
 }
 
 IR::~IR()
 {
-
+	list<CFG*>::iterator ite;
+	for(ite = listeCFG.begin(); ite!=listeCFG.end(); ++ite)
+	{
+	   delete *ite;
+	}
 }
 
 

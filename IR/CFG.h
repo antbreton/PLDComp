@@ -5,11 +5,12 @@
 #include <string>
 #include <vector>
 #include "General.h"
+#include "Fonction.h"
 class BasicBlock;
 
 class CFG {
 	public:
-		CFG();
+		CFG(Fonction* fonction);
 		~CFG();
 		
 		std::string genererAssembleur();
@@ -17,8 +18,8 @@ class CFG {
 
 	private:
 		std::list<BasicBlock* > listeBasicBlocks;
+		Fonction* fonctionDuCFG;
 		// TODO : Table des symboles
-		Programme * programme;
 
 
 };
