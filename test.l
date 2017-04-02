@@ -19,7 +19,7 @@ caractere '[a-zA-Z]{1}'
 [ \n\t]  	{ /* ignore */ }
 
 
-{caractere}	{ yylval.cval = new Caractere(yytext['0']); return CARACTERE; }
+{caractere}	{ yylval.cval = new Caractere(yytext[1]); return CARACTERE; }
 "("      	{ return PAROUVR; }
 ")"      	{ return PARFERM; }
 "int32_t"	{ return INT32;}

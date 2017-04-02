@@ -1,8 +1,13 @@
 
 int32_t main(int32_t z, int64_t t) {
-	for(a=0; a<z;a=a+1) {
-		t=t+1;
-	}
+	char a;
+	a='i';
+	a='k';
+	char b='j';
 
 }
+
+
+
+
 
