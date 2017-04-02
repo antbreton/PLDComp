@@ -1,12 +1,12 @@
 #ifndef _FONCTION_H
 #define _FONCTION_H
 
-#include "General.h"
 #include <string> 
 #include <list>
 #include <vector>
 #include <iostream>
 
+#include "General.h"
 
  
 using namespace std;

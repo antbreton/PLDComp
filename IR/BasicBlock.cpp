@@ -31,7 +31,7 @@ BasicBlock::~BasicBlock()
 string BasicBlock::genererAssembleur() {
     string codeAssembleur;
     
-    list<IRInstr *>::iterator ite = listeInstructionsIR.begin();
+    vector<IRInstr *>::iterator ite = listeInstructionsIR.begin();
     while(ite != listeInstructionsIR.end()) {
       codeAssembleur += (*ite)->genererAssembleur();
       ite++;
@@ -42,7 +42,7 @@ string BasicBlock::genererAssembleur() {
 
 
 // Ajoute une instruction IR à la liste du bloc
-void BasicBlock::addInstr(IRInstr *instruction) {
+void BasicBlock::addInstrIR(IRInstr *instruction) {
     listeInstructionsIR.push_back(instruction);
 }
 

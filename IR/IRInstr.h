@@ -1,12 +1,11 @@
-#ifndef PLDCOMP_IRINSTR_H
-#define PLDCOMP_IRINSTR_H
+#ifndef PLDCOMP_IR_IRINSTR_H
+#define PLDCOMP_IR_IRINSTR_H
 
 #include <iostream>
 #include <string>
 #include <vector>
-#include "General.h"
 
-class BasicBlock;
+
 class CFG;
 
 class IRInstr {
@@ -15,6 +14,7 @@ class IRInstr {
 		~IRInstr();
 		
 		std::string genererAssembleur();
+		CFG* getCFG();
 		
 	private:
 		int mnemoniqueAction; // Les mnemoniques du tableau
@@ -25,4 +25,4 @@ class IRInstr {
 
 
 
-#endif //PLDCOMP_IRINSTR_H
+#endif //PLDCOMP_IR_IRINSTR_H

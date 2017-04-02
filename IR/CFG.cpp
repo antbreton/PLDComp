@@ -9,16 +9,18 @@ CFG::CFG(Fonction* fonction)
 	
 	// On cree le basicBlock correspondants au bloc de la fonction
 	// Pour cela on recupere le bloc de la fonction avec un getBloc (pas encore existant)
+	/*
 	BasicBlock* newBasicBlock = new BasicBlock(this, fonction->getBloc());
 	this->addBasicBlock(newBasicBlock);
+	*/
 }
 
 CFG::~CFG()
 {
     list<BasicBlock*>::iterator ite;
-    for(ite = basicBlocks.begin(); ite!=basicBlocks.end(); ++ite)
+    for(ite = listeBasicBlocks.begin(); ite!=listeBasicBlocks.end(); ++ite)
     {
-        delete *it;
+        delete *ite;
 	}
 }
 

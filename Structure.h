@@ -1,6 +1,7 @@
 #ifndef _STRUCTURE_H
 #define _STRUCTURE_H
 #include "General.h"
+#include "IR/IR.h"
 #include <iostream>
 
 using namespace std;

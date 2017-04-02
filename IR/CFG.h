@@ -4,9 +4,12 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "General.h"
-#include "Fonction.h"
-class BasicBlock;
+#include <list>
+#include "../General.h"
+#include "../Fonction.h"
+#include "BasicBlock.h"
+
+class IR;
 
 class CFG {
 	public:

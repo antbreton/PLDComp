@@ -5,9 +5,9 @@
 #include <string>
 #include <vector>
 #include "IRInstr.h"
-#include "CFG.h"
 #include "../Fonction.h"
 
+class CFG;
 class BasicBlock {
 	public:
 		BasicBlock(); // Pour bloc vide, cf cours

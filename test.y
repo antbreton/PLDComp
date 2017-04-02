@@ -5,12 +5,14 @@
 #include "Expression.h"
 #include "Fonction.h"
 #include "Structure.h"
+#include "IR/IR.h"
 #include <iostream>
 
 #define YYDEBUG 1
 
-void yyerror(int *, const char *);
+void yyerror(Programme* , const char *);
 int yylex(void);
+
 %}
 %union {
    Val* val32;
@@ -133,7 +135,7 @@ int yylex(void);
 
 
 //%left IDENTIFIANT PAROUVR PARFERM INT32 INT64 CHAR VOID
-%parse-param { int * resultat }
+%parse-param { Programme * prog }
 
 %%
 
@@ -245,10 +247,11 @@ contenu_bloc :contenu_bloc declaration {$$->ajouterListeVariable($2);} // On ajo
 						 | contenu_bloc instr { $$->AjouterInstr($2);}
 						 | {$$ = new Bloc();};
 %%
-void yyerror(int * res, const char * msg) {
+void yyerror(Programme * res, const char * msg) {
    printf("Syntax error : %s\n",msg);
 }
 
+/*
 int main(void) {
 	 yydebug =1;
    int res = 0;
@@ -256,3 +259,4 @@ int main(void) {
    printf("Résutlat : %d\n",res);
    return 0;
 }
+*/
