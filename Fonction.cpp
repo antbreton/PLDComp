@@ -22,3 +22,8 @@ void Bloc::ajouterListeVariable(vector<Variable*>* listeVariable)
 	 		tableSymboles->insert(pairCourante); 
 	 }
 }
+
+Bloc* Fonction::getBloc()
+{
+	return bloc;
+}

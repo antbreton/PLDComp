@@ -106,6 +106,7 @@ class Programme {
 		
 		// Cette méthode ajoute la liste de variable passée en paramètre à la table de symbole du programme
 		void ajouterListeVariable(vector<Variable*>* listeVariable){} /* TODO */
+		std::vector<Fonction*> getFonctions();
 	private :
 		map<string,Identifiable*>* tableSymboles; // Cet attribut correspond à la table de symbole : mapping entre un identifiant et un identifiable
 		vector<Fonction*> *fonctions; // /* TODO Virer IntructionProgramme */

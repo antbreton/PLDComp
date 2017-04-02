@@ -66,8 +66,8 @@ class Fonction : public Identifiable {
 		}
 		void RajouterBloc (Bloc* bloc){
 			this->bloc=bloc;
-			
 		}
+		Bloc* getBloc();
 };
 
 

@@ -35,6 +35,11 @@ void Programme::Afficher (int nbtab)
 	cout<<endl<<"END_PROGRAMME"<<endl;
 }
 
+std::vector<Fonction*> Programme::getFonctions() 
+{
+	return *fonctions;
+}
+
  	// Réalisation Variable
 Variable::Variable(string id):Identifiable(id), initialisation (false)
 {
