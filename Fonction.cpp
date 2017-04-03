@@ -38,19 +38,19 @@ int Bloc::compterNbVariable ()
 	int nbVar = 0;
 
 	//Parcours de la table des symboles pour recuperer les variables du bloc
-	for(map<string,Identifiable*>::iterator it = tableSymboles.begin(); it != tableSymboles.end(); it++)
+	for(map<string,Identifiable*>::iterator it = tableSymboles->begin(); it != tableSymboles->end(); it++)
 	{
-		if(dynamic_cast<Variable*>(it.second))
+		if(dynamic_cast<Variable*>(it->second))
 		{
 			nbVar++;
 		}
 	}
 
 	//Parcours récursif des Blocs
-	for(vector<Instruction*>::iterator it = *instrs->begin(); it != *instrs->end(); it++){
-		if(dynamic_cast<Bloc*>(it))
+	for(vector<Instruction*>::iterator it = instrs->begin(); it != instrs->end(); it++){
+		if(Bloc* b = dynamic_cast<Bloc*>(*it))
 		{ 
-			nbVar += it.compterNbVariable();
+			nbVar += b->compterNbVariable();
 		}
 	}
 
