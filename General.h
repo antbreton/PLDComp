@@ -6,13 +6,14 @@
 #include <iostream>
 #include <map>
 
- 
-using namespace std;
 
+
+
+using namespace std;
 class Fonction;
 class Val;
 class Variable;
-
+class CFG;
 
 // ---- méthodes Utils --------
 
@@ -88,19 +89,23 @@ class RetourExpr : public Instruction {
 class Val : public Expression {
 	public:
 		Val(int valeur):Expression(), valeur(valeur) {}
-		int valeur;
+        // TODO : Pk val en public ?
+        int valeur;
 		void Afficher (int nbtab) {
 			 cout<<"VAL "<< valeur<<" ";
 		 }
+		std::string construireIR(CFG* cfg);
 };
 
 class Caractere : public Expression {
 	public:
 		Caractere(char c):Expression(), c(c) {}
+        // TODO : Pk char en public ?
 		char c;
 		void Afficher (int nbtab) {
 			 cout<<"CARACTERE"<< c;
 		 }
+		 std::string construireIR(CFG* cfg);
 };
 
 class Programme {
@@ -121,7 +126,7 @@ class Programme {
 class Not : public Expression {
 	public:
 		Not(Expression * membre):Expression(), membre(membre) {}
-	 	std::string construireIR();
+	 	std::string construireIR(CFG* cfg);
 	private:
 		Expression * membre;
 		 void Afficher (int nbtab) {
@@ -134,7 +139,7 @@ class Not : public Expression {
 class ExpreOpeBinaire : public Expression {
 	public:
 		ExpreOpeBinaire(Expression * membreG, Expression * membreD):Expression(), membreGauche(membreG), membreDroit(membreD) {}
-		virtual std::string construireIR() = 0;
+		virtual std::string construireIR(CFG* cfg) = 0;
 	protected:
 		Expression * membreGauche;
 		Expression * membreDroit;
@@ -152,7 +157,7 @@ class OperateurOR : public ExpreOpeBinaire {
 			 cout<<" || ";
 			 membreDroit->Afficher(nbtab);
 		 }
-		std::string construireIR();
+		std::string construireIR(CFG* cfg);
 };
 
 class OperateurAND : public ExpreOpeBinaire {
@@ -165,7 +170,7 @@ public:
 			 cout<<" && ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR();
+	std::string construireIR(CFG* cfg);
 };
 
 class OperateurSup : public ExpreOpeBinaire {
@@ -178,7 +183,7 @@ public:
 			 cout<<" > ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR();
+	std::string construireIR(CFG* cfg);
 };
 
 class OperateurInf : public ExpreOpeBinaire {
@@ -191,7 +196,7 @@ public:
 			 cout<<" < ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR();
+	std::string construireIR(CFG* cfg);
 };
 
 class OperateurSupEgal : public ExpreOpeBinaire {
@@ -204,7 +209,7 @@ public:
 			 cout<<" >= ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR();
+	std::string construireIR(CFG* cfg);
 };
 
 class OperateurInfEgal : public ExpreOpeBinaire {
@@ -217,7 +222,7 @@ public:
 			 cout<<" <= ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR();
+	std::string construireIR(CFG* cfg);
 };
 
 class OperateurEgal : public ExpreOpeBinaire {
@@ -230,7 +235,7 @@ public:
 			 cout<<" == ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR();
+	std::string construireIR(CFG* cfg);
 };
 
 class OperateurDifferent : public ExpreOpeBinaire {
@@ -243,7 +248,7 @@ public:
 			 cout<<" != ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR();
+	std::string construireIR(CFG* cfg);
 };
 
 class OperateurPlus : public ExpreOpeBinaire {
@@ -256,7 +261,7 @@ public:
 			 cout<<" + ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR();
+	std::string construireIR(CFG* cfg);
 };
 
 class OperateurMoins : public ExpreOpeBinaire {
@@ -269,7 +274,7 @@ public:
 			 cout<<" - ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR();
+	std::string construireIR(CFG* cfg);
 };
 
 class OperateurMultiplier : public ExpreOpeBinaire {
@@ -282,7 +287,7 @@ public:
 			 cout<<" * ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR();
+	std::string construireIR(CFG* cfg);
 };
 
 class OperateurModulo : public ExpreOpeBinaire {
@@ -295,7 +300,7 @@ public:
 			 cout<<" % ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR();
+	std::string construireIR(CFG* cfg);
 };
 
 class OperateurDivise : public ExpreOpeBinaire {
@@ -308,7 +313,7 @@ public:
 			 cout<<" / ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR();
+	std::string construireIR(CFG* cfg);
 };
 
 class AppelFonction : public Expression {

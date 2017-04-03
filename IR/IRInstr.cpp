@@ -1,13 +1,16 @@
 #include "IRInstr.h"
+#include "BasicBlock.h"
 using namespace std;
 
 
 // Constructeur et Destructeur
-IRInstr::IRInstr(CFG* cfg, int mnemonique, vector<string> parametres)
+
+IRInstr::IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std::string> params)
 {
-	this->cfg = cfg;
-    this->mnemonique = mnemonique;
-	this->parametres = parametres;
+	this->mnemoniqueAction = mnemonique;
+	this->blocParent = blocParent;
+	this->params = params;	
+
 }
 
 IRInstr::~IRInstr()
@@ -36,3 +39,4 @@ CFG* IRInstr::getCFG() {
 int IRInstr::getMnemonique() {
   return this->mnemonique;
 }
+

@@ -7,9 +7,10 @@
 
 
 class CFG;
+class BasicBlock;
 using namespace std;
 
-
+/*
 enum mnemoType {
     MNEMO_CONST = 500,
     MNEMO_PLUS = 501,
@@ -34,6 +35,8 @@ enum mnemoType {
     MNEMO_DSUP = 520,
     MNEMO_NOT = 521
 };
+*/
+
 
 // Une instruction IR peut etre sous plusieurs formes : une addition (Menomique PLUS), une constante (Mnemonique CONST) etc
 // Et selon chaque type d'instruction IR il faut reflechir au code donné en assembleur, cf cours page 20-24
@@ -52,6 +55,32 @@ class IRInstr {
 		CFG* cfg;
 		vector<string> parametres;
 		
+
+		typedef enum {
+        LDCONST,
+        ADD,
+        //sub,
+        //mul,
+        RMEM,
+        WMEM,
+        CALL,
+        //cmp_eq,
+        //cmp_lt,
+        //cmp_le
+    	} Mnemonique;
+		IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std::string> params);
+		~IRInstr();
+		std::string genererAssembleur();
+		
+		
+	private:
+		Mnemonique mnemoniqueAction; // Les mnemoniques du tableau
+		BasicBlock* blocParent;
+		std::vector<std::string> params;  
+		/**< For 3-op instrs: destination, operande1, operande2; 
+			 for ldconst: destination, constante;  
+			 For call: label, destination, params;  
+			 for wmem and rmem: choose yourself ??? */ 
 
 };
 

@@ -15,7 +15,7 @@ class BasicBlock {
 		~BasicBlock();
 		
 		std::string genererAssembleur();
-		void addInstrIR(IRInstr* instruction);
+		void ajouterInstrIR(IRInstr* instruction);
 		
 		CFG* getCFG();
 
