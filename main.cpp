@@ -14,8 +14,8 @@ int main(void) {
 	Programme* programme = new Programme();
 	
 	cout << "Partie Frontend" << endl;
-	yyparse(programme);
-	cout << "Résultat : " << programme << endl;
+	yyparse(&programme);
+	cout<< "size : "<<programme->getFonctions().size()<<endl;;
 	
 	cout << "Partie IR - Backend" << endl;
 	IR* ir = new IR(programme);
