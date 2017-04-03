@@ -39,7 +39,10 @@ class BlocWhile : public StructureControle {
 		BlocWhile(Expression * expr, Instruction * instrv):StructureControle(instrv), exprCondition(expr) {}
 		Expression* exprCondition;
 		void Afficher (int nbtab) {
-			cout<<"BLOC_WHILE ( "; exprCondition->Afficher(nbtab); cout<<" ) ";
+			nbtab++;
+			string tab = getTabPrefix(nbtab);
+			
+			cout<<endl<<tab<<"BLOC_WHILE ( "; exprCondition->Afficher(nbtab); cout<<" ) ";
 			instrv->Afficher(nbtab);
 		}
 };
@@ -51,7 +54,10 @@ class BlocFor : public StructureControle {
 		Expression* exprCondition;
 		Expression* exprIncrementation;
 		void Afficher (int nbtab) {
-			cout<<"BLOC_FOR ( "; exprInit->Afficher(nbtab); cout<<", "; exprCondition->Afficher(nbtab); cout<<", "; exprIncrementation->Afficher(nbtab); cout<<")";
+			nbtab++;
+			string tab = getTabPrefix(nbtab);
+			
+			cout<<endl<<tab<<"BLOC_FOR ( "; exprInit->Afficher(nbtab); cout<<", "; exprCondition->Afficher(nbtab); cout<<", "; exprIncrementation->Afficher(nbtab); cout<<")";
 			instrv->Afficher(nbtab);
 		}
 };
