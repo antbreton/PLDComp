@@ -11,6 +11,7 @@ CFG::CFG(Fonction* fonction)
 	// et on l'ajoute au CFG
 	BasicBlock* newBasicBlock = new BasicBlock(this, fonctionDuCFG->getBloc());
 	this->addBasicBlock(newBasicBlock);
+	nbRegVirtuels = 0;
 }
 
 CFG::~CFG()
@@ -77,6 +78,13 @@ int CFG::calculeTaille(){
 	
 
 	return nbVar;
+}
+
+std::string CFG::creerNouveauRegistre() {
+        std::string nomRegistreVirtuel = "!r" + this->nbRegVirtuels ;
+        this->nbRegVirtuels++;
+        IRVar* maVar = new IRVar(nomRegistreVirtuel);
+        this->dicoRegTmp.insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
 }
 
 

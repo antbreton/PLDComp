@@ -8,4 +8,5 @@ gc+
 .idea
 cmake-build-debug
 Compilo
-test/*/out
+test/**/out
+.DS_Store
