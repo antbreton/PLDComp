@@ -20,7 +20,7 @@ int main(void) {
 	cout << "Partie IR - Backend" << endl;
 	IR* ir = new IR(programme);
 
-	ir->genererAssembleur();
+	cout << ir->genererAssembleur() << endl;
 	
 	cout << "Fin de l'analyse du programme" << endl;
 	return 0;

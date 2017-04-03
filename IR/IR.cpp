@@ -7,7 +7,7 @@ IR::IR(Programme* programme)
 {
 	vector<Fonction*>::iterator fonction;
 
-	ofstream fichier("main.s", ios::out | ios::trunc);
+
 	
 	// Pour chaque fonction dans le programme (donc chaque AST), on cree son CFG.
 	// et on l'ajoute a la liste.
@@ -47,9 +47,15 @@ string IR::genererAssembleur()
 		{
 		  codeAssembleur += (*ite)->genererAssembleur(); 
 		}
-
-		fichier << codeAssembleur << endl;
-	  
+		
+		// Ecriture dans main.s
+		if(fichier)
+        {
+			ofstream fichier("main.s", ios::out | ios::trunc);
+			fichier << codeAssembleur << endl;
+			fichier.close();
+        }
+		
 		return codeAssembleur;	
 }
 
