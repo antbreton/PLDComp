@@ -1,5 +1,5 @@
 COMPIL = g++
-EXECNAME = Compilo
+EXECNAME = gc+
 COMPILFLAGS = -std=c++1y
 OPTIMISATIONFLAGS = -O1
 

@@ -1,3 +1,6 @@
+
+
+
 PROGRAMME // tableSymb size : 0
 	FONCTION	INT64 myFunc // size : 1VAR INT64 a 
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 0		RETURN ADD ID a  + VAL 1 

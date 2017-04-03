@@ -10,7 +10,7 @@
 
 #define YYDEBUG 1
 
-void yyerror(Programme* , const char *);
+void yyerror(Programme** , const char *);
 int yylex(void);
 
 %}
@@ -135,14 +135,14 @@ int yylex(void);
 
 
 //%left IDENTIFIANT PAROUVR PARFERM INT32 INT64 CHAR VOID
-%parse-param { Programme * prog }
+%parse-param { Programme ** prog }
 
 %%
 
 /*** ANTOINE *****/
 //déclaration Variables
 
-axiome : programme { $$->Afficher(0);};
+axiome : programme { *prog= $1;};
 
 suffixe_tab : CROCHOUVR valeur_variable CROCHFERM {$$ = $2;}
             | {$$ = NULL;};
@@ -247,7 +247,7 @@ contenu_bloc :contenu_bloc declaration {$$->ajouterListeVariable($2);} // On ajo
 						 | contenu_bloc instr { $$->AjouterInstr($2);}
 						 | {$$ = new Bloc();};
 %%
-void yyerror(Programme * res, const char * msg) {
+void yyerror(Programme ** res, const char * msg) {
    printf("Syntax error : %s\n",msg);
 }
 

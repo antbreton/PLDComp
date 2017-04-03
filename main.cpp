@@ -12,12 +12,11 @@ using namespace std;
 int main(void) {
    //yydebug = 1;
 	Programme* programme = new Programme();
+	yyparse(&programme);
 	
-	cout << "Partie Frontend" << endl;
-	yyparse(programme);
-	cout << "Résultat : " << programme << endl;
-	
-	cout << "Partie IR - Backend" << endl;
+	cout << "%%%Frontend%%%" << endl;
+	programme->Afficher(0);
+	cout << "%%%Backend%%%" << endl;
 	IR* ir = new IR(programme);
 	
 	cout << "Fin de l'analyse du programme" << endl;
