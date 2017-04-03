@@ -22,6 +22,9 @@ class CFG {
 		int calculeTaille ();
 		std::string creerNouveauRegistre();
 		int getNbRegVirtuels();
+		std::string gen_prologue();
+		std::string gen_epilogue();
+		std::map<string, IRVar*>* getDicoRegTmp() const {return dicoRegTmp;};
 
 	private:
 		std::list<BasicBlock* > listeBasicBlocks;

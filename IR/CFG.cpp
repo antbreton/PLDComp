@@ -36,47 +36,68 @@ void CFG::addBasicBlock(BasicBlock* newBasicBlock)
 // Parcours le CFG et en genere le code assembleur.
 string CFG::genererAssembleur() {
 		
-	  // TODO : Chopper la taille de la pile (et l'avoir calculer avant ...)
-	  string codeAssembleur;
+	// TODO : Chopper la taille de la pile (et l'avoir calculer avant ...)
+	string codeAssembleur;
 	  
-	  // PROLOGUE
-	  codeAssembleur += " TODO name:\r\n";
-	  codeAssembleur += "\r\n";
-	  codeAssembleur += "    pushq   %rbp \r\n";
-	  codeAssembleur += "    movq    %rsp, %rbp \r\n";
+	// PROLOGUE
+	codeAssembleur += gen_prologue();
+
+
+	// CORPS
+	// Pour chaque basicBlock dans le CFG on genere son code assembleur.
+  	list<BasicBlock *>::iterator ite = listeBasicBlocks.begin() ;
+  	while (ite != listeBasicBlocks.end()) 
+  	{
+		codeAssembleur += (*ite)->genererAssembleur();
+		ite++;
+  	}
+	  
+	  
+	codeAssembleur += gen_epilogue();
+	  
+	return codeAssembleur;
+}
+
+std::string CFG::gen_prologue()
+{
+	string codeAssembleur;
+
+	codeAssembleur += " TODO name:\r\n";
+	codeAssembleur += "\r\n";
+	codeAssembleur += "    pushq   %rbp \r\n";
+	codeAssembleur += "    movq    %rsp, %rbp \r\n";
 	  // addq ou subq ? Depend de la pile ? 
 	  //codeAssembleur += "    subq    $"+ (TaillePile + multiple de 16) +", %rsp \r\n";
-	  codeAssembleur += "\r\n";
+	codeAssembleur += "\r\n";
 	  
-	  //Offset pour chaque variable
-	  int i = 1;
-	  for(map<string, IRVar*>::iterator it = dicoRegTmp->begin(); it != dicoRegTmp->end(); it++)
-	  {
-	 		it->second->setOffset(8*i);
-	 		
-	 		string instructionASM = "movq $" + to_string(it->second->getValeur()) + ", -" + to_string(it->second->getOffset())  +"(%rbp)\r\n";
-	 		codeAssembleur = instructionASM;
-	 		i++;
-	  }
+	
+	//Offset pour chaque variable
+	int i = 1;
+	std::map<string, IRVar*>* dico = getDicoRegTmp();
+	for(map<string, IRVar*>::iterator it = dico->begin(); it != dico->end(); it++)
+	{
+ 		it->second->setOffset(8*i);
+ 		
+ 		string instructionASM = "movq $" + to_string(it->second->getValeur()) + ", -" + to_string(it->second->getOffset())  +"(%rbp)\r\n";
+ 		codeAssembleur = instructionASM;
+ 		i++;
+	}
 
+	return codeAssembleur;
+}
 
-	  // CORPS
-	  // Pour chaque basicBlock dans le CFG on genere son code assembleur.
-	  list<BasicBlock *>::iterator ite = listeBasicBlocks.begin() ;
-	  while (ite != listeBasicBlocks.end()) 
-	  {
-			codeAssembleur += (*ite)->genererAssembleur();
-			ite++;
-	  }
-	  
-	  // EPILOGUE
+std::string CFG::gen_epilogue()
+{
+	string codeAssembleur;
+
 	  codeAssembleur += "\r\n";
 	  codeAssembleur += "    leave\r\n";
 	  codeAssembleur += "    ret\r\n";
 	  codeAssembleur += "\r\n";
-	  
-	  return codeAssembleur;
+
+	 return codeAssembleur;
 }
+
 
 int CFG::calculeTaille()
 {
@@ -98,6 +119,7 @@ std::string CFG::creerNouveauRegistre() {
 
 // GETTER / SETTER
 
-int CFG::getNbRegVirtuels(){
+int CFG::getNbRegVirtuels()
+{
 	return nbRegVirtuels;
 }
