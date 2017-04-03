@@ -66,7 +66,7 @@ string CFG::genererAssembleur() {
 }
 
 int CFG::calculeTaille(){
-	int nbVar = fonctionDuCFG.getBloc().compterNbVariable();
+	int nbVar = fonctionDuCFG->getBloc()->compterNbVariable();
 
 	int taille = 8*nbVar; //8 octets par variable
 

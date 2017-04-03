@@ -27,6 +27,7 @@ class Identifiable {
 			Identifiable(string id):id(id){}
 			string id;	
 			string getIdentifiant() {return id;}
+			virtual ~Identifiable(){}
 };
 
 
