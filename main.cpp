@@ -8,7 +8,6 @@ extern int yydebug;
 
 using namespace std;
 
-
 int main(void) {
    //yydebug = 1;
 	Programme* programme = new Programme();
@@ -30,4 +29,3 @@ int main(void) {
 	cout << "Fin de l'analyse du programme" << endl;
 	return 0;
 }
-

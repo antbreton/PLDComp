@@ -59,7 +59,8 @@ Identifiable * Bloc::getIdentifiableIfExist(string id)
 		}
 		else if(ancetre != NULL) 			// Sinon on regarde s'il y a un bloc père
 		{
-				return ancetre->getIdentifiableIfExist(id); // on regarde si le père connait l'identifiant
+			if(Bloc *b = dynamic_cast<Bloc *>(ancetre)) 
+				return b->getIdentifiableIfExist(id); // on regarde si le père connait l'identifiant
 		}		
 		
 		// S'il n'y a pas de père (CAD => on est sur une racine) et que l'on a rien trouvé, on retourne NULL

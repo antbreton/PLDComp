@@ -180,11 +180,11 @@ type : INT32 { $$ = new string("INT32");}
 		 | CHAR { $$ = new string("CHAR");}
 		 | VOID { $$ = new string("VOID");};
 
-instr : expression PV {$$ = $1; $1->setIsInline(1);}
-       | structure_de_controle {$$ = $1;}
-       | bloc {$$ = $1;}
-       | RETURN expression PV {$$ = new RetourExpr($2);}
-       | RETURN PV { $$ = new RetourExpr();}
+instr : expression PV {$$ = $1; $1->setIsInline(1); $1->ancetre = $$;}
+       | structure_de_controle {$$ = $1; $1->ancetre = $$;}
+       | bloc {$$ = $1; $1->ancetre = $$;}
+       | RETURN expression PV {$$ = new RetourExpr($2); $1->ancetre = $$;}
+       | RETURN PV { $$ = new RetourExpr(); $1->ancetre = $$;}
        | PV;
        
 
@@ -193,25 +193,26 @@ programme : programme fonction {$$=$1; $$->ajouterFonction($2);}
           | programme declaration {$$=$1; $$->ajouterListeVariable($2);}
           |{ $$ = new Programme();};
 
-expression : NOT expression { $$ = new Not($2); }
-           | expression AND expression { $$ = new OperateurAND($1, $3); }
-           | expression OR expression { $$ = new OperateurOR($1, $3); }
-           | expression INF expression { $$ = new OperateurInf($1, $3); }
-           | expression SUP expression { $$ = new OperateurSup($1, $3); }
-           | expression INFEGAL expression { $$ = new OperateurInfEgal($1, $3); }
-           | expression SUPEGAL expression { $$ = new OperateurSupEgal($1, $3); }
-           | expression EGALEGAL expression { $$ = new OperateurEgal($1, $3); }
-           | expression DIFF expression { $$ = new OperateurDifferent($1, $3); }
-           | expression PLUS expression { $$ = new OperateurPlus($1, $3); }
-           | expression MOINS expression { $$ = new OperateurMoins($1, $3); }
-           | expression MULT expression { $$ = new OperateurMultiplier($1, $3); }
-           | expression DIV expression { $$ = new OperateurDivise($1, $3); }
-           | expression DIVEUCL expression { $$ = new OperateurModulo($1, $3); }
-           | PAROUVR expression PARFERM { $$ = $2; }
-           | appel_fonction { $$ = $1; }
-           | affectation { $$ = $1; }
-           | IDENTIFIANT { $$ = new Identifiant(yylval.identifiant); }
-           | valeur_variable { $$ = $1; };
+expression : NOT expression { $$ = new Not($2); $1->ancetre = $$;}
+           | expression AND expression { $$ = new OperateurAND($1, $3); $1->ancetre = $$; $3->ancetre = $$;}
+           | expression OR expression { $$ = new OperateurOR($1, $3); $1->ancetre = $$; $3->ancetre = $$;}
+           | expression INF expression { $$ = new OperateurInf($1, $3); $1->ancetre = $$; $3->ancetre = $$;}
+           | expression SUP expression { $$ = new OperateurSup($1, $3); $1->ancetre = $$; $3->ancetre = $$;}
+           | expression INFEGAL expression { $$ = new OperateurInfEgal($1, $3); $1->ancetre = $$; $3->ancetre = $$;}
+           | expression SUPEGAL expression { $$ = new OperateurSupEgal($1, $3); $1->ancetre = $$; $3->ancetre = $$;}
+           | expression EGALEGAL expression { $$ = new OperateurEgal($1, $3); $1->ancetre = $$; $3->ancetre = $$;}
+           | expression DIFF expression { $$ = new OperateurDifferent($1, $3); $1->ancetre = $$; $3->ancetre = $$;}
+           | expression PLUS expression { $$ = new OperateurPlus($1, $3); $1->ancetre = $$; $3->ancetre = $$;}
+           | expression MOINS expression { $$ = new OperateurMoins($1, $3); $1->ancetre = $$; $3->ancetre = $$;}
+           | expression MULT expression { $$ = new OperateurMultiplier($1, $3); $1->ancetre = $$; $3->ancetre = $$; }
+           | expression DIV expression { $$ = new OperateurDivise($1, $3); $1->ancetre = $$; $3->ancetre = $$;}
+           | expression DIVEUCL expression { $$ = new OperateurModulo($1, $3); $1->ancetre = $$; $3->ancetre = $$;}
+           | PAROUVR expression PARFERM { $$ = $2; $2->ancetre = $$;}
+           | appel_fonction { $$ = $1; $1->ancetre = $$;}
+           | affectation { $$ = $1; $1->ancetre = $$;}
+           | IDENTIFIANT { Identifiant* id= new Identifiant(yylval.identifiant); $$ =id; if(!id->checkExists()) 	cout << endl<< "Erreur de synthaxe : '"<< yylval.identifiant<< "' est inconnue dans ce scope" << endl; 
+} // Ici on vérifie que l'identifiant existe bien
+           | valeur_variable { $$ = $1; $1->ancetre = $$;};
 
 
            
@@ -247,19 +248,10 @@ bloc : ACCOLOUVR contenu_bloc ACCOLFERM {$$ = $2;};
 
 contenu_bloc :contenu_bloc declaration {$$->ajouterListeVariable($2);} // On ajoute la liste des variables résultantes de la déclaration dans le bloc
 							// Dans ce cas, nous devons traiter le cas ou l'instruction est elle même un bloc et lui désigné le bloc courant comme ancêtre
-						 | contenu_bloc instr { $$->AjouterInstr($2);}
+						 | contenu_bloc instr { $$->AjouterInstr($2); $2->ancetre = $$;}
 						 | {$$ = new Bloc();};
 %%
 void yyerror(Programme ** res, const char * msg) {
    printf("Syntax error : %s\n",msg);
 }
 
-/*
-int main(void) {
-	 yydebug =1;
-   int res = 0;
-   yyparse(&res);
-   printf("Résutlat : %d\n",res);
-   return 0;
-}
-*/

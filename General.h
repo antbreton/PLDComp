@@ -21,8 +21,15 @@ class Bloc;
 string getTabPrefix(int n);
 
 // ---- méthodes Utils --------
-
-
+/*
+class Noeud
+{
+	public :
+		Noeud * ancetre;
+		Bloc * getParentBloc();
+		virtual test();
+};
+*/
 class Identifiable {
 		public : 
 			Identifiable(string id):id(id){}
@@ -36,13 +43,14 @@ class Instruction {
 		Instruction() {}
 		virtual ~Instruction() {}
 		virtual void Afficher(int nbtab) = 0;
+		Instruction * ancetre;
+		Bloc * getParentBloc();
 };
 
-class Expression : public Instruction {
+class Expression : public Instruction{
 	public:
-		Expression(){}
-		virtual ~Expression() {isInline = 0;}
-		
+		Expression(){isInline = 0;}
+		virtual ~Expression() {}
 		void setIsInline(int v) {isInline =v;}
 		virtual void Afficher(int nbtab) { 
 				if(isInline)
@@ -66,6 +74,9 @@ class Identifiant : public Expression {
 			cout<<"ID ";
 			cout<<*id<<" ";
 		}
+		
+		// vérifie que l'identifiant utilisé exist bien dans une des tables de symbole du context courant
+		bool checkExists();
 };
 class RetourExpr : public Instruction {
 	public:
@@ -117,7 +128,7 @@ class Programme {
 };
 
 class Not : public Expression {
-	public:
+	public: 
 		Not(Expression * membre):Expression(), membre(membre) {}
 	private:
 		Expression * membre;

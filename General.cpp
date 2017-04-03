@@ -52,8 +52,7 @@ void Programme::setRecursifBlocAncestorToAll()
 // --------------------------
 
 
-// Réalisation Variable
-
+// Réalisation Variable ---------------------
 pair<bool,string> Programme::testReturn() {
 	bool allOK=true;
 	pair<bool,string> valeursRetour;
@@ -71,8 +70,9 @@ pair<bool,string> Programme::testReturn() {
 	//cout <<"RESULT RETURN :"<<allOK<<endl;
 	return valeursRetour;
 }
- 	// Réalisation Variable
+// ----------------------------------------
 
+// Réalisation Variable-------------
 Variable::Variable(string id):Identifiable(id), initialisation (false)
 {
 
@@ -87,3 +87,43 @@ Variable::Variable(string type, string id, Expression * expr):Identifiable(id), 
 {
 	
 }
+// ----------------------------------
+
+// Réalisation Noeud ----------------
+Bloc * Instruction::getParentBloc()
+{
+	Instruction * currAncetre = ancetre;
+	
+	while(currAncetre != NULL) // tant qu'il y a un parent
+	{
+		if(Bloc * bloc = dynamic_cast<Bloc*>(currAncetre) )
+		{
+			return bloc;
+		}
+	} 
+	
+	return NULL;
+}
+// ----------------------------------
+
+// Réalisation d'Identifiant --------
+bool Identifiant::checkExists()
+{
+	Bloc * c = getParentBloc();
+	
+	if(c == NULL)
+	{
+			return false;
+	}
+	else
+	{
+		Identifiable * identifiable = c->getIdentifiableIfExist(*id);
+		if(identifiable == NULL)
+			return false;
+	}
+
+	return true;
+}
+// ----------------------------------
+
+

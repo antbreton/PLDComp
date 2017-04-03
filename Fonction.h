@@ -18,7 +18,7 @@ class Bloc : public Instruction  {
 	public:
 		Bloc();
 		virtual ~Bloc() {}
-		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);};
+		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);}
 		vector<Instruction*>* instrs;
 		
 		void Afficher (int nbtab) {
@@ -39,7 +39,6 @@ class Bloc : public Instruction  {
 			bool testReturn(bool nullable);
 	private :
 		map<string,Identifiable*>* tableSymboles;
-		Bloc * ancetre;												// Ceci est un lien vers le bloc ancetre. Cela permet d'acceder à la table de symbole du bloc emglobant
 };
 
 class ParamDeclar {
