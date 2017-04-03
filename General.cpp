@@ -2,6 +2,7 @@
 #include "Expression.h"
 #include "Fonction.h"
 #include "IR/CFG.h"
+#include "IR/IRInstr.h"
 #include <iostream>
 
 
@@ -155,7 +156,7 @@ std::string Val::construireIR(CFG* cfg) {
 	vector<std::string> params;
 	params.push_back(reg);
 	params.push_back(to_string(this->valeur));
-	IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::LDCONST, blocCourant, params);
+	IRInstr* nouvelleInstr = new IRInstr(Mnemonique::LDCONST, blocCourant, params);
 	blocCourant->ajouterInstrIR(nouvelleInstr);
     cerr << "Construire IR : Classe Val" << endl;
 

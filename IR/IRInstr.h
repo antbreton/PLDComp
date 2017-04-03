@@ -4,10 +4,11 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <map>
+#include "IRVar.h"
 
-
-class CFG;
 class BasicBlock;
+//class CFG;
 using namespace std;
 
 /*
@@ -37,18 +38,7 @@ enum mnemoType {
 };
 */
 
-
-// Une instruction IR peut etre sous plusieurs formes : une addition (Menomique PLUS), une constante (Mnemonique CONST) etc
-// Et selon chaque type d'instruction IR il faut reflechir au code donné en assembleur, cf cours page 20-24
-class IRInstr {
-	public:
-		IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std::string> params);
-		~IRInstr();
-		
-		string genererAssembleur();
-		Mnemonique getMnemonique();
-		
-		typedef enum {
+		enum Mnemonique{
         LDCONST,
         ADD,
         //sub,
@@ -59,17 +49,29 @@ class IRInstr {
         //cmp_eq,
         //cmp_lt,
         //cmp_le
-    	} Mnemonique;
+    	};
 		
+		
+// Une instruction IR peut etre sous plusieurs formes : une addition (Menomique PLUS), une constante (Mnemonique CONST) etc
+// Et selon chaque type d'instruction IR il faut reflechir au code donné en assembleur, cf cours page 20-24
+class IRInstr {
+	public:
+		IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std::string> params);
+		~IRInstr();
+		
+		string genererAssembleur();
+		Mnemonique getMnemonique();
+		//CFG* getCFG();
 		
 	private:
 		Mnemonique mnemoniqueAction; // Les mnemoniques du tableau
 		BasicBlock* blocParent;
-		std::vector<std::string> params;  
+		std::vector<std::string> params;
+		//CFG *cfg;
 		/**< For 3-op instrs: destination, operande1, operande2; 
 			 for ldconst: destination, constante;  
 			 For call: label, destination, params;  
-			 for wmem and rmem: choose yourself ??? */ 
+			 for wmem and rmem: destination, source */ 
 
 };
 
