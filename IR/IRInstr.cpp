@@ -26,6 +26,7 @@ IRInstr::~IRInstr()
 string IRInstr::genererAssembleur() {
     //TODO : Pour chaque mnemonique different, generer le code assembleur associe à l'instruction IR ... 
 
+
 }
 
 
@@ -36,7 +37,7 @@ CFG* IRInstr::getCFG() {
     return cfg;
 }
 
-int IRInstr::getMnemonique() {
+Mnemonique IRInstr::getMnemonique() {
   return this->mnemonique;
 }
 

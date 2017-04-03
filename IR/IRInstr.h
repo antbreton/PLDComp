@@ -42,20 +42,12 @@ enum mnemoType {
 // Et selon chaque type d'instruction IR il faut reflechir au code donné en assembleur, cf cours page 20-24
 class IRInstr {
 	public:
-		IRInstr(CFG* cfg, int mnemonique, vector<string> parametres);
+		IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std::string> params);
 		~IRInstr();
 		
 		string genererAssembleur();
+		Mnemonique getMnemonique();
 		
-		CFG* getCFG();
-		int getMnemonique();
-		
-	private:
-		int mnemonique; // Les mnemoniques du tableau
-		CFG* cfg;
-		vector<string> parametres;
-		
-
 		typedef enum {
         LDCONST,
         ADD,
@@ -68,9 +60,6 @@ class IRInstr {
         //cmp_lt,
         //cmp_le
     	} Mnemonique;
-		IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std::string> params);
-		~IRInstr();
-		std::string genererAssembleur();
 		
 		
 	private:
