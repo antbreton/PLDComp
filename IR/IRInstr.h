@@ -7,20 +7,35 @@
 
 
 class CFG;
+class BasicBlock;
 
 class IRInstr {
 	public:
-		IRInstr();
+		typedef enum {
+        LDCONST,
+        ADD,
+        //sub,
+        //mul,
+        RMEM,
+        WMEM,
+        CALL,
+        //cmp_eq,
+        //cmp_lt,
+        //cmp_le
+    	} Mnemonique;
+		IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std::string> params);
 		~IRInstr();
-		
 		std::string genererAssembleur();
-		CFG* getCFG();
+		
 		
 	private:
-		int mnemoniqueAction; // Les mnemoniques du tableau
-		CFG* cfg;
-		// TODO : Liste des parametres (les reg, const et label du tableau))
-
+		Mnemonique mnemoniqueAction; // Les mnemoniques du tableau
+		BasicBlock* blocParent;
+		std::vector<std::string> params;  
+		/**< For 3-op instrs: destination, operande1, operande2; 
+			 for ldconst: destination, constante;  
+			 For call: label, destination, params;  
+			 for wmem and rmem: choose yourself ??? */ 
 };
 
 

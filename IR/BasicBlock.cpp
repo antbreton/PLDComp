@@ -42,13 +42,13 @@ string BasicBlock::genererAssembleur() {
 
 
 // Ajoute une instruction IR à la liste du bloc
-void BasicBlock::addInstrIR(IRInstr *instruction) {
+void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
     listeInstructionsIR.push_back(instruction);
 }
 
 
 // GETTER / SETTER
 
-CFG* BasicBlock::getCFG() {
+/*CFG* BasicBlock::getCFG() {
     return cfg;
-}
+}*/
