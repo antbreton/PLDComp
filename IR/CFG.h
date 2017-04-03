@@ -20,9 +20,12 @@ class CFG {
 		void addBasicBlock(BasicBlock* newBasicBlock);
 		int calculeTaille ();
 
+		int nbRegVirtuels;
+
 	private:
 		std::list<BasicBlock* > listeBasicBlocks;
 		Fonction* fonctionDuCFG;
+
 		// TODO : Table des symboles
 
 

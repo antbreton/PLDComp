@@ -11,6 +11,8 @@ CFG::CFG(Fonction* fonction)
 	// et on l'ajoute au CFG
 	BasicBlock* newBasicBlock = new BasicBlock(this, fonctionDuCFG->getBloc());
 	this->addBasicBlock(newBasicBlock);
+
+	nbRegVirtuels = 0;
 }
 
 CFG::~CFG()
@@ -65,19 +67,15 @@ string CFG::genererAssembleur() {
 	  return codeAssembleur;
 }
 
-int CFG::calculeTaille(){
-	int nbVar = fonctionDuCFG->getBloc()->compterNbVariable();
-
-	int taille = 8*nbVar; //8 octets par variable
-
-	if(taille%32 != 0)
-	{
-		taille += 32;
-	}
+int CFG::calculeTaille()
+{
 	
+	int taille = 8*nbRegVirtuels; //8 octets par variable
 
-	return nbVar;
+	return taille;
 }
+
+
 
 
 // GETTER / SETTER
