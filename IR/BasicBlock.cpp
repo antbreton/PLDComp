@@ -21,8 +21,8 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 	vector<Instruction*>* listeInstructions = bloc->getInstructions();
 	
 	// Pour chaque instruction, on regarde son type et selon celui-ci on appelle construireIR ou pas. 
-	vector<Instruction*>* iterator:: ite = listeInstructions.begin() ;
-	while (ite != listeInstructions.end()) 
+	vector<Instruction*>::iterator ite = listeInstructions->begin() ;
+	while (ite != listeInstructions->end()) 
 	  {
 			if (dynamic_cast<OperateurOR *>(*ite)) {
 			
@@ -81,7 +81,7 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 		  } else if (dynamic_cast<AppelFonction *>(*ite)) {
 			
 			AppelFonction *appel = (AppelFonction *)*ite;
-			appel->contruireIR();
+			appel->construireIR();
 			
 			
 		  }else if (dynamic_cast<Affectation *>(*ite)) {

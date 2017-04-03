@@ -32,7 +32,8 @@ class Bloc : public Instruction  {
 		}
 		void ajouterListeVariable(vector<Variable*>* listeVariable);
 		vector<Instruction*>* getInstructions();
-		
+		int compterNbVariable();
+
 	private :
 		map<string,Identifiable*>* tableSymboles;
 };
@@ -70,6 +71,7 @@ class Fonction : public Identifiable {
 			this->bloc=bloc;
 		}
 		Bloc* getBloc();
+		vector<Variable*>* getVariables(return this->s;)
 };
 
 

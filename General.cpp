@@ -54,3 +54,64 @@ Variable::Variable(string type, string id, Expression * expr):Identifiable(id), 
 {
 	
 }
+
+string Not::construireIR() {
+	cerr << "TODO : Construire IR : Classe Not" << endl;
+}
+
+std::string OperateurOR::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperatorOR" << endl;
+}
+
+std::string OperateurAND::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperateurAND" << endl;
+}
+
+std::string OperateurSup::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperateurSup" << endl;
+}
+
+std::string OperateurInf::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperateurInf" << endl;
+}
+
+std::string OperateurSupEgal::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperateurSupEgal" << endl;
+}
+
+std::string OperateurInfEgal::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperateurInfEgal" << endl;
+}
+
+std::string OperateurEgal::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperateurEgal" << endl;
+}
+
+std::string OperateurDifferent::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperateurDifferent" << endl;
+}
+
+std::string OperateurPlus::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperateurPlus" << endl;
+}
+
+std::string OperateurMoins::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperateurMoins" << endl;
+}
+
+std::string OperateurMultiplier::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperateurMultiplier" << endl;
+}
+
+std::string OperateurModulo::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperateurModulo" << endl;
+}
+
+std::string OperateurDivise::construireIR() {
+	cerr << "TODO : Construire IR : Classe OperateurDivise" << endl;
+}
+
+std::string AppelFonction::construireIR() 
+{
+	return "";
+}
