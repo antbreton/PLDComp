@@ -65,6 +65,10 @@ string CFG::genererAssembleur() {
 	  return codeAssembleur;
 }
 
+int CFG::calculeTaille(){
+	int nbVar = fonctionDuCFG.getBloc().compterNbVariable();
+	return nbVar;
+}
 
 
 // GETTER / SETTER

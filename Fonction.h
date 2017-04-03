@@ -30,7 +30,8 @@ class Bloc : public Instruction  {
 			}
 			cout<<endl<<tab<<"END_BLOC";
 		}
-			void ajouterListeVariable(vector<Variable*>* listeVariable);
+		void ajouterListeVariable(vector<Variable*>* listeVariable);
+		int compterNbVariable();
 	private :
 		map<string,Identifiable*>* tableSymboles;
 };

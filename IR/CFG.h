@@ -18,6 +18,7 @@ class CFG {
 		
 		std::string genererAssembleur();
 		void addBasicBlock(BasicBlock* newBasicBlock);
+		int calculeTaille ();
 
 	private:
 		std::list<BasicBlock* > listeBasicBlocks;
