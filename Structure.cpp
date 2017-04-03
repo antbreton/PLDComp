@@ -5,7 +5,7 @@
 
 std::string BlocIf::construireIR(CFG *cfg){
 
-	exprCondition→buildIR(cfg);
+	exprCondition→ConstruireIR(cfg);
 	testBB = cfg→currentBB
 	thenBB = new BasicBlock(cfg, instrv);
 	elseBB = new BasicBlock(cfg, blocElse);
@@ -28,7 +28,7 @@ std::string BlocWhile::construireIR(CFG * cfg){
 	bodyBB = new BasicBlock(cfg);
 	testBB = new BasicBlock(cfg);
 	cfg→currentBB = testBB ;
-	exprCondition→buildIR(cfg);
+	exprCondition→ConstruireIR(cfg);
 	bodyBB = new BasicBlock(cfg, instrv);
 	afterWhileBB = new BasicBlock(cfg);
 	afterWhileBB→succCond = beforeWhileBB→succCond ;
