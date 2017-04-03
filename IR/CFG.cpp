@@ -73,7 +73,10 @@ std::string CFG::gen_prologue()
 {
 	string codeAssembleur;
 
-	codeAssembleur += " TODO name:\r\n";
+	string label = listeBasicBlocks.front().getLabel();
+	string insLabel = label + ":\r\n";
+
+	codeAssembleur += insLabel;
 	codeAssembleur += "\r\n";
 	codeAssembleur += "    pushq   %rbp \r\n";
 	codeAssembleur += "    movq    %rsp, %rbp \r\n";
@@ -90,7 +93,7 @@ std::string CFG::gen_prologue()
  		it->second->setOffset(8*i);
  		
  		string instructionASM = "movq $" + to_string(it->second->getValeur()) + ", -" + to_string(it->second->getOffset())  +"(%rbp)\r\n";
- 		codeAssembleur = instructionASM;
+ 		codeAssembleur += instructionASM;
  		i++;
 	}
 

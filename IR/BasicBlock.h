@@ -10,7 +10,8 @@
 //class CFG;
 class BasicBlock {
 	public:
-		BasicBlock(); // Pour bloc vide, cf cours
+
+		BasicBlock(std::string label);
 		BasicBlock(CFG* cfg, Bloc* bloc, std::string label);
 		~BasicBlock();
 		
@@ -18,6 +19,9 @@ class BasicBlock {
 		void ajouterInstrIR(IRInstr* instruction);
 		
 		CFG* getCFG();
+		std::string getLabel() {return label;};
+		void setLabel(std::string label) {label = label;};
+
 
 	private:
 		std::vector<IRInstr * > listeInstructionsIR;
