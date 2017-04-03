@@ -8,7 +8,7 @@ BasicBlock::BasicBlock(std::string label)
 	
 }
 
-BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label) 
+BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 {
 	this->cfg = cfg;
 	this-> label = label;

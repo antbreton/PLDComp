@@ -11,7 +11,6 @@ IRInstr::IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std:
 	this->mnemoniqueAction = mnemonique;
 	this->blocParent = blocParent;
 	this->params = params;
-	//this->cfg = cfg;
 
 }
 
@@ -59,7 +58,8 @@ string IRInstr::genererAssembleur() {
 	  // On cherche l'offset du parametre, et apres on y ajoute le (%rbp).
 	  // Si c'est une constante :
 	  // On ajoute un $ devant.
-	  if(parametre1[0] == '!' && parametre1[1] == 'r') 
+	  // && parametre1[1] == 'r'
+	  if(parametre1[0] == '!' ) 
 	  {
 		string nomVariable = parametre1.substr(1);
 		IRVar* variableIR = dicoRegTmp->find(nomVariable)->second;
@@ -70,7 +70,7 @@ string IRInstr::genererAssembleur() {
 	  else 
 	  {parametre1 = "$"+parametre1;}
 	  
-	  if(parametre2[0] == '!' && parametre2[1] == 'r') 
+	  if(parametre2[0] == '!') 
 	  {
 		string nomVariable = parametre2.substr(1);
 		IRVar* variableIR = dicoRegTmp->find(nomVariable)->second;
@@ -81,7 +81,7 @@ string IRInstr::genererAssembleur() {
 	  else 
 	  {parametre2 = "$"+parametre2;}
 	  
-	  if(parametre3[0] == '!' && parametre3[1] == 'r') 
+	  if(parametre3[0] == '!') 
 	  {
 		string nomVariable = parametre3.substr(1);
 		IRVar* variableIR = dicoRegTmp->find(nomVariable)->second;

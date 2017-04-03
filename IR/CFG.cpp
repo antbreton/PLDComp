@@ -20,6 +20,8 @@ CFG::CFG(Fonction* fonction)
 	
 	// On cree le basicBlock correspondants au bloc de la fonction
 	// et on l'ajoute au CFG
+
+	
 	BasicBlock* newBasicBlock = new BasicBlock(this, fonctionDuCFG->getBloc(), fonctionDuCFG->getIdentifiant()+"_bb");
 	this->addBasicBlock(newBasicBlock);
 	nbRegVirtuels = 0;
@@ -49,7 +51,7 @@ string CFG::genererAssembleur() {
 		
 	// TODO : Chopper la taille de la pile (et l'avoir calculer avant ...)
 	string codeAssembleur;
-	  
+
 	// PROLOGUE
 	codeAssembleur += gen_prologue();
 
@@ -62,17 +64,17 @@ string CFG::genererAssembleur() {
 		codeAssembleur += (*ite)->genererAssembleur();
 		ite++;
   	}
-	  
-	  
+	
+	// EPILOGUE
 	codeAssembleur += gen_epilogue();
-	  
+
 	return codeAssembleur;
 }
 
 std::string CFG::gen_prologue()
 {
 	string codeAssembleur;
-
+	
 	string label = listeBasicBlocks.front()->getLabel();
 	string insLabel = label + ":\r\n";
 
@@ -87,16 +89,20 @@ std::string CFG::gen_prologue()
 	
 	//Offset pour chaque variable
 	int i = 1;
-	std::map<string, IRVar*>* dico = getDicoRegTmp();
-	for(map<string, IRVar*>::iterator it = dico->begin(); it != dico->end(); it++)
+	std::map<string, IRVar*>* dico = this->getDicoRegTmp();
+	std::map<string, IRVar*>::iterator it;
+	cout << "La probleme est la" << endl;
+	
+	
+	for(it=dicoRegTmp->begin(); it!=dicoRegTmp->end(); ++it)
 	{
+		cout << "probleme resolu ? " << endl;
  		it->second->setOffset(8*i);
- 		
  		string instructionASM = "movq $" + to_string(it->second->getValeur()) + ", -" + to_string(it->second->getOffset())  +"(%rbp)\r\n";
  		codeAssembleur += instructionASM;
  		i++;
 	}
-
+	
 	return codeAssembleur;
 }
 

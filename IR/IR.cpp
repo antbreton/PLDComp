@@ -11,7 +11,11 @@ IR::IR(Programme* programme)
 	
 	// Pour chaque fonction dans le programme (donc chaque AST), on cree son CFG.
 	// et on l'ajoute a la liste.
-	for(fonction = programme->getFonctions().begin() ; fonction != programme->getFonctions().end() ; fonction++)
+	vector<Fonction*> listeDeFonctions = programme->getFonctions();
+	
+	cout << "Taille liste fonction : " << listeDeFonctions.size() << endl;
+	
+	for(fonction = listeDeFonctions.begin() ; fonction != listeDeFonctions.end() ; ++fonction)
 	{
 		CFG* newCFG = new CFG(*fonction);
 		this->addCFG(newCFG);
@@ -36,26 +40,29 @@ IR::~IR()
 string IR::genererAssembleur() 
 {
 		string codeAssembleur;
-	  
-		// TODO : Vérifier le code de depart de l'assembleur ...
-		// Voir les exemples dans le poly de cours et dans l'archive fournie
+		
+		// Code assembleur de début de fichier
 		codeAssembleur += ".text        \r\n";
 		codeAssembleur += ".global main \r\n";
 
+		cout << "Taille liste CFG : " << listeCFG.size() << endl;
+		
+		// On itere pour chaque CFG
 		list<CFG*>::iterator ite;
 		for(ite=listeCFG.begin();ite!=listeCFG.end();ite++)
 		{
-		  codeAssembleur += (*ite)->genererAssembleur(); 
+		  codeAssembleur += (*ite)->genererAssembleur();
 		}
 		
 		// Ecriture dans main.s
+		/*
 		if(fichier)
         {
 			ofstream fichier("main.s", ios::out | ios::trunc);
 			fichier << codeAssembleur << endl;
 			fichier.close();
         }
-		
+		*/
 		return codeAssembleur;	
 }
 

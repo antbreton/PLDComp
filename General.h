@@ -27,7 +27,7 @@ class Identifiable {
 		public : 
 			Identifiable(string id):id(id){}
 			string id;	
-			string getIdentifiant() {return id;}
+			string getIdentifiant() { cout << "getid" <<endl; return id;}
 			virtual ~Identifiable(){}
 };
 
@@ -38,10 +38,6 @@ class Instruction {
 		virtual ~Instruction() {}
 		virtual void Afficher(int nbtab) = 0;
 		
-		string getClasse() {return classe;}
-		void setClasse(string classeAjout) { this->classe = classeAjout;}
-	private:
-		string classe; 
 };
 
 class Expression : public Instruction {

@@ -8,8 +8,6 @@ Bloc::Bloc() : Instruction()
 	tableSymboles = new map<string,Identifiable*>(); 
 }
 
-
-
 void Bloc::ajouterListeVariable(vector<Variable*>* listeVariable)
 {
 	 /* On ajoute la variable dans la table des symboles */	 
@@ -86,6 +84,9 @@ void Bloc::constructor_tableVariables(){
 
 Bloc* Fonction::getBloc()
 {
+	cout << "getbloc" <<endl;
+	cout << this->bloc << endl;
+	cout << "getbloc" <<endl;
 	return this->bloc;
 }
 

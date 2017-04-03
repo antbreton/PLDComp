@@ -23,5 +23,9 @@ int main(void) {
 	cout << ir->genererAssembleur() << endl;
 	
 	cout << "Fin de l'analyse du programme" << endl;
+	
+	delete programme;
+	delete ir;
+	
 	return 0;
 }
