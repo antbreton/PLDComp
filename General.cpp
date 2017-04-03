@@ -168,4 +168,3 @@ string Expression::construireIR(CFG* cfg) {
 		return "Inconnu";
 	}
 }
-

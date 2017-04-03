@@ -73,7 +73,7 @@ std::string CFG::gen_prologue()
 {
 	string codeAssembleur;
 
-	string label = listeBasicBlocks.front().getLabel();
+	string label = listeBasicBlocks.front()->getLabel();
 	string insLabel = label + ":\r\n";
 
 	codeAssembleur += insLabel;

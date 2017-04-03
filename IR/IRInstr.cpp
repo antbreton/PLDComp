@@ -149,7 +149,7 @@ CFG* IRInstr::getCFG() {
     return cfg;
 }
 */
-Mnemonique IRInstr::getMnemonique() {
+IRInstr::Mnemonique IRInstr::getMnemonique() {
   return this->mnemoniqueAction;
 }
 
