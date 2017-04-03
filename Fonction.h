@@ -71,7 +71,7 @@ class Fonction : public Identifiable {
 			this->bloc=bloc;
 		}
 		Bloc* getBloc();
-		vector<Variable*>* getVariables(return this->s;)
+		vector<Variable*>* getVariables() { return this->s;}
 };
 
 
