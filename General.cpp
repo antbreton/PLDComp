@@ -2,6 +2,7 @@
 #include "Expression.h"
 #include "Fonction.h"
 #include "IR/CFG.h"
+#include "IR/IRInstr.h"
 #include <iostream>
 
 
@@ -167,3 +168,4 @@ string Expression::construireIR(CFG* cfg) {
 		return "Inconnu";
 	}
 }
+

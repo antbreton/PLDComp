@@ -8,13 +8,15 @@ BasicBlock::BasicBlock()
 	
 }
 
-BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc) 
+BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label) 
 {
 	this->cfg = cfg;
+	this-> label = label;
 	
 	// TODO : POur chaque instruction dans le bloc : 
 	// On regarde son type, et selon celui-ci
 	// on recupere le code IR associee (on appelle le getIR de chaque classe) 
+	
 }
 
 BasicBlock::~BasicBlock()
@@ -49,6 +51,6 @@ void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
 
 // GETTER / SETTER
 
-/*CFG* BasicBlock::getCFG() {
+CFG* BasicBlock::getCFG() {
     return cfg;
-}*/
+}

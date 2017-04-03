@@ -7,9 +7,20 @@ CFG::CFG(Fonction* fonction)
 {
 	fonctionDuCFG = fonction;
 	
+	// On parcours la fonction pour recuperer tous les parametres des instructions
+	// et on cree les variable IR correspondantes.
+	//vector<string> listeParametres = fonctionDuCFG->getVariables();
+	/*
+	vector<string>::iterator ite;
+    for(ite = listeParametres.begin(); ite!=listeParametres.end(); ++ite)
+    {
+       
+	}
+	*/
+	
 	// On cree le basicBlock correspondants au bloc de la fonction
 	// et on l'ajoute au CFG
-	BasicBlock* newBasicBlock = new BasicBlock(this, fonctionDuCFG->getBloc());
+	BasicBlock* newBasicBlock = new BasicBlock(this, fonctionDuCFG->getBloc(), fonctionDuCFG->getIdentifiant()+"_bb");
 	this->addBasicBlock(newBasicBlock);
 	nbRegVirtuels = 0;
 }
@@ -62,7 +73,10 @@ std::string CFG::gen_prologue()
 {
 	string codeAssembleur;
 
-	codeAssembleur += " TODO name:\r\n";
+	string label = listeBasicBlocks.front().getLabel();
+	string insLabel = label + ":\r\n";
+
+	codeAssembleur += insLabel;
 	codeAssembleur += "\r\n";
 	codeAssembleur += "    pushq   %rbp \r\n";
 	codeAssembleur += "    movq    %rsp, %rbp \r\n";
@@ -79,7 +93,7 @@ std::string CFG::gen_prologue()
  		it->second->setOffset(8*i);
  		
  		string instructionASM = "movq $" + to_string(it->second->getValeur()) + ", -" + to_string(it->second->getOffset())  +"(%rbp)\r\n";
- 		codeAssembleur = instructionASM;
+ 		codeAssembleur += instructionASM;
  		i++;
 	}
 

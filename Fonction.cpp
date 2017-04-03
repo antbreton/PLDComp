@@ -23,6 +23,16 @@ void Bloc::ajouterListeVariable(vector<Variable*>* listeVariable)
 	 }
 }
 
+vector<Instruction*>* Bloc::getInstructions()
+{
+	return this->instrs;
+}
+
+void Bloc::AjouterInstr(Instruction* instr) 
+{
+	instrs->push_back(instr);
+}
+
 /*
 int Bloc::compterNbVariable () 
 {
@@ -76,7 +86,7 @@ void Bloc::constructor_tableVariables(){
 
 Bloc* Fonction::getBloc()
 {
-	return bloc;
+	return this->bloc;
 }
 
 
