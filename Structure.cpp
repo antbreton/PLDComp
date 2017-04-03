@@ -1,4 +1,5 @@
 #include "Structure.h"
+#include "Fonction.h"
 
 // Réalisation bloc if ----------
 BlocIf::BlocIf(Expression * expr, Instruction * instrv, Instruction * blocElse):StructureControle(instrv), exprCondition(expr), blocElse(blocElse)
@@ -35,4 +36,38 @@ void StructureControle::setRecursifBlocAncestorToAll(Bloc * bloc)
 		{
 			stru->setRecursifBlocAncestorToAll(bloc);
 		}
+}
+
+bool StructureControle::testReturn(bool nullable)
+{
+	bool returnFind=false;
+	if(RetourExpr* expr = dynamic_cast<RetourExpr*>(instrv)) //cherche un return
+	{
+		if(nullable)//y'a un return qui doit etre null
+		{
+			if( expr->expr == NULL)
+				returnFind = true; 
+			else
+				returnFind = false;
+		}
+		else
+		{
+			if( expr->expr == NULL)
+				returnFind = false; 
+			else
+				returnFind = true;	
+		}
+	}
+	else if ( StructureControle* struc = dynamic_cast<StructureControle*>(instrv) )
+	{
+		//cout<<"STRUC RECUSIF"<<endl;
+		returnFind = struc->testReturn(nullable);
+	}
+	else if (Bloc* bloc = dynamic_cast<Bloc*>(instrv)) 
+	{
+		//cout<<"BLOC dans struc"<<endl;
+		returnFind = bloc->testReturn(nullable);
+	}
+		
+	return returnFind;	
 }

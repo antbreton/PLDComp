@@ -69,14 +69,15 @@ class Identifiant : public Expression {
 };
 class RetourExpr : public Instruction {
 	public:
-	RetourExpr(Expression * expr):Instruction(), expr(expr){}
+	RetourExpr(Expression * expr = NULL):Instruction(), expr(expr){}
 	Expression * expr;
 	void Afficher(int nbtab) {
 		nbtab++;
 		string tab = getTabPrefix(nbtab);
 		
 		cout<<tab<<"RETURN ";
-		expr->Afficher(nbtab);
+		if(expr!=NULL)
+			expr->Afficher(nbtab);
 	}
 };
 
@@ -106,8 +107,10 @@ class Programme {
 		void Afficher (int nbtab);
 		
 		// Cette méthode ajoute la liste de variable passée en paramètre à la table de symbole du programme
+
 		void ajouterListeVariable(vector<Variable*>* listeVariable);
 		void setRecursifBlocAncestorToAll();
+		pair<bool,string> testReturn();
 	private :
 		Bloc * bloc; // Ce bloc corresponds au contexte du programme, il contiends simplement la table de symbole.
 		vector<Fonction*> *fonctions; //

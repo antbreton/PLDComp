@@ -1,5 +1,5 @@
 PROGRAMME // tableSymb size : 0
-	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t 
+	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 0 - tableSymb size : 1
 	END_BLOC
 END_PROGRAMME

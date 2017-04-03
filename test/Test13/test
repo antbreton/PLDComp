@@ -1,0 +1,14 @@
+void main(int32_t z, int64_t t) {
+	
+}
+
+void aaa() {
+	return;
+}
+
+int32_t bbb() {
+	return 5;
+}
+
+int32_t ccc();
+void ddd();

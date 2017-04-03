@@ -1,4 +1,5 @@
 #include "Fonction.h"
+#include "Structure.h"
 #include "General.h"
 #include "Structure.h"
 #include <iostream>
@@ -23,6 +24,7 @@ void Bloc::ajouterListeVariable(vector<Variable*>* listeVariable)
 	 		tableSymboles->insert(pairCourante); 
 	 }
 }
+
 
 void Bloc::setRecursifBlocAncestorToAll(Bloc * ancetre)
 {
@@ -63,3 +65,72 @@ Identifiable * Bloc::getIdentifiableIfExist(string id)
 		// S'il n'y a pas de père (CAD => on est sur une racine) et que l'on a rien trouvé, on retourne NULL
 		return NULL;
 }
+
+bool Bloc::testReturn(bool nullable){
+	bool returnFind=false;
+	for(int i=0; i<instrs->size();i++)
+	{ //parcours les instructions de premier niveau
+		if (Bloc* bloc = dynamic_cast<Bloc*>((*instrs)[i])) 
+		{
+			//cout<<"BLOC RECURSIF"<<endl;
+			returnFind = bloc->testReturn(nullable);
+		}
+		else if(StructureControle* struc = dynamic_cast<StructureControle*>((*instrs)[i])) //on trouve une structure de controle;
+		{
+			//cout<<"STRUCTURE DE CONTROLE"<<endl;
+			returnFind = struc->testReturn(nullable);
+		}
+		else if(RetourExpr* expr = dynamic_cast<RetourExpr*>((*instrs)[i])) //cherche un return
+		{
+			if(nullable)//y'a un return qui doit etre null
+			{
+				if( expr->expr == NULL)
+					returnFind = true; 
+				else
+					returnFind = false;
+			}
+			else
+			{
+				if( expr->expr == NULL)
+					returnFind = false; 
+				else
+					returnFind = true;
+				
+			}
+			//cout<<"RETURN DU BLOC"<<endl;
+		}
+		else if (nullable) // il n'y a pas de return;
+		{
+			returnFind = true;
+		}
+	}
+	if(instrs->size()==0 && nullable)
+	{
+		returnFind = true;
+	}
+	//cout<<"FIND :"<<returnFind<<endl;
+	return returnFind;
+}
+
+
+
+
+// Réalisation de fonction ----------
+bool Fonction::testReturn() {	
+	if(type!="VOID")
+	{
+		if( bloc != NULL)
+		{
+			return bloc->testReturn(false);	//recherche dans le bloc
+		}
+		return true; //pas de bloc, c'est une déclaration
+	}
+	else if( bloc != NULL)
+	{
+		return bloc->testReturn(true);	//recherche dans le bloc
+	}
+	return true; //pas de bloc, c'est une déclaration
+	
+}
+
+// ------------------------------

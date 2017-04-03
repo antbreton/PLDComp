@@ -6,6 +6,8 @@
 
 using namespace std;
 
+class Bloc;
+
 class StructureControle : public Instruction {
 	public:
 		StructureControle(Instruction * instrv): instrv(instrv){}
@@ -13,6 +15,7 @@ class StructureControle : public Instruction {
 		Instruction* instrv;
 		virtual void Afficher (int nbtab){}
 		virtual void setRecursifBlocAncestorToAll(Bloc * bloc);
+		bool testReturn(bool nullable);
 };
 
 class BlocIf : public StructureControle {

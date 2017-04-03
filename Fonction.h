@@ -36,6 +36,7 @@ class Bloc : public Instruction  {
 			void setRecursifBlocAncestorToAll(Bloc * ancetre);
 		Identifiable * getIdentifiableIfExist(string id);
 		map<string,Identifiable*>* getTableSymboles() { return tableSymboles; }
+			bool testReturn(bool nullable);
 	private :
 		map<string,Identifiable*>* tableSymboles;
 		Bloc * ancetre;												// Ceci est un lien vers le bloc ancetre. Cela permet d'acceder à la table de symbole du bloc emglobant
@@ -70,11 +71,11 @@ class Fonction : public Identifiable {
 			if(bloc != NULL)
 				bloc->Afficher(nbtab);
 		}
+
 		void RajouterBloc (Bloc* bloc){	this->bloc=bloc;}
 		Bloc * getBloc() { return bloc; }
+		bool testReturn();
 };
-
-
 
 
 #endif
