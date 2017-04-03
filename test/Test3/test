@@ -1,4 +1,4 @@
-int32_t main(int32_t z, int64_t t) {
+void main(int32_t z, int64_t t) {
 	
 	if(1==1)
 	{

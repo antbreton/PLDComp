@@ -31,6 +31,7 @@ class Bloc : public Instruction  {
 			cout<<endl<<tab<<"END_BLOC";
 		}
 			void ajouterListeVariable(vector<Variable*>* listeVariable);
+			bool testReturn(bool nullable);
 	private :
 		map<string,Identifiable*>* tableSymboles;
 };
@@ -66,6 +67,22 @@ class Fonction : public Identifiable {
 		}
 		void RajouterBloc (Bloc* bloc){
 			this->bloc=bloc;
+			
+		}
+		bool testReturn() {	
+			if(type!="VOID")
+			{
+				if( bloc != NULL)
+				{
+					return bloc->testReturn(false);	//recherche dans le bloc
+				}
+				return true; //pas de bloc, c'est une déclaration
+			}
+			else if( bloc != NULL)
+			{
+				return bloc->testReturn(true);	//recherche dans le bloc
+			}
+			return true; //pas de bloc, c'est une déclaration
 			
 		}
 };

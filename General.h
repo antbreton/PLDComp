@@ -68,14 +68,15 @@ class Identifiant : public Expression {
 };
 class RetourExpr : public Instruction {
 	public:
-	RetourExpr(Expression * expr):Instruction(), expr(expr){}
+	RetourExpr(Expression * expr = NULL):Instruction(), expr(expr){}
 	Expression * expr;
 	void Afficher(int nbtab) {
 		nbtab++;
 		string tab = getTabPrefix(nbtab);
 		
 		cout<<tab<<"RETURN ";
-		expr->Afficher(nbtab);
+		if(expr!=NULL)
+			expr->Afficher(nbtab);
 	}
 };
 
@@ -106,6 +107,7 @@ class Programme {
 		
 		// Cette méthode ajoute la liste de variable passée en paramètre à la table de symbole du programme
 		void ajouterListeVariable(vector<Variable*>* listeVariable){} /* TODO */
+		pair<bool,string> testReturn();
 	private :
 		map<string,Identifiable*>* tableSymboles; // Cet attribut correspond à la table de symbole : mapping entre un identifiant et un identifiable
 		vector<Fonction*> *fonctions; // /* TODO Virer IntructionProgramme */

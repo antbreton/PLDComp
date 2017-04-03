@@ -16,7 +16,15 @@ int main(void) {
 	
 	cout << "%%%Frontend%%%" << endl;
 	programme->Afficher(0);
+	
+	pair<bool,string> valeursRetour = programme->testReturn();
+	if(!valeursRetour.first)
+	{
+		cout<<"Erreur semantique : erreur de return dans : "<<valeursRetour.second<<endl;
+	}	
+		
 	cout << "%%%Backend%%%" << endl;
+
 	IR* ir = new IR(programme);
 	
 	cout << "Fin de l'analyse du programme" << endl;

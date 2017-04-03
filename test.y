@@ -184,6 +184,7 @@ instr : expression PV {$$ = $1; $1->setIsInline(1);}
        | structure_de_controle {$$ = $1;}
        | bloc {$$ = $1;}
        | RETURN expression PV {$$ = new RetourExpr($2);}
+       | RETURN PV { $$ = new RetourExpr();}
        | PV;
        
 
