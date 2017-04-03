@@ -52,7 +52,6 @@ void Programme::setRecursifBlocAncestorToAll()
 // --------------------------
 
 
-// Réalisation Variable
 
 pair<bool,string> Programme::testReturn() {
 	bool allOK=true;
@@ -70,6 +69,20 @@ pair<bool,string> Programme::testReturn() {
 	valeursRetour.first = allOK;
 	//cout <<"RESULT RETURN :"<<allOK<<endl;
 	return valeursRetour;
+}
+
+bool Programme::testMain(){
+	bool mainFind=false;
+	for(int i=0;i<fonctions->size();i++)
+	{
+		if((*fonctions)[i]->id=="main"){
+			mainFind=true;;
+			break;
+		}
+	}
+	
+	return mainFind;
+	
 }
  	// Réalisation Variable
 

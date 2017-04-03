@@ -111,6 +111,7 @@ class Programme {
 		void ajouterListeVariable(vector<Variable*>* listeVariable);
 		void setRecursifBlocAncestorToAll();
 		pair<bool,string> testReturn();
+		bool testMain();
 	private :
 		Bloc * bloc; // Ce bloc corresponds au contexte du programme, il contiends simplement la table de symbole.
 		vector<Fonction*> *fonctions; //

@@ -8,6 +8,8 @@ extern int yydebug;
 
 using namespace std;
 
+void passe1(Programme* programme);
+void passe2(Programme* programme);
 
 int main(void) {
    //yydebug = 1;
@@ -17,11 +19,10 @@ int main(void) {
 	cout << "%%%Frontend%%%" << endl;
 	programme->Afficher(0);
 	
-	pair<bool,string> valeursRetour = programme->testReturn();
-	if(!valeursRetour.first)
-	{
-		cout<<"Erreur semantique : erreur de return dans : "<<valeursRetour.second<<endl;
-	}	
+	
+	passe1(programme);
+	passe2(programme);
+	
 		
 	cout << "%%%Backend%%%" << endl;
 
@@ -31,3 +32,22 @@ int main(void) {
 	return 0;
 }
 
+
+void passe1(Programme* programme) { //test return;
+	pair<bool,string> valeursRetour = programme->testReturn();
+	if(!valeursRetour.first)
+	{
+		cout<<"Erreur semantique : erreur de return dans : "<<valeursRetour.second<<endl;
+	}	
+	
+}
+
+void passe2(Programme* programme) { // test main
+	bool mainFind = programme->testMain();
+	if(!mainFind) 
+	{
+		cout<<"Erreur semantique : fonction main introuvable"<<endl;
+	} 
+	
+	
+}
