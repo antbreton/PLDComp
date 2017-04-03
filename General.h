@@ -115,6 +115,7 @@ class Programme {
 class Not : public Expression {
 	public:
 		Not(Expression * membre):Expression(), membre(membre) {}
+	 	std::string construireIR();
 	private:
 		Expression * membre;
 		 void Afficher (int nbtab) {
@@ -127,6 +128,7 @@ class Not : public Expression {
 class ExpreOpeBinaire : public Expression {
 	public:
 		ExpreOpeBinaire(Expression * membreG, Expression * membreD):Expression(), membreGauche(membreG), membreDroit(membreD) {}
+		virtual std::string construireIR() = 0;
 	protected:
 		Expression * membreGauche;
 		Expression * membreDroit;
@@ -144,6 +146,7 @@ class OperateurOR : public ExpreOpeBinaire {
 			 cout<<" || ";
 			 membreDroit->Afficher(nbtab);
 		 }
+		std::string construireIR();
 };
 
 class OperateurAND : public ExpreOpeBinaire {
@@ -156,6 +159,7 @@ public:
 			 cout<<" && ";
 			 membreDroit->Afficher(nbtab);
 		 }
+	std::string construireIR();
 };
 
 class OperateurSup : public ExpreOpeBinaire {
@@ -168,6 +172,7 @@ public:
 			 cout<<" > ";
 			 membreDroit->Afficher(nbtab);
 		 }
+	std::string construireIR();
 };
 
 class OperateurInf : public ExpreOpeBinaire {
@@ -180,6 +185,7 @@ public:
 			 cout<<" < ";
 			 membreDroit->Afficher(nbtab);
 		 }
+	std::string construireIR();
 };
 
 class OperateurSupEgal : public ExpreOpeBinaire {
@@ -192,6 +198,7 @@ public:
 			 cout<<" >= ";
 			 membreDroit->Afficher(nbtab);
 		 }
+	std::string construireIR();
 };
 
 class OperateurInfEgal : public ExpreOpeBinaire {
@@ -204,6 +211,7 @@ public:
 			 cout<<" <= ";
 			 membreDroit->Afficher(nbtab);
 		 }
+	std::string construireIR();
 };
 
 class OperateurEgal : public ExpreOpeBinaire {
@@ -216,6 +224,7 @@ public:
 			 cout<<" == ";
 			 membreDroit->Afficher(nbtab);
 		 }
+	std::string construireIR();
 };
 
 class OperateurDifferent : public ExpreOpeBinaire {
@@ -228,6 +237,7 @@ public:
 			 cout<<" != ";
 			 membreDroit->Afficher(nbtab);
 		 }
+	std::string construireIR();
 };
 
 class OperateurPlus : public ExpreOpeBinaire {
@@ -240,6 +250,7 @@ public:
 			 cout<<" + ";
 			 membreDroit->Afficher(nbtab);
 		 }
+	std::string construireIR();
 };
 
 class OperateurMoins : public ExpreOpeBinaire {
@@ -252,6 +263,7 @@ public:
 			 cout<<" - ";
 			 membreDroit->Afficher(nbtab);
 		 }
+	std::string construireIR();
 };
 
 class OperateurMultiplier : public ExpreOpeBinaire {
@@ -264,6 +276,7 @@ public:
 			 cout<<" * ";
 			 membreDroit->Afficher(nbtab);
 		 }
+	std::string construireIR();
 };
 
 class OperateurModulo : public ExpreOpeBinaire {
@@ -276,6 +289,7 @@ public:
 			 cout<<" % ";
 			 membreDroit->Afficher(nbtab);
 		 }
+	std::string construireIR();
 };
 
 class OperateurDivise : public ExpreOpeBinaire {
@@ -288,6 +302,7 @@ public:
 			 cout<<" / ";
 			 membreDroit->Afficher(nbtab);
 		 }
+	std::string construireIR();
 };
 
 class AppelFonction : public Expression {
