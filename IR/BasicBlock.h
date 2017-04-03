@@ -10,7 +10,8 @@
 class CFG;
 class BasicBlock {
 	public:
-		BasicBlock(std::string label); // Pour bloc vide, cf cours
+
+		BasicBlock(std::string label);
 		BasicBlock(CFG* cfg, Bloc* bloc, std::string label);
 		~BasicBlock();
 		

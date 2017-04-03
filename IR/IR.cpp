@@ -8,6 +8,7 @@ IR::IR(Programme* programme)
 	vector<Fonction*>::iterator fonction;
 	
 	// Pour chaque fonction dans le programme (donc chaque AST), on cree son CFG.
+	// et on l'ajoute a la liste.
 	for(fonction = programme->getFonctions().begin() ; fonction != programme->getFonctions().end() ; fonction++)
 	{
 		CFG* newCFG = new CFG(*fonction);
@@ -34,8 +35,11 @@ string IR::genererAssembleur()
 {
 		string codeAssembleur;
 	  
-		// TODO : Peut etre un code special au debut d'un fichier assembleur .. 
-	  
+		// TODO : Vérifier le code de depart de l'assembleur ...
+		// Voir les exemples dans le poly de cours et dans l'archive fournie
+		codeAssembleur += ".text        \r\n";
+		codeAssembleur += ".global main \r\n";
+
 		list<CFG*>::iterator ite;
 		for(ite=listeCFG.begin();ite!=listeCFG.end();ite++)
 		{

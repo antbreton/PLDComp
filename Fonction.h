@@ -18,7 +18,7 @@ class Bloc : public Instruction  {
 	public:
 		Bloc();
 		virtual ~Bloc() {}
-		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);};
+		void AjouterInstr (Instruction* instr);
 		vector<Instruction*>* instrs;
 		
 		void Afficher (int nbtab) {
@@ -31,8 +31,10 @@ class Bloc : public Instruction  {
 			cout<<endl<<tab<<"END_BLOC";
 		}
 		void ajouterListeVariable(vector<Variable*>* listeVariable);
+		vector<Instruction*>* getInstructions();
 		int compterNbVariable();
 		void constructor_tableVariables();
+
 	private :
 		map<string,Identifiable*>* tableSymboles;
 		map<string,Variable*>* tableVariables;
@@ -71,6 +73,7 @@ class Fonction : public Identifiable {
 			this->bloc=bloc;
 		}
 		Bloc* getBloc();
+		vector<Variable*>* getVariables() { return this->s;}
 };
 
 
