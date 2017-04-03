@@ -31,8 +31,14 @@ class Bloc : public Instruction  {
 			cout<<endl<<tab<<"END_BLOC";
 		}
 			void ajouterListeVariable(vector<Variable*>* listeVariable);
+			
+			// Cette méthode va récursivement ajouter ce bloc en ancetre de tous ses fils direct. Puis il va set l'ancetre du bloc courant.
+			void setRecursifBlocAncestorToAll(Bloc * ancetre);
+		Identifiable * getIdentifiableIfExist(string id);
+		map<string,Identifiable*>* getTableSymboles() { return tableSymboles; }
 	private :
 		map<string,Identifiable*>* tableSymboles;
+		Bloc * ancetre;												// Ceci est un lien vers le bloc ancetre. Cela permet d'acceder à la table de symbole du bloc emglobant
 };
 
 class ParamDeclar {
@@ -64,10 +70,8 @@ class Fonction : public Identifiable {
 			if(bloc != NULL)
 				bloc->Afficher(nbtab);
 		}
-		void RajouterBloc (Bloc* bloc){
-			this->bloc=bloc;
-			
-		}
+		void RajouterBloc (Bloc* bloc){	this->bloc=bloc;}
+		Bloc * getBloc() { return bloc; }
 };
 
 

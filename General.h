@@ -12,6 +12,7 @@ using namespace std;
 class Fonction;
 class Val;
 class Variable;
+class Bloc;
 
 
 // ---- méthodes Utils --------
@@ -105,10 +106,11 @@ class Programme {
 		void Afficher (int nbtab);
 		
 		// Cette méthode ajoute la liste de variable passée en paramètre à la table de symbole du programme
-		void ajouterListeVariable(vector<Variable*>* listeVariable){} /* TODO */
+		void ajouterListeVariable(vector<Variable*>* listeVariable);
+		void setRecursifBlocAncestorToAll();
 	private :
-		map<string,Identifiable*>* tableSymboles; // Cet attribut correspond à la table de symbole : mapping entre un identifiant et un identifiable
-		vector<Fonction*> *fonctions; // /* TODO Virer IntructionProgramme */
+		Bloc * bloc; // Ce bloc corresponds au contexte du programme, il contiends simplement la table de symbole.
+		vector<Fonction*> *fonctions; //
 };
 
 class Not : public Expression {

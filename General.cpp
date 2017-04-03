@@ -18,16 +18,16 @@ string getTabPrefix(int n)
 	return tab;
 }
 
-
-// Réalisation Programme
+// Réalisation Programme ----
 Programme::Programme()
 {
 	fonctions = new vector<Fonction*>();
-	tableSymboles = new map<string,Identifiable*>();
+	bloc 			= new Bloc();
 }
+
 void Programme::Afficher (int nbtab) 
 {
-	cout<< endl << endl << endl <<"PROGRAMME // tableSymb size : "<< tableSymboles->size();
+	cout<< endl << endl << endl <<"PROGRAMME // tableSymb size : "<< bloc->getTableSymboles()->size();
 	for(int i=0;i<fonctions->size();i++)
 	{
 		(*fonctions)[i]->Afficher(1);
@@ -35,14 +35,32 @@ void Programme::Afficher (int nbtab)
 	cout<<endl<<"END_PROGRAMME"<<endl;
 }
 
- 	// Réalisation Variable
+void Programme::ajouterListeVariable(vector<Variable*>* listeVariable)
+{
+	bloc->ajouterListeVariable(listeVariable);
+}
+
+
+// This method set the 
+void Programme::setRecursifBlocAncestorToAll()
+{
+	for(int i=0;i<fonctions->size();i++)
+	{
+		(*fonctions)[i]->getBloc()->setRecursifBlocAncestorToAll(this->bloc);
+	}
+}
+// --------------------------
+
+
+// Réalisation Variable
 Variable::Variable(string id):Identifiable(id), initialisation (false)
 {
 
 }
+
 Variable::Variable(string type, string id):Identifiable(id), type(type), initialisation (false)
 {
-cerr<< "type : "<<type<<" id : "<<id<<endl;;
+	cerr<< "type : "<<type<<" id : "<<id<<endl;;
 }
 
 Variable::Variable(string type, string id, Expression * expr):Identifiable(id), type(type), expr(expr),initialisation (true)

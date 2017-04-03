@@ -12,12 +12,15 @@ class StructureControle : public Instruction {
 		virtual ~StructureControle() {}	
 		Instruction* instrv;
 		virtual void Afficher (int nbtab){}
+		virtual void setRecursifBlocAncestorToAll(Bloc * bloc);
 };
+
 class BlocIf : public StructureControle {
 	public:
-		BlocIf(Expression * expr, Instruction * instrv, Instruction * blocElse = NULL):StructureControle(instrv), exprCondition(expr), blocElse(blocElse){}
+		BlocIf(Expression * expr, Instruction * instrv, Instruction * blocElse = NULL);
 		Expression* exprCondition;
 		Instruction * blocElse;
+		void setRecursifBlocAncestorToAll(Bloc * bloc);
 		void Afficher (int nbtab) {
 			nbtab++;
 			string tab = getTabPrefix(nbtab);

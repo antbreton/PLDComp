@@ -225,7 +225,8 @@ affectation : IDENTIFIANT EGAL_AFFECTATION expression { $$ = new Affectation(); 
 /**** QUENTIN ****/
 structure_de_controle : bloc_if {$$ = $1;}
                       | bloc_boucle {$$ = $1;};
-
+                      
+// Dans ce cas, nous devons traiter le cas ou l'instruction est elle même un bloc et lui désigné le bloc courant comme ancêtre
 bloc_if : IF PAROUVR expression PARFERM instr ELSE instr {$$ = new BlocIf($3,$5,$7);}
         | IF PAROUVR expression PARFERM instr { $$ = new BlocIf($3,$5);} ;
 
@@ -244,6 +245,7 @@ bloc_while : WHILE PAROUVR expression PARFERM instr { $$ = new BlocWhile($3,$5);
 bloc : ACCOLOUVR contenu_bloc ACCOLFERM {$$ = $2;};
 
 contenu_bloc :contenu_bloc declaration {$$->ajouterListeVariable($2);} // On ajoute la liste des variables résultantes de la déclaration dans le bloc
+							// Dans ce cas, nous devons traiter le cas ou l'instruction est elle même un bloc et lui désigné le bloc courant comme ancêtre
 						 | contenu_bloc instr { $$->AjouterInstr($2);}
 						 | {$$ = new Bloc();};
 %%
