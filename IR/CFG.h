@@ -23,6 +23,8 @@ class CFG {
 		std::string creerNouveauRegistre();
 
 
+		int nbRegVirtuels;
+
 	private:
 		std::list<BasicBlock* > listeBasicBlocks;
 		Fonction* fonctionDuCFG;

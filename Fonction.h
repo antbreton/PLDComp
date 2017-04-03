@@ -32,8 +32,10 @@ class Bloc : public Instruction  {
 		}
 		void ajouterListeVariable(vector<Variable*>* listeVariable);
 		int compterNbVariable();
+		void constructor_tableVariables();
 	private :
 		map<string,Identifiable*>* tableSymboles;
+		map<string,Variable*>* tableVariables;
 };
 
 class ParamDeclar {

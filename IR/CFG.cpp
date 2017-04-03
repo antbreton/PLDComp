@@ -66,18 +66,12 @@ string CFG::genererAssembleur() {
 	  return codeAssembleur;
 }
 
-int CFG::calculeTaille(){
-	int nbVar = fonctionDuCFG->getBloc()->compterNbVariable();
-
-	int taille = 8*nbVar; //8 octets par variable
-
-	if(taille%32 != 0)
-	{
-		taille += 32;
-	}
+int CFG::calculeTaille()
+{
 	
+	int taille = 8*nbRegVirtuels; //8 octets par variable
 
-	return nbVar;
+	return taille;
 }
 
 std::string CFG::creerNouveauRegistre() {
@@ -86,6 +80,8 @@ std::string CFG::creerNouveauRegistre() {
         IRVar* maVar = new IRVar(nomRegistreVirtuel);
         this->dicoRegTmp.insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
 }
+
+
 
 
 // GETTER / SETTER
