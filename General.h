@@ -35,6 +35,11 @@ class Instruction {
 		Instruction() {}
 		virtual ~Instruction() {}
 		virtual void Afficher(int nbtab) = 0;
+		
+		string getClasse() {return classe;}
+		void setClasse(string classeAjout) { this->classe = classeAjout;}
+	private:
+		string classe; 
 };
 
 class Expression : public Instruction {

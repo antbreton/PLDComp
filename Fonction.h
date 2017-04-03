@@ -18,7 +18,7 @@ class Bloc : public Instruction  {
 	public:
 		Bloc();
 		virtual ~Bloc() {}
-		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);};
+		void AjouterInstr (Instruction* instr);
 		vector<Instruction*>* instrs;
 		
 		void Afficher (int nbtab) {
@@ -30,7 +30,9 @@ class Bloc : public Instruction  {
 			}
 			cout<<endl<<tab<<"END_BLOC";
 		}
-			void ajouterListeVariable(vector<Variable*>* listeVariable);
+		void ajouterListeVariable(vector<Variable*>* listeVariable);
+		vector<Instruction*>* getInstructions();
+		
 	private :
 		map<string,Identifiable*>* tableSymboles;
 };

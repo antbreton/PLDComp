@@ -3,9 +3,11 @@ using namespace std;
 
 
 // Constructeur et Destructeur
-IRInstr::IRInstr()
+IRInstr::IRInstr(CFG* cfg, int mnemonique, vector<string> parametres)
 {
-	
+	this->cfg = cfg;
+    this->mnemonique = mnemonique;
+	this->parametres = parametres;
 }
 
 IRInstr::~IRInstr()
@@ -19,7 +21,8 @@ IRInstr::~IRInstr()
 
 
 string IRInstr::genererAssembleur() {
-    
+    //TODO : Pour chaque mnemonique different, generer le code assembleur associe à l'instruction IR ... 
+
 }
 
 
@@ -28,4 +31,8 @@ string IRInstr::genererAssembleur() {
 
 CFG* IRInstr::getCFG() {
     return cfg;
+}
+
+int IRInstr::getMnemonique() {
+  return this->mnemonique;
 }

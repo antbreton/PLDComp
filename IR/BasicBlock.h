@@ -11,7 +11,7 @@ class CFG;
 class BasicBlock {
 	public:
 		BasicBlock(); // Pour bloc vide, cf cours
-		BasicBlock(CFG* cfg, Bloc* bloc);
+		BasicBlock(CFG* cfg, Bloc* bloc, std::string label);
 		~BasicBlock();
 		
 		std::string genererAssembleur();
@@ -24,6 +24,7 @@ class BasicBlock {
 		BasicBlock* succCond; // Son successeur conditionnel
 		BasicBlock* succIncond; // Son sucesseur inconditionnel
 		CFG* cfg;
+		std::string label;
 };
 
 
