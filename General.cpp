@@ -151,8 +151,13 @@ std::string Caractere::construireIR(CFG* cfg) {
 std::string Val::construireIR(CFG* cfg) {
 	// Creation d'un registre temporaire
 	string reg = cfg->creerNouveauRegistre();
-	//cfg->ajouterInstruction(reg + " <- constant");
-    cerr << "TODO : Construire IR : Classe Val" << endl;
+	BasicBlock* blocCourant = cfg->getBlockCourant();
+	vector<std::string> params;
+	params.push_back(reg);
+	params.push_back(to_string(this->valeur));
+	IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::LDCONST, blocCourant, params);
+	blocCourant->ajouterInstrIR(nouvelleInstr);
+    cerr << "Construire IR : Classe Val" << endl;
 
     return reg;
 }
