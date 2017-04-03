@@ -10,20 +10,24 @@
 class CFG;
 class BasicBlock {
 	public:
-		BasicBlock(); // Pour bloc vide, cf cours
-		BasicBlock(CFG* cfg, Bloc* bloc);
+		BasicBlock(std::string label); // Pour bloc vide, cf cours
+		BasicBlock(CFG* cfg, Bloc* bloc, std::string label);
 		~BasicBlock();
 		
 		std::string genererAssembleur();
 		void ajouterInstrIR(IRInstr* instruction);
 		
 		CFG* getCFG();
+		std::string getLabel() {return label;};
+		void setLabel(std::string label) {label = label;};
+
 
 	private:
 		std::vector<IRInstr * > listeInstructionsIR;
 		BasicBlock* succCond; // Son successeur conditionnel
 		BasicBlock* succIncond; // Son sucesseur inconditionnel
 		CFG* cfg;
+		std::string label;
 };
 
 
