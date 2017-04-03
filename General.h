@@ -62,7 +62,9 @@ class Expression : public Instruction {
 class Identifiant : public Expression {
 	public:
 		Identifiant(string * id):Expression(),id(id){}
+		// TODO : Attribut public
 		string * id;
+		string* getId() { return this->id; }
 		void Afficher(int nbtab) {
 			Expression::Afficher(nbtab);
 			cout<<"ID ";
@@ -302,6 +304,8 @@ public:
 	void ajouterParametre(Expression * expression) {parametres->push_back(expression);}
 	void setParametres(std::vector<Expression*>* liste_expressions) {this->parametres = liste_expressions;}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
+	std::vector<Expression*>* getParametres() { return this->parametres;}
+	Identifiant* getIdentifiant() { return this->identifiant;}
 	virtual ~AppelFonction() {delete this->parametres; }
 	void Afficher (int nbtab) {
 		Expression::Afficher(nbtab);

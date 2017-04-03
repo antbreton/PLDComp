@@ -141,8 +141,28 @@ string Expression::construireIR(CFG* cfg) {
 		return "";
 	} else if(dynamic_cast<Identifiant*>(this)) {
 		return "Identifiant";
-	} else if(dynamic_cast<AppelFonction*>(this)) {
-		return "AppelFonction";
+	} else if(AppelFonction* appelFonction = dynamic_cast<AppelFonction*>(this)) {
+		
+		string reg = cfg->creerNouveauRegistre();
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+		vector<std::string> params;
+
+		params.push_back(*appelFonction->getIdentifiant()->getId());
+		params.push_back(reg);
+		
+		vector<Expression*>* listeParametresFonction = appelFonction->getParametres();
+		for(int i = 0; i < listeParametresFonction->size(); i++)
+		{
+			string regI = (*listeParametresFonction)[i]->construireIR(cfg);
+			params.push_back(regI);
+		}
+
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CALL, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+
+		cerr << "Construire IR : Classe AppelFonction" << endl;
+
+		return reg;
 	} else {
 		return "Inconnu";
 	}
