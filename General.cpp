@@ -56,108 +56,94 @@ Variable::Variable(string type, string id, Expression * expr):Identifiable(id), 
 	
 }
 
-string Not::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe Not" << endl;
-    return "";
-    
-}
+string Expression::construireIR(CFG* cfg) {
+	if(dynamic_cast<OperateurAND*>(this)) {
+		cerr << "TODO : Construire IR : Classe OperateurAND" << endl;
+		return "";
+	} else if(dynamic_cast<OperateurOR*>(this)) {
+		cerr << "TODO : Construire IR : Classe OperatorOR" << endl;
+		return "";
+	} else if(dynamic_cast<OperateurSup*>(this)) {
+		cerr << "TODO : Construire IR : Classe OperateurSup" << endl;
+		return "";
+	} else if(dynamic_cast<OperateurInf*>(this)) {
+		cerr << "TODO : Construire IR : Classe OperateurInf" << endl;
+		return "";
+	} else if(dynamic_cast<OperateurSupEgal*>(this)) {
+		cerr << "TODO : Construire IR : Classe OperateurSupEgal" << endl;
+		return "";
+	} else if(dynamic_cast<OperateurInfEgal*>(this)) {
+		cerr << "TODO : Construire IR : Classe OperateurInfEgal" << endl;
+		return "";
+	} else if(dynamic_cast<OperateurEgal*>(this)) {
+		cerr << "TODO : Construire IR : Classe OperateurEgal" << endl;
+		return "";
+	} else if(dynamic_cast<OperateurDifferent*>(this)) {
+		cerr << "TODO : Construire IR : Classe OperateurDifferent" << endl;
+		return "";
+	} else if(dynamic_cast<OperateurPlus*>(this)) {
+		cerr << "TODO : Construire IR : Classe OperateurPlus" << endl;
+		return "";
+	} else if(dynamic_cast<OperateurMoins*>(this)) {
+		cerr << "TODO : Construire IR : Classe OperateurMoins" << endl;
+		return "";
+	} else if(dynamic_cast<OperateurMultiplier*>(this)) {
+		cerr << "TODO : Construire IR : Classe OperateurMultiplier" << endl;
+		return "";
+	} else if(dynamic_cast<OperateurModulo*>(this)) {
+		cerr << "TODO : Construire IR : Classe OperateurModulo" << endl;
+		return "";
+	} else if(dynamic_cast<OperateurDivise*>(this)) {
 
-std::string OperateurOR::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe OperatorOR" << endl;
-    return "";
-}
+		//string reg1 = membreGauche->getType()->construireIR(cfg);
+		//string reg2 = membreDroit->construireIR(cfg);
 
-std::string OperateurAND::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe OperateurAND" << endl;
-    return "";
-}
+		//string reg3 = creerNouveauRegistre();
 
-std::string OperateurSup::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe OperateurSup" << endl;
-    return "";
-}
+		//string ir = reg3 + " <- " + reg1 + " / " + reg2;
+		//cfg->ajouterInstruction(ir);
 
-std::string OperateurInf::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe OperateurInf" << endl;
-    return "";
-}
+		cerr << "TODO : Construire IR : Classe OperateurDivise" << endl;
 
-std::string OperateurSupEgal::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe OperateurSupEgal" << endl;
-    return "";
-}
+		return "";
 
-std::string OperateurInfEgal::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe OperateurInfEgal" << endl;
-    return "";
-}
+	} else if(dynamic_cast<Val*>(this)) {
 
-std::string OperateurEgal::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe OperateurEgal" << endl;
-    return "";
-}
+		// Creation d'un registre temporaire
+		string reg = cfg->creerNouveauRegistre();
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+		vector<std::string> params;
+		params.push_back(reg);
+		params.push_back(to_string( static_cast<Val*>(this)->valeur) );
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::LDCONST, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+		cerr << "Construire IR : Classe Val" << endl;
 
-std::string OperateurDifferent::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe OperateurDifferent" << endl;
-    return "";
-}
+		return reg;
 
-std::string OperateurPlus::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe OperateurPlus" << endl;
-    return "";
-}
+	} else if(dynamic_cast<Caractere*>(this)) {
 
-std::string OperateurMoins::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe OperateurMoins" << endl;
-    return "";
-}
+		// Creation d'un registre temporaire
+		string reg = cfg->creerNouveauRegistre();
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+		vector<std::string> params;
+		params.push_back(reg);
+		params.push_back(to_string((int)(static_cast<Caractere*>(this)->c )));
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::LDCONST, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
 
-std::string OperateurMultiplier::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe OperateurMultiplier" << endl;
-    return "";
-}
+		cerr << "Construire IR : Classe Caractere" << endl;
 
-std::string OperateurModulo::construireIR(CFG* cfg) {
-	cerr << "TODO : Construire IR : Classe OperateurModulo" << endl;
-    return "";
-}
+		return reg;
 
-std::string OperateurDivise::construireIR(CFG* cfg) {
-	// TODO : Caster l'expression selon son type
-    //string reg1 = membreGauche->construireIR(cfg);
-	//string reg2 = membreDroit->construireIR(cfg);
-
-	//string reg3 = creerNouveauRegistre();
-
-	//string ir = reg3 + " <- " + reg1 + " / " + reg2;
-	//cfg->ajouterInstruction(ir);
-
-	cerr << "TODO : Construire IR : Classe OperateurDivise" << endl;
-
-    return "";
-}
-
-std::string Caractere::construireIR(CFG* cfg) {
-	// Creation d'un registre temporaire
-	// TODO : Gerer typage, i.e comment savoir si la variable est un INT_32, char, etc..
-
-	string reg = cfg->creerNouveauRegistre();
-	//cfg->ajouterInstruction( reg + " <- constant");
-    cerr << "TODO : Construire IR : Classe Caractere" << endl;
-
-	return reg;
-}
-
-std::string Val::construireIR(CFG* cfg) {
-	// Creation d'un registre temporaire
-	string reg = cfg->creerNouveauRegistre();
-	BasicBlock* blocCourant = cfg->getBlockCourant();
-	vector<std::string> params;
-	params.push_back(reg);
-	params.push_back(to_string(this->valeur));
-	IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::LDCONST, blocCourant, params);
-	blocCourant->ajouterInstrIR(nouvelleInstr);
-    cerr << "Construire IR : Classe Val" << endl;
-
-    return reg;
+	} else if(dynamic_cast<Not*>(this)) {
+		cerr << "TODO : Construire IR : Classe Not" << endl;
+		return "";
+	} else if(dynamic_cast<Identifiant*>(this)) {
+		return "Identifiant";
+	} else if(dynamic_cast<AppelFonction*>(this)) {
+		return "AppelFonction";
+	} else {
+		return "Inconnu";
+	}
 }
