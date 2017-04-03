@@ -69,7 +69,7 @@ string CFG::genererAssembleur() {
 int CFG::calculeTaille()
 {
 	
-	int taille = 8*nbRegVirtuels; //8 octets par variable
+	int taille = 8*getNbRegVirtuels(); //8 octets par variable
 
 	return taille;
 }
@@ -85,3 +85,7 @@ std::string CFG::creerNouveauRegistre() {
 
 
 // GETTER / SETTER
+
+int CFG::getNbRegVirtuels(){
+	return nbRegVirtuels;
+}

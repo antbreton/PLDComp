@@ -21,9 +21,7 @@ class CFG {
 		void addBasicBlock(BasicBlock* newBasicBlock);
 		int calculeTaille ();
 		std::string creerNouveauRegistre();
-
-
-		int nbRegVirtuels;
+		int getNbRegVirtuels();
 
 	private:
 		std::list<BasicBlock* > listeBasicBlocks;
