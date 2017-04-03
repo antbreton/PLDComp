@@ -3,9 +3,11 @@
 #include "Structure.h"
 #include "IR/BasicBlock.h"
 
+/*
 std::string BlocIf::construireIR(CFG *cfg){
 
-	exprCondition→buildIR(cfg);
+	
+	exprCondition→ConstruireIR(cfg);
 	testBB = cfg→currentBB
 	thenBB = new BasicBlock(cfg, instrv);
 	elseBB = new BasicBlock(cfg, blocElse);
@@ -20,15 +22,18 @@ std::string BlocIf::construireIR(CFG *cfg){
 	elseBB→succIncond = NULL ;
 	cfg→currentBB = afterIfBB;
 
+	
 
 
 }
 std::string BlocWhile::construireIR(CFG * cfg){
+	
+	
 	beforeWhileBB = cfg→currentBB
 	bodyBB = new BasicBlock(cfg);
 	testBB = new BasicBlock(cfg);
 	cfg→currentBB = testBB ;
-	exprCondition→buildIR(cfg);
+	exprCondition→ConstruireIR(cfg);
 	bodyBB = new BasicBlock(cfg, instrv);
 	afterWhileBB = new BasicBlock(cfg);
 	afterWhileBB→succCond = beforeWhileBB→succCond ;
@@ -41,6 +46,6 @@ std::string BlocWhile::construireIR(CFG * cfg){
 	
 }
 
-
+*/
 
 #endif
