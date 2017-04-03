@@ -48,6 +48,7 @@ class Expression : public Instruction {
 	public:
 		Expression(){}
 		virtual ~Expression() {isInline = 0;}
+        std::string construireIR(CFG* cfg);
 		
 		void setIsInline(int v) {isInline =v;}
 		virtual void Afficher(int nbtab) { 
@@ -66,7 +67,9 @@ class Expression : public Instruction {
 class Identifiant : public Expression {
 	public:
 		Identifiant(string * id):Expression(),id(id){}
+		// TODO : Attribut public
 		string * id;
+		string* getId() { return this->id; }
 		void Afficher(int nbtab) {
 			Expression::Afficher(nbtab);
 			cout<<"ID ";
@@ -94,7 +97,6 @@ class Val : public Expression {
 		void Afficher (int nbtab) {
 			 cout<<"VAL "<< valeur<<" ";
 		 }
-		std::string construireIR(CFG* cfg);
 };
 
 class Caractere : public Expression {
@@ -105,7 +107,6 @@ class Caractere : public Expression {
 		void Afficher (int nbtab) {
 			 cout<<"CARACTERE"<< c;
 		 }
-		 std::string construireIR(CFG* cfg);
 };
 
 class Programme {
@@ -126,7 +127,6 @@ class Programme {
 class Not : public Expression {
 	public:
 		Not(Expression * membre):Expression(), membre(membre) {}
-	 	std::string construireIR(CFG* cfg);
 	private:
 		Expression * membre;
 		 void Afficher (int nbtab) {
@@ -139,7 +139,6 @@ class Not : public Expression {
 class ExpreOpeBinaire : public Expression {
 	public:
 		ExpreOpeBinaire(Expression * membreG, Expression * membreD):Expression(), membreGauche(membreG), membreDroit(membreD) {}
-		virtual std::string construireIR(CFG* cfg) = 0;
 	protected:
 		Expression * membreGauche;
 		Expression * membreDroit;
@@ -157,7 +156,6 @@ class OperateurOR : public ExpreOpeBinaire {
 			 cout<<" || ";
 			 membreDroit->Afficher(nbtab);
 		 }
-		std::string construireIR(CFG* cfg);
 };
 
 class OperateurAND : public ExpreOpeBinaire {
@@ -170,7 +168,6 @@ public:
 			 cout<<" && ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR(CFG* cfg);
 };
 
 class OperateurSup : public ExpreOpeBinaire {
@@ -183,7 +180,6 @@ public:
 			 cout<<" > ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR(CFG* cfg);
 };
 
 class OperateurInf : public ExpreOpeBinaire {
@@ -196,7 +192,6 @@ public:
 			 cout<<" < ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR(CFG* cfg);
 };
 
 class OperateurSupEgal : public ExpreOpeBinaire {
@@ -209,7 +204,6 @@ public:
 			 cout<<" >= ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR(CFG* cfg);
 };
 
 class OperateurInfEgal : public ExpreOpeBinaire {
@@ -222,7 +216,7 @@ public:
 			 cout<<" <= ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR(CFG* cfg);
+
 };
 
 class OperateurEgal : public ExpreOpeBinaire {
@@ -235,7 +229,6 @@ public:
 			 cout<<" == ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR(CFG* cfg);
 };
 
 class OperateurDifferent : public ExpreOpeBinaire {
@@ -248,7 +241,6 @@ public:
 			 cout<<" != ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR(CFG* cfg);
 };
 
 class OperateurPlus : public ExpreOpeBinaire {
@@ -261,7 +253,6 @@ public:
 			 cout<<" + ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR(CFG* cfg);
 };
 
 class OperateurMoins : public ExpreOpeBinaire {
@@ -274,7 +265,6 @@ public:
 			 cout<<" - ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR(CFG* cfg);
 };
 
 class OperateurMultiplier : public ExpreOpeBinaire {
@@ -287,7 +277,6 @@ public:
 			 cout<<" * ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR(CFG* cfg);
 };
 
 class OperateurModulo : public ExpreOpeBinaire {
@@ -300,7 +289,6 @@ public:
 			 cout<<" % ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR(CFG* cfg);
 };
 
 class OperateurDivise : public ExpreOpeBinaire {
@@ -313,7 +301,6 @@ public:
 			 cout<<" / ";
 			 membreDroit->Afficher(nbtab);
 		 }
-	std::string construireIR(CFG* cfg);
 };
 
 class AppelFonction : public Expression {
@@ -322,6 +309,8 @@ public:
 	void ajouterParametre(Expression * expression) {parametres->push_back(expression);}
 	void setParametres(std::vector<Expression*>* liste_expressions) {this->parametres = liste_expressions;}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
+	std::vector<Expression*>* getParametres() { return this->parametres;}
+	Identifiant* getIdentifiant() { return this->identifiant;}
 	virtual ~AppelFonction() {delete this->parametres; }
 	void Afficher (int nbtab) {
 		Expression::Afficher(nbtab);
@@ -332,7 +321,6 @@ public:
 			(*parametres)[i]->Afficher(nbtab);
 		}		
 	}
-	std::string construireIR();
 private:
 	std::vector<Expression *> *parametres;
 	Identifiant* identifiant;

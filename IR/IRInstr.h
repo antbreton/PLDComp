@@ -37,30 +37,30 @@ enum mnemoType {
     MNEMO_NOT = 521
 };
 */
-
-		enum Mnemonique{
-        LDCONST,
-        ADD,
-        //sub,
-        //mul,
-        RMEM,
-        WMEM,
-        CALL,
-        //cmp_eq,
-        //cmp_lt,
-        //cmp_le
-    	};
 		
 		
 // Une instruction IR peut etre sous plusieurs formes : une addition (Menomique PLUS), une constante (Mnemonique CONST) etc
 // Et selon chaque type d'instruction IR il faut reflechir au code donné en assembleur, cf cours page 20-24
 class IRInstr {
 	public:
+		enum Mnemonique{
+			LDCONST,
+			ADD,
+			//sub,
+			//mul,
+					RMEM,
+			WMEM,
+			CALL,
+			//cmp_eq,
+			//cmp_lt,
+			//cmp_le
+		};
 		IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std::string> params);
 		~IRInstr();
 		
 		string genererAssembleur();
 		Mnemonique getMnemonique();
+
 		//CFG* getCFG();
 		
 	private:

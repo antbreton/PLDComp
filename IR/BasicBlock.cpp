@@ -3,7 +3,7 @@ using namespace std;
 
 
 // Constructeur et Destructeur
-BasicBlock::BasicBlock()
+BasicBlock::BasicBlock(std::string label)
 {
 	
 }
