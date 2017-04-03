@@ -3,18 +3,20 @@ using namespace std;
 
 
 // Constructeur et Destructeur
-BasicBlock::BasicBlock()
+BasicBlock::BasicBlock(std::string label)
 {
 	
 }
 
-BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc) 
+BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label) 
 {
 	this->cfg = cfg;
+	this-> label = label;
 	
 	// TODO : POur chaque instruction dans le bloc : 
 	// On regarde son type, et selon celui-ci
 	// on recupere le code IR associee (on appelle le getIR de chaque classe) 
+	
 }
 
 BasicBlock::~BasicBlock()
@@ -42,7 +44,7 @@ string BasicBlock::genererAssembleur() {
 
 
 // Ajoute une instruction IR à la liste du bloc
-void BasicBlock::addInstrIR(IRInstr *instruction) {
+void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
     listeInstructionsIR.push_back(instruction);
 }
 
