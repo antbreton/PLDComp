@@ -27,7 +27,7 @@ class CFG {
 		std::list<BasicBlock* > listeBasicBlocks;
 		Fonction* fonctionDuCFG;
 		int nbRegVirtuels;
-		std::map<string, IRVar*> dicoRegTmp; // Table des symboles : On stockera ici nos registres virtuels
+		std::map<string, IRVar*>* dicoRegTmp; // Table des symboles : On stockera ici nos registres virtuels
 
 };
 #endif //PLDCOMP_CFG_H

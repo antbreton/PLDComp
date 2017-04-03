@@ -48,6 +48,18 @@ string CFG::genererAssembleur() {
 	  //codeAssembleur += "    subq    $"+ (TaillePile + multiple de 16) +", %rsp \r\n";
 	  codeAssembleur += "\r\n";
 	  
+	  //Offset pour chaque variable
+	  int i = 1;
+	  for(map<string, IRVar*>::iterator it = dicoRegTmp->begin(); it != dicoRegTmp->end(); it++)
+	  {
+	 		it->second->setOffset(8*i);
+	 		
+	 		string instructionASM = "movq $" + to_string(it->second->getValeur()) + ", -" + to_string(it->second->getOffset())  +"(%rbp)\r\n";
+	 		codeAssembleur = instructionASM;
+	 		i++;
+	  }
+
+
 	  // CORPS
 	  // Pour chaque basicBlock dans le CFG on genere son code assembleur.
 	  list<BasicBlock *>::iterator ite = listeBasicBlocks.begin() ;
@@ -78,7 +90,7 @@ std::string CFG::creerNouveauRegistre() {
         std::string nomRegistreVirtuel = "!r" + this->nbRegVirtuels ;
         this->nbRegVirtuels++;
         IRVar* maVar = new IRVar(nomRegistreVirtuel);
-        this->dicoRegTmp.insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
+        this->dicoRegTmp->insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
 }
 
 
