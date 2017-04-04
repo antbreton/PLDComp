@@ -24,14 +24,16 @@ int main(void) {
 	passe2(programme);
 	
 		
-	cout << "%%%Backend%%%" << endl;
 
+
+	
 	// PASSE 4 qui check les IDs
 //	cout <<endl << "PASSE 4";
 	if(!programme->checkIDs())
-	{
-		error = true;
-	}
+		{
+			error = true;
+		}
+	cout << endl<<"%%%Backend%%%" << endl;
 
 	IR* ir = new IR(programme);
 	
@@ -58,4 +60,3 @@ void passe2(Programme* programme) { // test main
 	
 	
 }
-

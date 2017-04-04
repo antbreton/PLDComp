@@ -64,8 +64,6 @@ void Programme::setRecursifBlocAncestorToAll()
 // --------------------------
 
 
-
-// Réalisation Variable ---------------------
 pair<bool,string> Programme::testReturn() {
 	bool allOK=true;
 	pair<bool,string> valeursRetour;

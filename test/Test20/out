@@ -4,3 +4,4 @@ PROGRAMME // tableSymb size : 0
 		ID a 
 	END_BLOC
 END_PROGRAMME
+Erreur de résolution de portée : 'a' est inconnue dans ce scope.

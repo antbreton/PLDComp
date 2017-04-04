@@ -9,3 +9,4 @@ PROGRAMME // tableSymb size : 0
 	END_BLOC
 	END_BLOC
 END_PROGRAMME
+Erreur de résolution de portée : 'b' est inconnue dans ce scope.
