@@ -97,6 +97,7 @@ void BasicBlock::ajouterVariableMappee(CFG* cfg, std::string nomVariable) {
 }
 
 int BasicBlock::getValeurMappee(std::string nomVariable) {
+
     auto trouve = this->mappingVarReg.find(nomVariable);
     if(trouve != this->mappingVarReg.end()) {
       return trouve->second;
