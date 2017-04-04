@@ -7,23 +7,18 @@ CFG::CFG(Fonction* fonction)
 {
 	fonctionDuCFG = fonction;
 	
-	// On parcours la fonction pour recuperer tous les parametres des instructions
-	// et on cree les variable IR correspondantes.
-	//vector<string> listeParametres = fonctionDuCFG->getVariables();
-	/*
-	vector<string>::iterator ite;
-    for(ite = listeParametres.begin(); ite!=listeParametres.end(); ++ite)
-    {
-       
+	if(fonctionDuCFG->getBloc() == NULL) 
+	{cout << "bloc null skdfj" << endl;
 	}
-	*/
-	
-	// On cree le basicBlock correspondants au bloc de la fonction
-	// et on l'ajoute au CFG
-
-	
-	BasicBlock* newBasicBlock = new BasicBlock(this, fonctionDuCFG->getBloc(), fonctionDuCFG->getIdentifiant()+"_bb");
+	Bloc* bloc = fonctionDuCFG->getBloc();
+	if(bloc == NULL) 
+	{cout << "bloc null skdfj" << endl;
+	}
+	cout << sizeof(bloc) << endl;
+	BasicBlock* newBasicBlock = new BasicBlock(this, bloc, fonctionDuCFG->getIdentifiant()+"_bb");
+	cout << "test"<<endl;
 	this->addBasicBlock(newBasicBlock);
+	
 	nbRegVirtuels = 0;
 }
 
@@ -83,7 +78,7 @@ std::string CFG::gen_prologue()
 	codeAssembleur += "    pushq   %rbp \r\n";
 	codeAssembleur += "    movq    %rsp, %rbp \r\n";
 	  // addq ou subq ? Depend de la pile ? 
-	  //codeAssembleur += "    subq    $"+ (TaillePile + multiple de 16) +", %rsp \r\n";
+	codeAssembleur += "    subq    $"+ to_string(this->calculeTaille()) +", %rsp \r\n";
 	codeAssembleur += "\r\n";
 	  
 	
@@ -93,16 +88,20 @@ std::string CFG::gen_prologue()
 	std::map<string, IRVar*>::iterator it;
 	cout << "La probleme est la" << endl;
 	
-	
-	for(it=dicoRegTmp->begin(); it!=dicoRegTmp->end(); ++it)
+	// Si il y a au moins une instruction dans le programme
+	if(dico != NULL)
 	{
-		cout << "probleme resolu ? " << endl;
- 		it->second->setOffset(8*i);
- 		string instructionASM = "movq $" + to_string(it->second->getValeur()) + ", -" + to_string(it->second->getOffset())  +"(%rbp)\r\n";
- 		codeAssembleur += instructionASM;
- 		i++;
+		cout << "Le dico n'est pas null" << endl;
+		for(it=dico->begin(); it!=dico->end(); ++it)
+		{
+			cout << "probleme resolu ? " << endl;
+			it->second->setOffset(8*i);
+			string instructionASM = "movq $" + to_string(it->second->getValeur()) + ", -" + to_string(it->second->getOffset())  +"(%rbp)\r\n";
+			codeAssembleur += instructionASM;
+			i++;
+		}
 	}
-	
+	cout << "La probleme est la 2 " << endl;
 	return codeAssembleur;
 }
 

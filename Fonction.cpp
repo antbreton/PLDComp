@@ -84,9 +84,9 @@ void Bloc::constructor_tableVariables(){
 
 Bloc* Fonction::getBloc()
 {
-	cout << "getbloc" <<endl;
+	cout << "getbloc 1" <<endl;
 	cout << this->bloc << endl;
-	cout << "getbloc" <<endl;
+	cout << "getbloc 2" <<endl;
 	return this->bloc;
 }
 

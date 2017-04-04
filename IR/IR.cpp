@@ -44,7 +44,8 @@ string IR::genererAssembleur()
 		// Code assembleur de début de fichier
 		codeAssembleur += ".text        \r\n";
 		codeAssembleur += ".global main \r\n";
-
+		codeAssembleur += "\r\n";
+		
 		cout << "Taille liste CFG : " << listeCFG.size() << endl;
 		
 		// On itere pour chaque CFG
@@ -55,14 +56,13 @@ string IR::genererAssembleur()
 		}
 		
 		// Ecriture dans main.s
-		/*
+		ofstream fichier("main.s", ios::out | ios::trunc);	
 		if(fichier)
         {
-			ofstream fichier("main.s", ios::out | ios::trunc);
 			fichier << codeAssembleur << endl;
 			fichier.close();
         }
-		*/
+		
 		return codeAssembleur;	
 }
 

@@ -78,6 +78,7 @@ string Expression::construireIR(CFG* cfg) {
 		return "";
 	} else if(dynamic_cast<OperateurEgal*>(this)) {
 		cerr << "TODO : Construire IR : Classe OperateurEgal" << endl;
+		cout << "Egal" << endl;
 		return "";
 	} else if(dynamic_cast<OperateurDifferent*>(this)) {
 		cerr << "TODO : Construire IR : Classe OperateurDifferent" << endl;
