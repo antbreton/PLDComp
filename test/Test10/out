@@ -1,8 +1,0 @@
-PROGRAMME // tableSymb size : 0
-	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t 
-	BEGIN_BLOC // nb instr : 2 - tableSymb size : 2
-		AFFECTATION ID a  = CARACTEREi 
-		AFFECTATION ID a  = CARACTEREk 
-	END_BLOC
-END_PROGRAMME
-Résutlat : 0

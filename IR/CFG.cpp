@@ -100,7 +100,7 @@ std::string CFG::gen_prologue()
 
 	*/
 	cout << endl << "GEN_PROLOGUE" << endl;
-	int i = 0;
+	int i = 1;
 	if(taille != 0)
 	{
 		codeAssembleur += "    subq    $"+ to_string(taille) +", %rsp \r\n";
