@@ -238,7 +238,7 @@ string Expression::construireIR(CFG* cfg) {
 		params.push_back(regGauche);
 		params.push_back(regDroit);
 
-		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_LT, blocCourant, params);
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_LE, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 
 		cerr << "Construire IR : Classe OperateurInfEgal" << endl;

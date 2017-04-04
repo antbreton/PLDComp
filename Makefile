@@ -1,6 +1,6 @@
 COMPIL = g++
 EXECNAME = gc+
-COMPILFLAGS = -std=c++14
+COMPILFLAGS = -std=c++11
 OPTIMISATIONFLAGS = -O1
 
 
