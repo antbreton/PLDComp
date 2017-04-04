@@ -20,8 +20,8 @@ class IRInstr {
 		enum Mnemonique{
 			LDCONST,
 			ADD,
-			//sub,
-			//mul,
+			SUB,
+			MUL,
 			RMEM,
 			WMEM,
 			CALL,
