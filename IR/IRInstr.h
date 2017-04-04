@@ -8,7 +8,7 @@
 #include "IRVar.h"
 
 class BasicBlock;
-//class CFG;
+
 using namespace std;
 
 		

@@ -2,7 +2,6 @@
 #include "IRInstr.h"
 #include "BasicBlock.h"
 
-//#include "CFG.h"
 using namespace std;
 
 
@@ -61,12 +60,11 @@ string IRInstr::genererAssembleur() {
 	  // On cherche l'offset du parametre, et apres on y ajoute le (%rbp).
 	  // Si c'est une constante :
 	  // On ajoute un $ devant.
-	  // && parametre1[1] == 'r'
 	  if(parametre1[0] == '!' ) 
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre1)->second;
 		int varOffset = variableIR->getOffset();
-		parametre1 = to_string(varOffset)+"(%rbp)";
+		parametre1 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre1[0])) // Si c'est un entier
 	  {

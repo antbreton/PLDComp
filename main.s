@@ -9,8 +9,13 @@ main_bb:
 
 movq $0, -0(%rbp)
 movq $0, -0(%rbp)
+movq $0, -0(%rbp)
+    movq   $105, 0(%rbp)
+    movq    0(%rbp), %rax
+    movq    %rax, 0(%rbp)
     movq   $107, 0(%rbp)
-    call   putchar
+    movq    0(%rbp), %rax
+    movq    %rax, 0(%rbp)
 
     leave
     ret

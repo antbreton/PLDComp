@@ -40,7 +40,6 @@ void CFG::addBasicBlock(BasicBlock* newBasicBlock)
 // Parcours le CFG et en genere le code assembleur.
 string CFG::genererAssembleur() {
 		
-	// TODO : Chopper la taille de la pile (et l'avoir calculer avant ...)
 	string codeAssembleur;
 
 	// PROLOGUE
@@ -74,7 +73,6 @@ std::string CFG::gen_prologue()
 	codeAssembleur += "\r\n";
 	codeAssembleur += "    pushq   %rbp \r\n";
 	codeAssembleur += "    movq    %rsp, %rbp \r\n";
-	  // addq ou subq ? Depend de la pile ? 
 	codeAssembleur += "    subq    $"+ to_string(this->calculeTaille()) +", %rsp \r\n";
 	codeAssembleur += "\r\n";
 	  
