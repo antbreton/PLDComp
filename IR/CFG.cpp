@@ -6,7 +6,9 @@ using namespace std;
 CFG::CFG(Fonction* fonction)
 {
 	fonctionDuCFG = fonction;
-	this->dicoRegTmp = NULL;
+	
+	this->dicoRegTmp = new map<string, IRVar*>();
+	
 	if(fonctionDuCFG->getBloc() == NULL) 
 	{cout << "bloc null skdfj" << endl;
 	}
@@ -134,9 +136,10 @@ std::string CFG::creerNouveauRegistre() {
 
 		cout << maVar->getNom() << endl;
 
-		cout << "creerNewReg" << endl;
+		cout << "creerNewReg avant insert" << endl;
 
         this->dicoRegTmp->insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
+		cout << "creerNewReg apres insert" << endl;
         return nomRegistreVirtuel;
 }
 
