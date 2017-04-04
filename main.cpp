@@ -9,16 +9,34 @@ int yyparse (Programme ** prog);
 
 using namespace std;
 
+void passe1(Programme* programme);
+void passe2(Programme* programme);
 
 int main(void) {
-   //yydebug = 1;
+   yydebug = 1;
 	Programme* programme = new Programme();
-	
-	cout << "Partie Frontend" << endl;
 	yyparse(&programme);
-	cout<< "size : "<<programme->getFonctions().size()<<endl;;
+	bool error = false;
+	cout << "%%%Frontend%%%" << endl;
+	programme->Afficher(0);
 	
-	cout << "Partie IR - Backend" << endl;
+
+	
+	passe1(programme);
+	passe2(programme);
+	
+		
+
+
+	
+	// PASSE 4 qui check les IDs
+//	cout <<endl << "PASSE 4";
+	if(!programme->checkIDs())
+		{
+			error = true;
+		}
+	cout << endl<<"%%%Backend%%%" << endl;
+
 	IR* ir = new IR(programme);
 
 	cout << ir->genererAssembleur() << endl;
@@ -30,3 +48,24 @@ int main(void) {
 	
 	return 0;
 }
+
+
+void passe1(Programme* programme) { //test return;
+	pair<bool,string> valeursRetour = programme->testReturn();
+	if(!valeursRetour.first)
+	{
+		cout<<"Erreur semantique : erreur de return dans : "<<valeursRetour.second<<endl;
+	}	
+	
+}
+
+void passe2(Programme* programme) { // test main
+	bool mainFind = programme->testMain();
+	if(!mainFind) 
+	{
+		cout<<"Erreur semantique : fonction main introuvable"<<endl;
+	} 
+	
+	
+}
+

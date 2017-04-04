@@ -1,0 +1,5 @@
+PROGRAMME // tableSymb size : 0
+	FONCTION	VOID main // size : 1VAR INT32 z 
+	FONCTION	VOID fonction2 // size : 1VAR INT32 z 
+	FONCTION	VOID fonction3 // size : 1VAR INT32 z 
+END_PROGRAMME

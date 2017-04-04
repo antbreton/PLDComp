@@ -1,6 +1,6 @@
 PROGRAMME // tableSymb size : 0
-	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t 
-	BEGIN_BLOC // nb instr : 1 - tableSymb size : 0
+	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
+	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2
 		BLOC_IF ( EGAL VAL 1  == VAL 1 )
 		BEGIN_BLOC // nb instr : 0 - tableSymb size : 1
 		END_BLOC
@@ -13,4 +13,3 @@ PROGRAMME // tableSymb size : 0
 			END_BLOC
 	END_BLOC
 END_PROGRAMME
-Résutlat : 0

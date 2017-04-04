@@ -1,6 +1,6 @@
 COMPIL = g++
-EXECNAME = Compilo
-COMPILFLAGS = -std=c++1y
+EXECNAME = gc+
+COMPILFLAGS = -std=c++14
 OPTIMISATIONFLAGS = -O1
 
 
@@ -19,6 +19,7 @@ $(EXECNAME) : $(OBJS)
 %.o : %.c
 	$(COMPIL)  -o $@ $(COMPILFLAGS) $(OPTIMISATIONFLAGS) -c $<
 	
-
+marche :
+	$(COMPIL) *.cpp *.c -o $(EXECNAME) 
 clean : 
 	rm -f *.o *.exe *.yy.c *.tab.c *.tab.h *.output test $(EXECNAME) core
