@@ -413,14 +413,10 @@ string Expression::construireIR(CFG* cfg) {
 
 		if(!blocCourant->estVarMappee(nomVariable)){
 			blocCourant->ajouterVariableMappee(cfg, nomVariable);
-			cerr << "Identifiant :: La variable " << nomVariable << " n existe pas : On la cree" << endl;
-		} else {
-			cerr << "Identifiant :: La variable " << nomVariable << " existe  : Valeur : " 
-				 << to_string(blocCourant->getValeurMappee(nomVariable))	 << endl;
 		}
 			// Registre virtuel de l'identifiant
-			string reg = "!r" + blocCourant->getValeurMappee(nomVariable);
-		
+			string reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
+		cout << reg << endl;
 		cout << "Fin IR : Identifiant" << endl;
 
 		return reg;

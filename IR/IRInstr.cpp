@@ -79,6 +79,7 @@ string IRInstr::genererAssembleur() {
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre2)->second;
 		int varOffset = variableIR->getOffset();
+		cout << endl;
 		// to_string est dans le C++11 sinon NumberToString
 		parametre2 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
