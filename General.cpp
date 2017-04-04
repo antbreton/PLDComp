@@ -413,9 +413,7 @@ string Expression::construireIR(CFG* cfg) {
 
 		if(!blocCourant->estVarMappee(nomVariable)){
 			blocCourant->ajouterVariableMappee(cfg, nomVariable);
-		} 
-
-		cout << nomVariable << endl;
+		}
 			// Registre virtuel de l'identifiant
 			string reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
 		cout << reg << endl;
@@ -457,7 +455,11 @@ string Expression::construireIR(CFG* cfg) {
 
 		if(!blocCourant->estVarMappee(nomVariable)){
 			blocCourant->ajouterVariableMappee(cfg, nomVariable);
-		} 
+			cerr << "Affectation :: La variable " << nomVariable << " n existe pas : On la cree" << endl;
+		} else {
+			cerr << "Affectation :: La variable " << nomVariable << " existe  : Valeur : " 
+				 << to_string(blocCourant->getValeurMappee(nomVariable))	 << endl;
+		}
 			// Registre leftValue
 			// TODO : Dans le poly, il faut ici rajouter un offset
 			reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));

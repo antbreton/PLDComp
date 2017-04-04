@@ -104,31 +104,31 @@ string IRInstr::genererAssembleur() {
 	  
 	  switch(mnemoniqueAction) {
 		case LDCONST :
-		  codeAssembleur += "    LDCONST\r\n";
+		//  codeAssembleur += "    LDCONST\r\n";
 		  if(parametre1=="-0(%rbp)"){ parametre1 = "%edi"; }
 		  codeAssembleur += "    movl   "+ parametre2 +", "+parametre1+"\r\n";
 		  break;
 		  
 		case WMEM :
-		codeAssembleur += "    WMEM\r\n";
+		//codeAssembleur += "    WMEM\r\n";
 		  codeAssembleur += "    movq    "+ parametre2 +", %rax\r\n";
 		  codeAssembleur += "    movq    %rax, "+ parametre1 +"\r\n";
 		  break;
 		  
 		case RMEM :
-		codeAssembleur += "    RMEM\r\n";
+		//codeAssembleur += "    RMEM\r\n";
 		  codeAssembleur += "    movq    "+ parametre1 +", %rax\r\n";
 		  codeAssembleur += "    movq    "+ parametre2 +", %r10\r\n";
 		  codeAssembleur += "    movq    %r10, (%rax)\r\n";
 		  break;
 		  
 		case CALL :
-		codeAssembleur += "    CALL\r\n";
+		//codeAssembleur += "    CALL\r\n";
 		  codeAssembleur += "    call   "+ parametre1 +"\r\n";
 		  break;
 		  
 		case ADD :
-		codeAssembleur += "    ADD\r\n";
+		//codeAssembleur += "    ADD\r\n";
 		  codeAssembleur += "    movq    "+ parametre2 +", %rax\r\n";
 		  codeAssembleur += "    addq    "+ parametre3 +", %rax\r\n";
 		  codeAssembleur += "    movq    %rax, "+ parametre1 +"\r\n";

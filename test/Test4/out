@@ -1,5 +1,25 @@
+<<<<<<< HEAD
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 1VAR INT32 z 
 	FONCTION	VOID fonction2 // size : 1VAR INT32 z 
 	FONCTION	VOID fonction3 // size : 1VAR INT32 z 
 END_PROGRAMME
+=======
+APLE CONSTR avec z
+APLE CONSTR avec fonction1
+APLE CONSTR avec z
+APLE CONSTR avec fonction2
+APLE CONSTR avec z
+APLE CONSTR avec fonction3%%%Frontend%%%
+PROGRAMME // tableSymb size : 0
+	FONCTION	VOID fonction1 // size : 1VAR INT32 z TEST2
+	FONCTION	VOID fonction2 // size : 1VAR INT32 z TEST2
+	FONCTION	VOID fonction3 // size : 1VAR INT32 z TEST2
+END_PROGRAMME
+Erreur semantique : fonction main introuvable
+%%%Backend%%%
+Taille liste fonction : 3
+getid:fonction1
+test 2
+calculeTaille debut
+>>>>>>> Linker

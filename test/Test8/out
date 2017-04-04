@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 3 - tableSymb size : 2
@@ -9,3 +10,61 @@ PROGRAMME // tableSymb size : 0
 		END_BLOC
 	END_BLOC
 END_PROGRAMME
+=======
+APLE CONSTR avec z
+APLE CONSTR avec t
+APLE CONSTR avec mainJE SUIS la TEST
+JE SUIS ici TEST
+JE SUIS la TEST
+JE SUIS ici TEST
+[a:0x1f86520, c:0x1f86470 ]
+[a:0x1f86520, c:0x1f864f0 ]
+[a:0x1f86710, c:0x1f866c0 ]
+[a:0x1f86710, c:0x1f866f0 ]
+JE SUIS la TEST
+JE SUIS ici TEST
+[a:0x1f867c0, c:0x1f86550  st ]
+JE SUIS la TEST
+JE SUIS ici TEST
+[a:0x1f861b0, c:0x1f867c0  st ]
+TEST 10 :2
+TEST :0x1f86040
+getid:z
+TEST :z
+getid:z
+TEST :0x1f86130
+getid:t
+TEST :t
+getid:t
+[a:0x1f81d70, c:0x1f861b0 ]
+%%%Frontend%%%
+PROGRAMME // tableSymb size : 0
+	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t TEST1
+TEST 3
+	BEGIN_BLOC // nb instr : 3 - tableSymb size : 2
+blabla
+		AFFECTATION ID z  = VAL 5  blabla
+		AFFECTATION ID t  = VAL 0  blabla
+		BLOC_WHILE ( DIFF ID z  != ID t  ) TEST 3
+		BEGIN_BLOC // nb instr : 1 - tableSymb size : 0
+blabla
+			AFFECTATION ID t  = ADD ID t  + VAL 1  
+		END_BLOC
+	END_BLOCTEST2
+END_PROGRAMME
+Erreur semantique : erreur de return dans : main
+%%%Backend%%%
+Taille liste fonction : 1
+getid:main
+test 2
+Affectation
+IR Val
+Affectation
+IR Val
+calculeTaille debut
+getid:t
+getid:z
+calculeTaille fin
+Taille liste CFG : 1
+GEN_PROLOGUE
+>>>>>>> Linker
