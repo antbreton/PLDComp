@@ -117,9 +117,9 @@ string IRInstr::genererAssembleur() {
 		  
 		case RMEM :
 		//codeAssembleur += "    RMEM\r\n";
-		  codeAssembleur += "    movq    "+ parametre1 +", %rax\r\n";
-		  codeAssembleur += "    movq    "+ parametre2 +", %r10\r\n";
-		  codeAssembleur += "    movq    %r10, (%rax)\r\n";
+		  if(parametre1 !="-0(%rbp)"){ codeAssembleur += "    movq    "+ parametre1 +", %rax\r\n"; }
+		  codeAssembleur += "    movq    "+ parametre2 +", %rdi\r\n";
+		  codeAssembleur += "    movq    %rdi, (%rax)\r\n";
 		  break;
 		  
 		case CALL :

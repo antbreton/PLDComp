@@ -434,8 +434,27 @@ string Expression::construireIR(CFG* cfg) {
 		vector<Expression*>* listeParametresFonction = appelFonction->getParametres();
 		for(int i = 0; i < listeParametresFonction->size(); i++)
 		{
-			string regI = (*listeParametresFonction)[i]->construireIR(cfg);
-			params.push_back(regI);
+			Expression* expI = (*listeParametresFonction)[i]; 
+			string regI = expI->construireIR(cfg);
+
+			if(Identifiant* identifiant = dynamic_cast<Identifiant*>(expI)) {
+				cerr << "C'est une variable !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+				
+				string regValIdent = cfg->creerNouveauRegistre();
+				
+				vector<std::string> paramsI;
+				paramsI.push_back(regValIdent);
+				paramsI.push_back(regI);
+				IRInstr* nouvelleInstrI = new IRInstr(IRInstr::Mnemonique::RMEM, blocCourant, paramsI);
+				blocCourant->ajouterInstrIR(nouvelleInstrI);
+
+				params.push_back(regValIdent);	
+			} else {
+				
+				cerr << "regI" << regI << endl;
+				params.push_back(regI);	
+			}
+			
 		}
 
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CALL, blocCourant, params);
