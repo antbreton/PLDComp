@@ -135,6 +135,8 @@ class Not : public Expression {
 class ExpreOpeBinaire : public Expression {
 	public:
 		ExpreOpeBinaire(Expression * membreG, Expression * membreD):Expression(), membreGauche(membreG), membreDroit(membreD) {}
+		Expression* getMembreGauche() { return membreGauche; }
+		Expression* getMembreDroit() { return membreDroit; }
 	protected:
 		Expression * membreGauche;
 		Expression * membreDroit;
