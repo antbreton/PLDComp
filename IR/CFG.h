@@ -21,12 +21,14 @@ class CFG {
 		void addBasicBlock(BasicBlock* newBasicBlock);
 		int calculeTaille ();
 		std::string creerNouveauRegistre();
+		std::string creerNouveauRegistre(int nbRegVirt);
 		BasicBlock* getBlockCourant() {return this->blocCourant;}
 		int getNbRegVirtuels();
 		void incrementerNbRegVirtuels(){ this->nbRegVirtuels++; }
 		std::string gen_prologue();
 		std::string gen_epilogue();
-		std::map<string, IRVar*>* getDicoRegTmp() const {return dicoRegTmp;};
+		std::map<string, IRVar*>* getDicoRegTmp() const {return dicoRegTmp;}
+		
 
 	private:
 		std::list<BasicBlock* > listeBasicBlocks;
