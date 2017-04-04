@@ -194,19 +194,81 @@ string Expression::construireIR(CFG* cfg) {
 	} else if(dynamic_cast<OperateurSup*>(this)) {
 		cerr << "TODO : Construire IR : Classe OperateurSup" << endl;
 		return "";
-	} else if(dynamic_cast<OperateurInf*>(this)) {
-		cerr << "TODO : Construire IR : Classe OperateurInf" << endl;
-		return "";
+	} else if(OperateurInf* opeInf = dynamic_cast<OperateurInf*>(this)) {
+
+		// Operande 1
+		string regGauche = opeInf->getMembreGauche()->construireIR(cfg);
+		// Operande 2
+		string regDroit = opeInf->getMembreDroit()->construireIR(cfg);
+		// Destination
+		string regResultat = cfg->creerNouveauRegistre();
+
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+
+		vector<std::string> params;
+		// Destination - Operande 1 - Operande 2
+		params.push_back(regResultat);
+		params.push_back(regGauche);
+		params.push_back(regDroit);
+
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_LT, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+
+		cerr << "Construire IR : Classe OperateurInf" << endl;
+		
+		return regGauche;
+
 	} else if(dynamic_cast<OperateurSupEgal*>(this)) {
 		cerr << "TODO : Construire IR : Classe OperateurSupEgal" << endl;
 		return "";
-	} else if(dynamic_cast<OperateurInfEgal*>(this)) {
-		cerr << "TODO : Construire IR : Classe OperateurInfEgal" << endl;
-		return "";
-	} else if(dynamic_cast<OperateurEgal*>(this)) {
-		cerr << "TODO : Construire IR : Classe OperateurEgal" << endl;
-		cout << "Egal" << endl;
-		return "";
+	} else if(OperateurInfEgal* opeInfEgal = dynamic_cast<OperateurInfEgal*>(this)) {
+
+		// Operande 1
+		string regGauche = opeInfEgal->getMembreGauche()->construireIR(cfg);
+		// Operande 2
+		string regDroit = opeInfEgal->getMembreDroit()->construireIR(cfg);
+		// Destination
+		string regResultat = cfg->creerNouveauRegistre();
+
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+
+		vector<std::string> params;
+		// Destination - Operande 1 - Operande 2
+		params.push_back(regResultat);
+		params.push_back(regGauche);
+		params.push_back(regDroit);
+
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_LT, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+
+		cerr << "Construire IR : Classe OperateurInfEgal" << endl;
+		
+		return regGauche;
+
+	} else if(OperateurEgal* opeEgal = dynamic_cast<OperateurEgal*>(this)) {
+
+		// Operande 1
+		string regGauche = opeEgal->getMembreGauche()->construireIR(cfg);
+		// Operande 2
+		string regDroit = opeEgal->getMembreDroit()->construireIR(cfg);
+		// Destination
+		string regResultat = cfg->creerNouveauRegistre();
+
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+
+		vector<std::string> params;
+		// Destination - Operande 1 - Operande 2
+		params.push_back(regResultat);
+		params.push_back(regGauche);
+		params.push_back(regDroit);
+
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_EQ, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+
+		cerr << "Construire IR : Classe OperateurEgal" << endl;
+		
+        return regGauche;
+        
 	} else if(dynamic_cast<OperateurDifferent*>(this)) {
 		cerr << "TODO : Construire IR : Classe OperateurDifferent" << endl;
 		return "";

@@ -10,3 +10,4 @@ cmake-build-debug
 Compilo
 test/**/out
 .DS_Store
+main.s
