@@ -17,7 +17,7 @@ private:
 	int type; // Mettre une enum de types ?
 	std::string nom; // Le nom de la variable
 	int offset; // TODO : Quentin et Nathan en parlaient
-	int valeur;
+	int valeur = 150;
 };
 
 #endif // PLD_COMP_IR_IRVAR_H

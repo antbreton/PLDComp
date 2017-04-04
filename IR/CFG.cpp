@@ -73,11 +73,7 @@ std::string CFG::gen_prologue()
 	codeAssembleur += insLabel;
 	codeAssembleur += "\r\n";
 	codeAssembleur += "    pushq   %rbp \r\n";
-	codeAssembleur += "    movq    %rsp, %rbp \r\n";
-	codeAssembleur += "    subq    $"+ to_string(this->calculeTaille()) +", %rsp \r\n";
-	codeAssembleur += "\r\n";
-
-	  
+	codeAssembleur += "    movq    %rsp, %rbp \r\n";  
 	
 	//Offset pour chaque variable
 	/*
@@ -106,12 +102,22 @@ std::string CFG::gen_prologue()
 		codeAssembleur += "    subq    $"+ to_string(taille) +", %rsp \r\n";
 
 		std::map<string, Variable*>* table = fonctionDuCFG->getBloc()->tableVariables;
+		cout << "apres getbloc" << endl;
 		std::map<string, Variable*>::iterator it;
 		for(it= table->begin(); it != table->end(); it++)
 		{
+			cout << "dans for" << endl;
 			string key = it->first;
+			cout << key << endl;
 			dicoRegTmp->find(key)->second->setOffset(8*i);
+			cout << "apres setoffset" << endl;
+			if(dicoRegTmp->find(key)->first==""){cout << "lol" << endl;}
+			cout << "apres setoffset" << endl;
+			if(dicoRegTmp->find(key)->second==NULL){cout << "lol" << endl;}
+		cout << to_string(dicoRegTmp->find(key)->second->getOffset()) << endl;
+			cout << "test passe" << endl;
 			string instructionASM = "movq $" + to_string(dicoRegTmp->find(key)->second->getValeur()) + ", -" + to_string(dicoRegTmp->find(key)->second->getOffset())  +"(%rbp)\r\n";
+			cout << "apres instrASM" << endl;
 			codeAssembleur += instructionASM;
 			i++;
 		}
