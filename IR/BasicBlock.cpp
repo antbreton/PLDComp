@@ -10,18 +10,22 @@ BasicBlock::BasicBlock(std::string label)
 
 BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 {
-	cfg->setBlockCourant(this);
+
+	cout << "test 2" << endl;
+	cfg->setBlockCourant(this); //TODO : faut-il maj ailleur de bloc courant ?
+
 	this->cfg = cfg;
 	this-> label = label;
 
 	listeInstructionsIR = new vector<IRInstr*>();
 
 	if(bloc!=NULL)
-	 {
+	{
 
 		vector<Instruction*>* listeIntruc = bloc->getInstructions();
 		vector<Instruction*>:: iterator ite;
-		 
+
+
 		for(ite = listeIntruc->begin(); ite!=listeIntruc->end(); ++ite)
 		{
 			
@@ -29,7 +33,6 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 			{
 				e->construireIR(cfg);
 			}
-		
 		}
 	
 	}

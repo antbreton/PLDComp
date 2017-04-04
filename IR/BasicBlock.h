@@ -24,6 +24,7 @@ class BasicBlock {
 		bool estVarMappee(std::string nomVariable);
 		void ajouterVariableMappee(CFG* cfg, std::string nomVariable);
 		int getValeurMappee(std::string nomVariable);
+		int nbVariables;
 
 	private:
 		std::vector<IRInstr * >* listeInstructionsIR;

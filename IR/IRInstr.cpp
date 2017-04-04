@@ -34,7 +34,8 @@ string IRInstr::genererAssembleur() {
 	  string parametre2 = "";
 	  string parametre3 = "";
 
-	  
+	  cout << "IRinstr::genererAssembleur 1" << endl;
+
 	  vector<string>::iterator iteParam = params.begin();
 	  if(nbParametres >= 1)
 	  { 
@@ -51,6 +52,7 @@ string IRInstr::genererAssembleur() {
 		parametre3 = *iteParam;
 		iteParam++;
 	  }
+
 
 	  CFG* cfg = blocParent->getCFG();
 	  map<string, IRVar*>* dicoRegTmp = cfg->getDicoRegTmp();
