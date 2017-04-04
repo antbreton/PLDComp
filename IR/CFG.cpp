@@ -110,7 +110,9 @@ std::string CFG::gen_prologue()
 		std::map<string, Variable*>::iterator it;
 		for(it= table->begin(); it != table->end(); it++)
 		{
-			string key = it->first;
+			
+			int numReg = getBlockCourant()->getValeurMappee(it->first);
+			string key = "!r" + to_string(numReg);
 			dicoRegTmp->find(key)->second->setOffset(8*i);
 			string instructionASM = "movq $" + to_string(dicoRegTmp->find(key)->second->getValeur()) + ", -" + to_string(dicoRegTmp->find(key)->second->getOffset())  +"(%rbp)\r\n";
 			codeAssembleur += instructionASM;
