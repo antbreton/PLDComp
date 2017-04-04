@@ -54,3 +54,25 @@ void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
 CFG* BasicBlock::getCFG() {
     return cfg;
 }
+
+
+bool BasicBlock::estVarMappee(std::string nomVariable) {
+    if(this->mappingVarReg.count(nomVariable) == 0) {
+        return false;
+    }
+    return true;
+}
+
+void BasicBlock::ajouterVariableMappee(CFG* cfg, std::string nomVariable) {
+    int numeroRegistreVirtuel = cfg->getNbRegVirtuels();
+    this->mappingVarReg.insert(std::pair<std::string, int>(nomVariable, numeroRegistreVirtuel));
+}
+
+int BasicBlock::getValeurMappee(std::string nomVariable) {
+    auto trouve = this->mappingVarReg.find(nomVariable);
+    if(trouve != this->mappingVarReg.end()) {
+      return trouve->second;
+    } else {
+      cerr << "BasicBlock::GetValeurMappee : mappingDe " + nomVariable + " non trouve" << endl; 
+    }
+}
