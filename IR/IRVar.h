@@ -10,6 +10,7 @@ public:
 	void setOffset(int offset) {offset = offset;};
 	int getOffset() {return offset;};
 	int getValeur() {return valeur;};
+	std::string getNom() {return nom;};
 	~IRVar();
 
 private:

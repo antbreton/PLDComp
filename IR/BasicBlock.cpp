@@ -14,7 +14,7 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 	this->cfg = cfg;
 	this-> label = label;
 	cout << "debut const basicblock" << endl;
-	
+	this->listeInstructionsIR = new vector<IRInstr*>();
 	if(bloc!=NULL)
 	 {
 
@@ -27,9 +27,9 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 			
 			if(Expression* e = dynamic_cast<Expression*>(*ite))
 			{
-				cout << "debut if " << endl;
+				cout << "Avant construireIR " << endl;
 				e->construireIR(cfg);
-				cout << "fin if " << endl;
+				cout << "Après construireIR " << endl;
 			}
 				
 			
@@ -56,8 +56,8 @@ BasicBlock::~BasicBlock()
 string BasicBlock::genererAssembleur() {
     string codeAssembleur;
     
-    vector<IRInstr *>::iterator ite = listeInstructionsIR.begin();
-    while(ite != listeInstructionsIR.end()) {
+    vector<IRInstr *>::iterator ite = listeInstructionsIR->begin();
+    while(ite != listeInstructionsIR->end()) {
       codeAssembleur += (*ite)->genererAssembleur();
       ite++;
     }
@@ -68,7 +68,9 @@ string BasicBlock::genererAssembleur() {
 
 // Ajoute une instruction IR à la liste du bloc
 void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
-    listeInstructionsIR.push_back(instruction);
+	cout << " debut ajouterInstrIR"<< endl;
+    listeInstructionsIR->push_back(instruction);
+	cout << " fin ajouterInstrIR"<< endl;
 }
 
 

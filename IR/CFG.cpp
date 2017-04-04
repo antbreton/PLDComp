@@ -7,6 +7,8 @@ CFG::CFG(Fonction* fonction)
 {
 	fonctionDuCFG = fonction;
 	
+	this->dicoRegTmp = new map<string, IRVar*>();
+	
 	if(fonctionDuCFG->getBloc() == NULL) 
 	{cout << "bloc null skdfj" << endl;
 	}
@@ -127,10 +129,17 @@ int CFG::calculeTaille()
 }
 
 std::string CFG::creerNouveauRegistre() {
-        std::string nomRegistreVirtuel = "!r" + this->nbRegVirtuels ;
+        string nomRegistreVirtuel = "!r" + to_string(this->nbRegVirtuels) ;
         this->nbRegVirtuels++;
+		cout << "creerNewReg" << endl;
         IRVar* maVar = new IRVar(nomRegistreVirtuel);
+
+		cout << maVar->getNom() << endl;
+
+		cout << "creerNewReg avant insert" << endl;
+
         this->dicoRegTmp->insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
+		cout << "creerNewReg apres insert" << endl;
         return nomRegistreVirtuel;
 }
 

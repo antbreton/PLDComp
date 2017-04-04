@@ -110,6 +110,8 @@ string Expression::construireIR(CFG* cfg) {
 		return "";
 
 	} else if(dynamic_cast<Val*>(this)) {
+		
+		cout<< "IR Val" << endl;
 
 		// Creation d'un registre temporaire
 		string reg = cfg->creerNouveauRegistre();
@@ -124,16 +126,21 @@ string Expression::construireIR(CFG* cfg) {
 		return reg;
 
 	} else if(dynamic_cast<Caractere*>(this)) {
-
+		
+		cout<< "IR Caractere" << endl;
+		
 		// Creation d'un registre temporaire
 		string reg = cfg->creerNouveauRegistre();
 		BasicBlock* blocCourant = cfg->getBlockCourant();
+		cout<< "IR Caractere apres blockcourant" << endl;
 		vector<std::string> params;
 		params.push_back(reg);
 		params.push_back(to_string((int)(static_cast<Caractere*>(this)->c )));
+		cout<< "IR Caractere apres les pushback" << endl;
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::LDCONST, blocCourant, params);
+		cout<< "IR Caractere apres creation nouvelleInstr" << endl;
 		blocCourant->ajouterInstrIR(nouvelleInstr);
-
+		cout<< "IR Caractere apres ajouterInstrIR" << endl;
 		cerr << "Construire IR : Classe Caractere" << endl;
 
 		return reg;
@@ -156,13 +163,16 @@ string Expression::construireIR(CFG* cfg) {
 		return reg;
 	} else if(AppelFonction* appelFonction = dynamic_cast<AppelFonction*>(this)) {
 		
+		cout << "appel de fonction 1" << endl;
 		string reg = cfg->creerNouveauRegistre();
+		cout << "appel de fonction 2" << endl;
 		BasicBlock* blocCourant = cfg->getBlockCourant();
+		cout << "appel de fonction 3" << endl;
 		vector<std::string> params;
 
 		params.push_back(*appelFonction->getIdentifiant()->getId());
 		params.push_back(reg);
-		
+		cout << "appel de fonction 4" << endl;
 		vector<Expression*>* listeParametresFonction = appelFonction->getParametres();
 		for(int i = 0; i < listeParametresFonction->size(); i++)
 		{
@@ -178,6 +188,7 @@ string Expression::construireIR(CFG* cfg) {
 		return reg;
 	} else if(Affectation* affectation = dynamic_cast<Affectation*>(this)) {
 
+		cout << "Affectation" << endl;
 		BasicBlock* blocCourant = cfg->getBlockCourant();
 		string nomVariable = *affectation->getIdentifiant()->getId();
 		string reg;
@@ -187,7 +198,7 @@ string Expression::construireIR(CFG* cfg) {
 		} 
 			// Registre leftValue
 			// TODO : Dans le poly, il faut ici rajouter un offset
-			reg = "!r" + blocCourant->getValeurMappee(nomVariable);
+			reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
 
 			//Registre rightValue
 			string reg2 = 	affectation->getValeur()->construireIR(cfg);

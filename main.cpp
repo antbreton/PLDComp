@@ -5,6 +5,7 @@
 #include "test.tab.h"
 
 extern int yydebug;
+int yyparse (Programme ** prog);
 
 using namespace std;
 

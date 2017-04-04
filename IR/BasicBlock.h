@@ -26,7 +26,7 @@ class BasicBlock {
 		int getValeurMappee(std::string nomVariable);
 
 	private:
-		std::vector<IRInstr * > listeInstructionsIR;
+		std::vector<IRInstr * >* listeInstructionsIR;
 		BasicBlock* succCond; // Son successeur conditionnel
 		BasicBlock* succIncond; // Son sucesseur inconditionnel
 		map<std::string,int> mappingVarReg;
