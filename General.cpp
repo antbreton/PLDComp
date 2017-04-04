@@ -442,8 +442,9 @@ string Expression::construireIR(CFG* cfg) {
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 
 		cerr << "Fin IR :  AppelFonction" << endl;
-
 		return reg;
+		
+		
 
 	} else if(Affectation* affectation = dynamic_cast<Affectation*>(this)) {
 

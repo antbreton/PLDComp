@@ -30,6 +30,8 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 		{
 			cout << "------ FOR ----------" << endl;
 			
+
+
 			if(Expression* e = dynamic_cast<Expression*>(*ite))
 			{
 				cout << "------ IF ----------" << endl;
@@ -103,5 +105,6 @@ int BasicBlock::getValeurMappee(std::string nomVariable) {
       return trouve->second;
     } else {
       cerr << "BasicBlock::GetValeurMappee : mappingDe " + nomVariable + " non trouve" << endl; 
+	  return 0;
     }
 }

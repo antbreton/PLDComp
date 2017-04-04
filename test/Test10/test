@@ -1,5 +1,5 @@
 
-void main(int32_t z, int64_t t) {
+void main() {
 	char a;
 	a='i';
 	a='k';

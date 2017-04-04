@@ -108,8 +108,8 @@ std::string CFG::gen_prologue()
 
 			int numReg = getBlockCourant()->getValeurMappee(it->first);
 			string key = "!r" + to_string(numReg);
-
 			dicoRegTmp->find(key)->second->setOffset(8*i);
+
 			//string instructionASM = "movq $" + to_string(dicoRegTmp->find(key)->second->getValeur()) + ", -" + to_string(dicoRegTmp->find(key)->second->getOffset())  +"(%rbp)\r\n";
 			//codeAssembleur += instructionASM;
 			i++;
