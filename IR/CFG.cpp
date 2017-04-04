@@ -11,7 +11,7 @@ CFG::CFG(Fonction* fonction)
 	
 	Bloc* bloc = fonctionDuCFG->getBloc();
 
-	BasicBlock* newBasicBlock = new BasicBlock(this, bloc, fonctionDuCFG->getIdentifiant()+"_bb");
+	BasicBlock* newBasicBlock = new BasicBlock(this, bloc, fonctionDuCFG->getIdentifiant());
 
 	this->addBasicBlock(newBasicBlock);
 	
