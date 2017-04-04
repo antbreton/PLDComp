@@ -389,10 +389,10 @@ class Variable : public Identifiable
 				this->type=type;
 		}
 		
-		
+				bool initialisation;
+
 	private:
 		string type;
-		bool initialisation;
 		Expression * expr;
 };
 

@@ -1,15 +1,8 @@
-<<<<<<< HEAD
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
-	BEGIN_BLOC // nb instr : 2 - tableSymb size : 4
+	BEGIN_BLOC // nb instr : 3 - tableSymb size : 4
 		AFFECTATION ID a  = CARACTEREi 
 		AFFECTATION ID a  = CARACTEREk 
+		AFFECTATION ID b  = CARACTEREj 
 	END_BLOC
 END_PROGRAMME
-=======
-APLE CONSTR avec z
-APLE CONSTR avec t
-APLE CONSTR avec main
-APLE CONSTR avec aTEST 10 :1
-TEST :0x25e3300
->>>>>>> Linker
