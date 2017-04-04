@@ -9,6 +9,7 @@
  
 using namespace std;
 
+
 // Méthodes utils
 string getTabPrefix(int n)
 {
@@ -107,12 +108,12 @@ std::vector<Fonction*> Programme::getFonctions()
 
 Variable::Variable(string id):Identifiable(id), initialisation (false)
 {
-
+	
 }
 
 Variable::Variable(string type, string id):Identifiable(id), type(type), initialisation (false)
 {
-	cerr<< "type : "<<type<<" id : "<<id<<endl;;
+	cerr<<endl<<endl<<endl<< "type : "<<type<<" id : "<<this->id<<endl;;
 }
 
 Variable::Variable(string type, string id, Expression * expr):Identifiable(id), type(type), expr(expr),initialisation (true)

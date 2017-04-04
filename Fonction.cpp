@@ -15,9 +15,12 @@ Bloc::Bloc() : Instruction()
 
 void Bloc::ajouterListeVariable(vector<Variable*>* listeVariable)
 {
+	cout<<"TEST 10 :"<<listeVariable->size()<<endl;
 	 /* On ajoute la variable dans la table des symboles */	 
 	 for(int i =0; i<listeVariable->size();i++)
 	 {
+		 cout<<"TEST :"<<((*listeVariable)[i])<<endl;
+		 cout<<"TEST :"<<((*listeVariable)[i]->getIdentifiant())<<endl;
 	 		// On construit la pair avec la valeur courante du vecteur
 	 		std::pair<string,Identifiable*> pairCourante((*listeVariable)[i]->getIdentifiant(), (*listeVariable)[i]);
 	 		
@@ -50,8 +53,10 @@ void Bloc::setRecursifBlocAncestorToAll(Bloc * ancetre)
 
 void Bloc::AjouterInstr (Instruction* instr) 
 {
+	cout<<"JE SUIS la TEST"<<endl;
 	instrs->push_back(instr);
-	
+		cout<<"JE SUIS ici TEST"<<endl;
+
 	if(Bloc * b = dynamic_cast<Bloc *>(instr))
 	{
 		instr->setAncetre(this," bloc ");

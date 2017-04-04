@@ -22,10 +22,12 @@ class Bloc : public Instruction  {
 		vector<Instruction*>* instrs;
 		bool checkIDs();
 		void Afficher (int nbtab) {
+			cout<<"TEST 3"<<endl;
 			string tab = getTabPrefix(nbtab);
-			cout<<endl<<tab<<"BEGIN_BLOC // nb instr : "<<instrs->size()<< " - tableSymb size : "<< tableSymboles->size();
+			cout<<endl<<tab<<"BEGIN_BLOC // nb instr : "<<instrs->size()<< " - tableSymb size : "<< tableSymboles->size()<<endl;;
 			for(int i=0;i<instrs->size();i++)
 			{
+				cout<<"blabla"<<endl;
 				(*instrs)[i]->Afficher(nbtab);
 			}
 			cout<<endl<<tab<<"END_BLOC";
@@ -74,8 +76,12 @@ class Fonction : public Identifiable {
 
 				cout<<" ";
 			}
-			if(bloc != NULL)
+			if(bloc != NULL){
+	cout<<"TEST1"<<endl;
 				bloc->Afficher(nbtab);
+				}
+					cout<<"TEST2"<<endl;
+
 		}
 
 		

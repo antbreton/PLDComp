@@ -15,6 +15,7 @@ class Val;
 class Variable;
 class Bloc;
 class CFG;
+class Affectation;
 // ---- méthodes Utils --------
 
 // Cette méthode crée une string de préfixes
@@ -30,11 +31,19 @@ class Noeud
 		virtual test();
 };
 */
+class declarationGrammaire {
+	public:
+		declarationGrammaire (){};
+		vector <Variable*>*  variables;
+		Affectation* affectation;
+		
+};
+
 class Identifiable {
 		public : 
-			Identifiable(string id):id(id){}
+			Identifiable(string id):id(id){ cout <<endl<<endl<<endl<< "APLE CONSTR avec "<<id;}
 			string id;	
-			string getIdentifiant() { cout << "getid" <<endl; return id;}
+			string getIdentifiant() { cout << "getid:" <<id<<endl; return id;}
 			virtual ~Identifiable(){}
 };
 

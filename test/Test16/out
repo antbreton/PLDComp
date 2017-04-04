@@ -1,6 +1,0 @@
-PROGRAMME // tableSymb size : 0
-	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
-	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2		RETURN VAL 5 
-	END_BLOC
-END_PROGRAMME
-Erreur semantique : erreur de return dans : main
