@@ -18,3 +18,7 @@ Nous regardons si toutes les variables sont initialisées
 ### Passe 4 : Test d'existance d'un identifiant
 Quand nous vérifions que lorsque l'on parle d'un identifiant, celui ci existe dans la table de symbole.
 Ceci gère également la portée d'un identifiant. Ainsi, si une variable n'est pas dans la table de symbole du contexte courant et de ceux de ses ancètres, alors la variable est inconnue.
+####Bugs
+- On ne vérifie pas l'éxistance d'un identifiant dans la condition d'un if
+- l'affectation avant la déclaration est acceptée
+- Ne marche pas si on a pas de bloc dans une structure de controle 

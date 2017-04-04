@@ -24,7 +24,19 @@ Programme::Programme()
 	fonctions = new vector<Fonction*>();
 	bloc 			= new Bloc();
 }
-
+bool Programme::checkIDs()
+{
+	int echec = 0;
+	
+	for(int i =0; i<fonctions->size(); i++)
+	{
+		if((*fonctions)[i]->getBloc() != NULL)
+			if(!(*fonctions)[i]->getBloc()->checkIDs())
+				echec++;
+	}
+	
+	return (echec==0);
+}
 void Programme::Afficher (int nbtab) 
 {
 	cout<< endl << endl << endl <<"PROGRAMME // tableSymb size : "<< bloc->getTableSymboles()->size();
@@ -41,7 +53,7 @@ void Programme::ajouterListeVariable(vector<Variable*>* listeVariable)
 }
 
 
-// This method set the 
+// This method set the ancestor
 void Programme::setRecursifBlocAncestorToAll()
 {
 	for(int i=0;i<fonctions->size();i++)
@@ -70,9 +82,7 @@ pair<bool,string> Programme::testReturn() {
 	//cout <<"RESULT RETURN :"<<allOK<<endl;
 	return valeursRetour;
 }
-// ----------------------------------------
 
-// Réalisation Variable-------------
 Variable::Variable(string id):Identifiable(id), initialisation (false)
 {
 
@@ -109,10 +119,12 @@ Bloc * Instruction::getParentBloc()
 // Réalisation d'Identifiant --------
 bool Identifiant::checkExists()
 {
+	//cout << endl << "checking if "<< (*id) << " exists..." <<endl;
 	Bloc * c = getParentBloc();
 	
 	if(c == NULL)
 	{
+		//	cout << endl << "pas de bloc père"<<endl;
 			return false;
 	}
 	else
@@ -121,9 +133,29 @@ bool Identifiant::checkExists()
 		if(identifiable == NULL)
 			return false;
 	}
+	
+	return true;
+}
 
+bool Identifiant::checkIDs(Bloc * b)
+{
+//	cout << "[checking ID " << (*id)<< "]";
+	Identifiable * identifiable = b->getIdentifiableIfExist(*id);
+	if(identifiable == NULL)
+	{
+		cout << endl<< "Erreur de résolution de portée : '"<< (*id) << "' est inconnue dans ce scope.";
+		return false;
+	}
+		
 	return true;
 }
 // ----------------------------------
 
 
+// Réalisation Affectation ---------
+
+bool Affectation::checkIDs(Bloc *c)
+{
+	identifiant->checkIDs(c);
+	valeur->checkIDs(c);
+}

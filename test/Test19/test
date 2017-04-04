@@ -1,0 +1,14 @@
+void fonc(int32_t a)
+{
+	1;
+}
+
+void main(int32_t z, int64_t t) {
+	int32_t a;
+	
+	{
+		a+b;
+	}
+}
+
+

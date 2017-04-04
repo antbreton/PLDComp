@@ -22,9 +22,33 @@ void BlocIf::setRecursifBlocAncestorToAll(Bloc * bloc)
 			stru->setRecursifBlocAncestorToAll(bloc);
 		}
 }
+
+bool BlocIf::checkIDs()
+{
+	bool blocIfRes = true;
+	bool blocElseRes = true;
+	
+	if(Bloc *b1 = dynamic_cast<Bloc *>(instrv))
+	{
+		blocIfRes = b1->checkIDs();
+	}
+	if(Bloc *b = dynamic_cast<Bloc *>(blocElse))
+	{
+		blocElseRes = b->checkIDs();
+	}
+	
+	return blocIfRes && blocElseRes;
+}
+
 // -------------------------------
 
 // Réalisation StructureControle
+
+StructureControle::StructureControle(Instruction * instrv): instrv(instrv)
+{
+	instrv->setAncetre(this," st ");
+}
+
 void StructureControle::setRecursifBlocAncestorToAll(Bloc * bloc)
 {
 		// Si l'instruction de la structure est un bloc, on la setRecursivement
@@ -70,4 +94,14 @@ bool StructureControle::testReturn(bool nullable)
 	}
 		
 	return returnFind;	
+}
+
+// Réalisation BlocWhile
+bool BlocWhile::checkIDs()
+{
+	bool exprRes = true;
+	if(Bloc* bloc = dynamic_cast<Bloc *>(ancetre))
+		 exprRes = exprCondition->checkIDs(bloc);	
+		 
+	return StructureControle::checkIDs() && exprRes;
 }

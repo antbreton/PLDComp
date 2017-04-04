@@ -12,7 +12,7 @@ int main(void) {
    //yydebug = 1;
 	Programme* programme = new Programme();
 	yyparse(&programme);
-	
+	bool error = false;
 	cout << "%%%Frontend%%%" << endl;
 	programme->Afficher(0);
 	
@@ -21,8 +21,12 @@ int main(void) {
 	{
 		cout<<"Erreur semantique : erreur de return dans : "<<valeursRetour.second<<endl;
 	}	
-		
-	cout << "%%%Backend%%%" << endl;
+	
+	// PASSE 4 qui check les IDs
+//	cout <<endl << "PASSE 4";
+	if(!programme->checkIDs())
+		error = true;
+	cout << endl<<"%%%Backend%%%" << endl;
 
 	IR* ir = new IR(programme);
 	

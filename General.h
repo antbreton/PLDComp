@@ -43,8 +43,10 @@ class Instruction {
 		Instruction() {}
 		virtual ~Instruction() {}
 		virtual void Afficher(int nbtab) = 0;
-		Instruction * ancetre;
 		Bloc * getParentBloc();
+		void setAncetre(Instruction * ancetre, string id = "") {/* DEBUG*/cout << "[a:"<<ancetre<<", c:"<<this<<" "<<id; this->ancetre = ancetre; cout <<"]"<<endl;}
+	protected:
+		Instruction * ancetre;
 };
 
 class Expression : public Instruction{
@@ -60,6 +62,7 @@ class Expression : public Instruction{
 					cout << endl << tab;
 				}
 		}
+		virtual bool checkIDs(Bloc * b) { return true; }
 	private :
 		int isInline;
 };
@@ -74,7 +77,7 @@ class Identifiant : public Expression {
 			cout<<"ID ";
 			cout<<*id<<" ";
 		}
-		
+		bool checkIDs(Bloc * b);
 		// vérifie que l'identifiant utilisé exist bien dans une des tables de symbole du context courant
 		bool checkExists();
 };
@@ -116,12 +119,12 @@ class Programme {
 		virtual ~Programme() {}
 		void ajouterFonction(Fonction* fonc) {fonctions->push_back(fonc);}
 		void Afficher (int nbtab);
-		
+		bool checkIDs();
 		// Cette méthode ajoute la liste de variable passée en paramètre à la table de symbole du programme
-
 		void ajouterListeVariable(vector<Variable*>* listeVariable);
 		void setRecursifBlocAncestorToAll();
 		pair<bool,string> testReturn();
+		Bloc * getBloc() { return bloc; }
 	private :
 		Bloc * bloc; // Ce bloc corresponds au contexte du programme, il contiends simplement la table de symbole.
 		vector<Fonction*> *fonctions; //
@@ -132,6 +135,7 @@ class Not : public Expression {
 		Not(Expression * membre):Expression(), membre(membre) {}
 	private:
 		Expression * membre;
+		bool checkIDs(Bloc *b) { return membre->checkIDs(b); }
 		 void Afficher (int nbtab) {
 			 Expression::Afficher(nbtab);
 			 cout<<"NOT ";
@@ -142,9 +146,11 @@ class Not : public Expression {
 class ExpreOpeBinaire : public Expression {
 	public:
 		ExpreOpeBinaire(Expression * membreG, Expression * membreD):Expression(), membreGauche(membreG), membreDroit(membreD) {}
+		virtual bool checkIDs(Bloc * b) { bool mg = membreGauche->checkIDs(b); bool md = membreDroit->checkIDs(b); return mg && md; }
 	protected:
 		Expression * membreGauche;
 		Expression * membreDroit;
+		
 		
 };
 
@@ -312,6 +318,7 @@ public:
 	void setParametres(std::vector<Expression*>* liste_expressions) {this->parametres = liste_expressions;}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
 	virtual ~AppelFonction() {delete this->parametres; }
+	bool checkIDs(Bloc *b) { int echec = 0; for(int i=0;i<parametres->size();i++){	if(!(*parametres)[i]->checkIDs(b)) echec++;		}	return (echec == 0); }	
 	void Afficher (int nbtab) {
 		Expression::Afficher(nbtab);
 		cout<<"APPEL FONCTION ";
@@ -341,6 +348,7 @@ public:
 	}
 
 private:
+	bool checkIDs(Bloc *c);
 	Identifiant* identifiant;
 	Expression* valeur;
 };
