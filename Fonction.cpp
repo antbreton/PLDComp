@@ -46,24 +46,68 @@ void Bloc::setRecursifBlocAncestorToAll(Bloc * ancetre)
 		}
 	}
 }
+
+void Bloc::AjouterInstr (Instruction* instr) 
+{
+	instrs->push_back(instr);
+	
+	if(Bloc * b = dynamic_cast<Bloc *>(instr))
+	{
+		instr->setAncetre(this," bloc ");
+	}
+	if(StructureControle * st = dynamic_cast<StructureControle *>(instr))
+	{
+		st->setAncetre(this," st ");
+	}	
+/* DEBUG*/ 
+}
 // ---------------------------
 
 
 // Cette méthode retourne l'identifiable identifié par l'id en paramètre. Si elle ne trouve rien dans la table de symbole de ce bloc, elle regarde dans la table de son ancetre direct. 
 Identifiable * Bloc::getIdentifiableIfExist(string id)
 {
+	if(ancetre==this)
+	{
+		//cout << endl << "[ ancester loop "<<this<< "]";
+		return NULL;
+	}
 		// On regarde dans la table courante s'il existe
 		if(tableSymboles->count(id) >0) 	// si l'id existe
 		{
+	//		cout << endl << "[Found]";
 				return tableSymboles->at(id); // on retourne l'identifiable associé
 		}
 		else if(ancetre != NULL) 			// Sinon on regarde s'il y a un bloc père
 		{
-				return ancetre->getIdentifiableIfExist(id); // on regarde si le père connait l'identifiant
+			//cout << endl << "[NotFound checking ancestre]";
+			if(Bloc *b = dynamic_cast<Bloc *>(ancetre)) 
+				return b->getIdentifiableIfExist(id); // on regarde si le père connait l'identifiant
 		}		
-		
+		//cout << endl << "[NotFound no ancestor]";
 		// S'il n'y a pas de père (CAD => on est sur une racine) et que l'on a rien trouvé, on retourne NULL
 		return NULL;
+}
+
+bool Bloc::checkIDs()
+{
+	for(int i=0; i<instrs->size(); i++)
+	{
+		if( Bloc * b = dynamic_cast<Bloc*>((*instrs)[i]) )
+		{
+			return b->checkIDs();
+		}
+		else if( StructureControle * stru = dynamic_cast<StructureControle*>((*instrs)[i]) )
+		{
+			stru->checkIDs();
+		}
+		else if(Expression * e =dynamic_cast<Expression*>((*instrs)[i]) )
+		{
+			return e->checkIDs(this);
+		}
+	}
+	
+	return true;
 }
 
 bool Bloc::testReturn(bool nullable){
@@ -112,9 +156,6 @@ bool Bloc::testReturn(bool nullable){
 	return returnFind;
 }
 
-
-
-
 // Réalisation de fonction ----------
 bool Fonction::testReturn() {	
 	if(type!="VOID")
@@ -130,7 +171,21 @@ bool Fonction::testReturn() {
 		return bloc->testReturn(true);	//recherche dans le bloc
 	}
 	return true; //pas de bloc, c'est une déclaration
-	
 }
 
+void Fonction::RajouterBloc (Bloc* bloc)
+{	
+	//cout <<endl <<"Adding bloc for func "<< id;
+	this->bloc=bloc;
+	bloc->ajouterListeVariable(s);
+	//cout << " add var in this bloc";
+}
+
+Fonction :: Fonction(string type, string id, vector<Variable*>* s, Bloc* bloc): Identifiable(id), type(type), s(s)
+{
+	this->bloc=bloc;
+	if(bloc !=NULL)
+		bloc->ajouterListeVariable(s);
+	
+}
 // ------------------------------

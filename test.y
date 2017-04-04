@@ -180,37 +180,37 @@ type : INT32 { $$ = new string("INT32");}
 		 | CHAR { $$ = new string("CHAR");}
 		 | VOID { $$ = new string("VOID");};
 
-instr : expression PV {$$ = $1; $1->setIsInline(1);}
-       | structure_de_controle {$$ = $1;}
-       | bloc {$$ = $1;}
-       | RETURN expression PV {$$ = new RetourExpr($2);}
-       | RETURN PV { $$ = new RetourExpr();}
+instr : expression PV {$$ = $1; $1->setIsInline(1); /*$1->setAncetre($$);*/}
+       | structure_de_controle {$$ = $1; /*$1->setAncetre($$);*/}
+       | bloc {$$ = $1; /*$1->setAncetre($$);*/}
+       | RETURN expression PV {$$ = new RetourExpr($2); /*$1->setAncetre($$);*/}
+       | RETURN PV { $$ = new RetourExpr();/* $1->setAncetre($$);*/}
        | PV;
        
 
 
-programme : programme fonction {$$=$1; $$->ajouterFonction($2);}
+programme : programme fonction {$$=$1; $$->ajouterFonction($2); if($2->getBloc() != NULL) $2->getBloc()->setAncetre($$->getBloc());}
           | programme declaration {$$=$1; $$->ajouterListeVariable($2);}
           |{ $$ = new Programme();};
 
-expression : NOT expression { $$ = new Not($2); }
-           | expression AND expression { $$ = new OperateurAND($1, $3); }
-           | expression OR expression { $$ = new OperateurOR($1, $3); }
-           | expression INF expression { $$ = new OperateurInf($1, $3); }
-           | expression SUP expression { $$ = new OperateurSup($1, $3); }
-           | expression INFEGAL expression { $$ = new OperateurInfEgal($1, $3); }
-           | expression SUPEGAL expression { $$ = new OperateurSupEgal($1, $3); }
-           | expression EGALEGAL expression { $$ = new OperateurEgal($1, $3); }
-           | expression DIFF expression { $$ = new OperateurDifferent($1, $3); }
-           | expression PLUS expression { $$ = new OperateurPlus($1, $3); }
-           | expression MOINS expression { $$ = new OperateurMoins($1, $3); }
-           | expression MULT expression { $$ = new OperateurMultiplier($1, $3); }
-           | expression DIV expression { $$ = new OperateurDivise($1, $3); }
-           | expression DIVEUCL expression { $$ = new OperateurModulo($1, $3); }
-           | PAROUVR expression PARFERM { $$ = $2; }
-           | appel_fonction { $$ = $1; }
-           | affectation { $$ = $1; }
-           | IDENTIFIANT { $$ = new Identifiant(yylval.identifiant); }
+expression : NOT expression { $$ = new Not($2); $1->setAncetre($$);}
+           | expression AND expression { $$ = new OperateurAND($1, $3); $1->setAncetre($$); $3->setAncetre($$);}
+           | expression OR expression { $$ = new OperateurOR($1, $3); $1->setAncetre($$); $3->setAncetre($$);}
+           | expression INF expression { $$ = new OperateurInf($1, $3); $1->setAncetre($$); $3->setAncetre($$);}
+           | expression SUP expression { $$ = new OperateurSup($1, $3); $1->setAncetre($$); $3->setAncetre($$);}
+           | expression INFEGAL expression { $$ = new OperateurInfEgal($1, $3); $1->setAncetre($$); $3->setAncetre($$);}
+           | expression SUPEGAL expression { $$ = new OperateurSupEgal($1, $3); $1->setAncetre($$); $3->setAncetre($$);}
+           | expression EGALEGAL expression { $$ = new OperateurEgal($1, $3); $1->setAncetre($$); $3->setAncetre($$);}
+           | expression DIFF expression { $$ = new OperateurDifferent($1, $3); $1->setAncetre($$); $3->setAncetre($$);}
+           | expression PLUS expression { $$ = new OperateurPlus($1, $3); $1->setAncetre($$); $3->setAncetre($$);}
+           | expression MOINS expression { $$ = new OperateurMoins($1, $3); $1->setAncetre($$); $3->setAncetre($$);}
+           | expression MULT expression { $$ = new OperateurMultiplier($1, $3); $1->setAncetre($$); $3->setAncetre($$); }
+           | expression DIV expression { $$ = new OperateurDivise($1, $3); $1->setAncetre($$); $3->setAncetre($$);}
+           | expression DIVEUCL expression { $$ = new OperateurModulo($1, $3); $1->setAncetre($$); $3->setAncetre($$);}
+           | PAROUVR expression PARFERM { $$ = $2;}
+           | appel_fonction { $$ = $1;}
+           | affectation { $$ = $1;}
+           | IDENTIFIANT { Identifiant* id= new Identifiant(yylval.identifiant); $$ =id; }
            | valeur_variable { $$ = $1; };
 
 
@@ -219,7 +219,7 @@ valeur_variable : VAL
                 | CARACTERE ;
 
 
-affectation : IDENTIFIANT EGAL_AFFECTATION expression { $$ = new Affectation(); $$->setValeur($3); $$->setIdentifiant(new Identifiant($1));};
+affectation : IDENTIFIANT EGAL_AFFECTATION expression { Identifiant * idd =new Identifiant($1); $$ = new Affectation(); $$->setValeur($3); $$->setIdentifiant(idd);};
 
 
 
@@ -254,12 +254,3 @@ void yyerror(Programme ** res, const char * msg) {
    printf("Syntax error : %s\n",msg);
 }
 
-/*
-int main(void) {
-	 yydebug =1;
-   int res = 0;
-   yyparse(&res);
-   printf("Résutlat : %d\n",res);
-   return 0;
-}
-*/

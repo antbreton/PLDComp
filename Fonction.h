@@ -18,9 +18,9 @@ class Bloc : public Instruction  {
 	public:
 		Bloc();
 		virtual ~Bloc() {}
-		void AjouterInstr (Instruction* instr) {instrs->push_back(instr);};
+		void AjouterInstr (Instruction* instr);
 		vector<Instruction*>* instrs;
-		
+		bool checkIDs();
 		void Afficher (int nbtab) {
 			string tab = getTabPrefix(nbtab);
 			cout<<endl<<tab<<"BEGIN_BLOC // nb instr : "<<instrs->size()<< " - tableSymb size : "<< tableSymboles->size();
@@ -39,7 +39,6 @@ class Bloc : public Instruction  {
 			bool testReturn(bool nullable);
 	private :
 		map<string,Identifiable*>* tableSymboles;
-		Bloc * ancetre;												// Ceci est un lien vers le bloc ancetre. Cela permet d'acceder à la table de symbole du bloc emglobant
 };
 
 class ParamDeclar {
@@ -50,7 +49,7 @@ class ParamDeclar {
 
 class Fonction : public Identifiable {
 	public:
-		Fonction(string type, string id, vector<Variable*>* s, Bloc* bloc = NULL): Identifiable(id), type(type), s(s), bloc(bloc) {}
+		Fonction(string type, string id, vector<Variable*>* s, Bloc* bloc = NULL);
 		Bloc* bloc;
 		string type;
 		vector<Variable*>* s;
@@ -72,7 +71,7 @@ class Fonction : public Identifiable {
 				bloc->Afficher(nbtab);
 		}
 
-		void RajouterBloc (Bloc* bloc){	this->bloc=bloc;}
+		void RajouterBloc (Bloc* bloc);
 		Bloc * getBloc() { return bloc; }
 		bool testReturn();
 };

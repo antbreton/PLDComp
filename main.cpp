@@ -15,7 +15,7 @@ int main(void) {
    //yydebug = 1;
 	Programme* programme = new Programme();
 	yyparse(&programme);
-	
+	bool error = false;
 	cout << "%%%Frontend%%%" << endl;
 	programme->Afficher(0);
 	
@@ -25,6 +25,13 @@ int main(void) {
 	
 		
 	cout << "%%%Backend%%%" << endl;
+
+	// PASSE 4 qui check les IDs
+//	cout <<endl << "PASSE 4";
+	if(!programme->checkIDs())
+	{
+		error = true;
+	}
 
 	IR* ir = new IR(programme);
 	
@@ -51,3 +58,4 @@ void passe2(Programme* programme) { // test main
 	
 	
 }
+
