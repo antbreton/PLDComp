@@ -141,8 +141,12 @@ string Expression::construireIR(CFG* cfg) {
 	} else if(dynamic_cast<Not*>(this)) {
 		cerr << "TODO : Construire IR : Classe Not" << endl;
 		return "";
-	} else if(dynamic_cast<Identifiant*>(this)) {
-		return "Identifiant";
+	} else if(Identidiant* identifiant = dynamic_cast<Identifiant*>(this)) {
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+				
+
+
+		return reg;
 	} else if(AppelFonction* appelFonction = dynamic_cast<AppelFonction*>(this)) {
 		
 		string reg = cfg->creerNouveauRegistre();
