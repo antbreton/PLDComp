@@ -1,1 +1,4 @@
-void main(){int32_t a = 2;}
+void main(){
+int32_t a;
+a = 2;
+}

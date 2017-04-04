@@ -135,10 +135,8 @@ std::string CFG::gen_epilogue()
 
 int CFG::calculeTaille()
 {
-	cout << endl << "calculeTaille debut" << endl;
 	fonctionDuCFG->getBloc()->constructor_tableVariables(); //8 octets par variable
 	int taille = 8*fonctionDuCFG->getBloc()->tableVariables->size();
-	cout << endl << "calculeTaille fin" << endl;
 	setTaille(taille);
 	return taille;
 }
