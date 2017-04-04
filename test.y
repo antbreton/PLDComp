@@ -142,7 +142,9 @@ int yylex(void);
 /*** ANTOINE *****/
 //déclaration Variables
 
+
 axiome : programme { *prog= $1;};
+
 
 suffixe_tab : CROCHOUVR valeur_variable CROCHFERM {$$ = $2;}
             | {$$ = NULL;};
@@ -253,4 +255,5 @@ contenu_bloc :contenu_bloc declaration {$$->ajouterListeVariable($2);} // On ajo
 void yyerror(Programme ** res, const char * msg) {
    printf("Syntax error : %s\n",msg);
 }
+
 

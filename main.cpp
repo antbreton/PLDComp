@@ -5,6 +5,7 @@
 #include "test.tab.h"
 
 extern int yydebug;
+int yyparse (Programme ** prog);
 
 using namespace std;
 
@@ -12,13 +13,14 @@ void passe1(Programme* programme);
 void passe2(Programme* programme);
 
 int main(void) {
-   //yydebug = 1;
+   yydebug = 1;
 	Programme* programme = new Programme();
 	yyparse(&programme);
 	bool error = false;
 	cout << "%%%Frontend%%%" << endl;
 	programme->Afficher(0);
 	
+
 	
 	passe1(programme);
 	passe2(programme);
@@ -36,8 +38,14 @@ int main(void) {
 	cout << endl<<"%%%Backend%%%" << endl;
 
 	IR* ir = new IR(programme);
+
+	cout << ir->genererAssembleur() << endl;
 	
 	cout << "Fin de l'analyse du programme" << endl;
+	
+	delete programme;
+	delete ir;
+	
 	return 0;
 }
 
@@ -60,3 +68,4 @@ void passe2(Programme* programme) { // test main
 	
 	
 }
+

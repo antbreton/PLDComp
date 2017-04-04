@@ -7,12 +7,16 @@ CFG::CFG(Fonction* fonction)
 {
 	fonctionDuCFG = fonction;
 	
-	// On cree le basicBlock correspondants au bloc de la fonction
-	// Pour cela on recupere le bloc de la fonction avec un getBloc (pas encore existant)
-	/*
-	BasicBlock* newBasicBlock = new BasicBlock(this, fonction->getBloc());
+	this->dicoRegTmp = new map<string, IRVar*>();
+	
+	Bloc* bloc = fonctionDuCFG->getBloc();
+
+	BasicBlock* newBasicBlock = new BasicBlock(this, bloc, fonctionDuCFG->getIdentifiant()+"_bb");
+
 	this->addBasicBlock(newBasicBlock);
-	*/
+	
+	nbRegVirtuels = 0;
+	calculeTaille();
 }
 
 CFG::~CFG()
@@ -37,36 +41,134 @@ void CFG::addBasicBlock(BasicBlock* newBasicBlock)
 // Parcours le CFG et en genere le code assembleur.
 string CFG::genererAssembleur() {
 		
-	  // TODO : Chopper la taille de la pile (et l'avoir calculer avant ...)
-	  string codeAssembleur;
-	  
-	  // PROLOGUE
-	  codeAssembleur += " TODO name:\r\n";
-	  codeAssembleur += "\r\n";
-	  codeAssembleur += "    pushq   %rbp \r\n";
-	  codeAssembleur += "    movq    %rsp, %rbp \r\n";
+	// TODO : Chopper la taille de la pile (et l'avoir calculer avant ...)
+	string codeAssembleur;
+
+	// PROLOGUE
+	codeAssembleur += gen_prologue();
+
+
+	// CORPS
+	// Pour chaque basicBlock dans le CFG on genere son code assembleur.
+  	list<BasicBlock *>::iterator ite = listeBasicBlocks.begin() ;
+
+  	while (ite != listeBasicBlocks.end()) 
+  	{
+		codeAssembleur += (*ite)->genererAssembleur();
+		ite++;
+  	}
+	
+	// EPILOGUE
+	codeAssembleur += gen_epilogue();
+
+	return codeAssembleur;
+}
+
+std::string CFG::gen_prologue()
+{
+	string codeAssembleur;
+	
+	string label = listeBasicBlocks.front()->getLabel();
+	string insLabel = label + ":\r\n";
+
+	codeAssembleur += insLabel;
+	codeAssembleur += "\r\n";
+	codeAssembleur += "    pushq   %rbp \r\n";
+	codeAssembleur += "    movq    %rsp, %rbp \r\n";
 	  // addq ou subq ? Depend de la pile ? 
-	  //codeAssembleur += "    subq    $"+ (TaillePile + multiple de 16) +", %rsp \r\n";
-	  codeAssembleur += "\r\n";
+	//codeAssembleur += "    subq    $"+ to_string(this->calculeTaille()) +", %rsp \r\n";
+	//codeAssembleur += "\r\n";
 	  
-	  // CORPS
-	  // Pour chaque basicBlock dans le CFG on genere son code assembleur.
-	  list<BasicBlock *>::iterator ite = listeBasicBlocks.begin() ;
-	  while (ite != listeBasicBlocks.end()) 
-	  {
-			codeAssembleur += (*ite)->genererAssembleur();
-			ite++;
-	  }
-	  
-	  // EPILOGUE
+	
+	//Offset pour chaque variable
+	/*
+	int i = 1;
+	std::map<string, IRVar*>* dico = this->getDicoRegTmp();
+	std::map<string, IRVar*>::iterator it;
+	
+	// Si il y a au moins une instruction dans le programme
+	if(dico != NULL)
+	{
+
+		for(it=dico->begin(); it!=dico->end(); ++it)
+		{
+			it->second->setOffset(8*i);
+			string instructionASM = "movq $" + to_string(it->second->getValeur()) + ", -" + to_string(it->second->getOffset())  +"(%rbp)\r\n";
+			codeAssembleur += instructionASM;
+			i++;
+		}
+	}
+
+	*/
+	cout << endl << "GEN_PROLOGUE" << endl;
+	int i = 1;
+	if(taille != 0)
+	{
+		codeAssembleur += "    subq    $"+ to_string(taille) +", %rsp \r\n";
+
+		std::map<string, Variable*>* table = fonctionDuCFG->getBloc()->tableVariables;
+		std::map<string, Variable*>::iterator it;
+		for(it= table->begin(); it != table->end(); it++)
+		{
+			string key = it->first;
+			dicoRegTmp->find(key)->second->setOffset(8*i);
+			string instructionASM = "movq $" + to_string(dicoRegTmp->find(key)->second->getValeur()) + ", -" + to_string(dicoRegTmp->find(key)->second->getOffset())  +"(%rbp)\r\n";
+			codeAssembleur += instructionASM;
+			i++;
+		}
+	}
+
+
+	return codeAssembleur;
+}
+
+std::string CFG::gen_epilogue()
+{
+	string codeAssembleur;
+
 	  codeAssembleur += "\r\n";
 	  codeAssembleur += "    leave\r\n";
 	  codeAssembleur += "    ret\r\n";
 	  codeAssembleur += "\r\n";
-	  
-	  return codeAssembleur;
+
+	 return codeAssembleur;
+}
+
+
+int CFG::calculeTaille()
+{
+	cout << endl << "calculeTaille debut" << endl;
+	fonctionDuCFG->getBloc()->constructor_tableVariables(); //8 octets par variable
+	int taille = 8*fonctionDuCFG->getBloc()->tableVariables->size();
+	cout << endl << "calculeTaille fin" << endl;
+	setTaille(taille);
+	return taille;
+}
+
+std::string CFG::creerNouveauRegistre() {
+        string nomRegistreVirtuel = "!r" + to_string(this->nbRegVirtuels) ;
+        this->nbRegVirtuels++;
+
+        IRVar* maVar = new IRVar(nomRegistreVirtuel);
+
+        this->dicoRegTmp->insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
+
+        return nomRegistreVirtuel;
+}
+
+std::string CFG::creerNouveauRegistre(int nbRegVirt) {
+		std::string nomRegistreVirtuel = "!r" + nbRegVirt ;
+        IRVar* maVar = new IRVar(nomRegistreVirtuel);
+        this->dicoRegTmp->insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
+        return nomRegistreVirtuel;
 }
 
 
 
+
 // GETTER / SETTER
+
+int CFG::getNbRegVirtuels()
+{
+	return nbRegVirtuels;
+}

@@ -6,17 +6,20 @@ using namespace std;
 IR::IR(Programme* programme)
 {
 	vector<Fonction*>::iterator fonction;
-	
-	// En supposant un getFonctions dans programme
+
+
 	
 	// Pour chaque fonction dans le programme (donc chaque AST), on cree son CFG.
-	/*
-	for(fonction = programme->getFonctions().begin() ; fonction != programme->getFonctions().end() ; fonction++)
+	// et on l'ajoute a la liste.
+	vector<Fonction*> listeDeFonctions = programme->getFonctions();
+	
+	cout << "Taille liste fonction : " << listeDeFonctions.size() << endl;
+	
+	for(fonction = listeDeFonctions.begin() ; fonction != listeDeFonctions.end() ; ++fonction)
 	{
-		CFG* newCFG = new CFG(fonction);
+		CFG* newCFG = new CFG(*fonction);
 		this->addCFG(newCFG);
-	}
-	*/
+	}	
 }
 
 IR::~IR()
@@ -37,15 +40,29 @@ IR::~IR()
 string IR::genererAssembleur() 
 {
 		string codeAssembleur;
-	  
-		// TODO : Peut etre un code special au debut d'un fichier assembleur .. 
-	  
+		
+		// Code assembleur de début de fichier
+		codeAssembleur += ".text        \r\n";
+		codeAssembleur += ".global main \r\n";
+		codeAssembleur += "\r\n";
+		
+		cout << "Taille liste CFG : " << listeCFG.size() << endl;
+		
+		// On itere pour chaque CFG
 		list<CFG*>::iterator ite;
 		for(ite=listeCFG.begin();ite!=listeCFG.end();ite++)
 		{
-		  codeAssembleur += (*ite)->genererAssembleur(); 
+		  codeAssembleur += (*ite)->genererAssembleur();
 		}
-	  
+		
+		// Ecriture dans main.s
+		ofstream fichier("main.s", ios::out | ios::trunc);	
+		if(fichier)
+        {
+			fichier << codeAssembleur << endl;
+			fichier.close();
+        }
+		
 		return codeAssembleur;	
 }
 

@@ -37,6 +37,13 @@ class Bloc : public Instruction  {
 		Identifiable * getIdentifiableIfExist(string id);
 		map<string,Identifiable*>* getTableSymboles() { return tableSymboles; }
 			bool testReturn(bool nullable);
+
+		vector<Instruction*>* getInstructions();
+		int compterNbVariable();
+		void constructor_tableVariables();
+		map<string,Variable*>* tableVariables;
+
+
 	private :
 		map<string,Identifiable*>* tableSymboles;
 };
@@ -71,10 +78,20 @@ class Fonction : public Identifiable {
 				bloc->Afficher(nbtab);
 		}
 
+		
+		//Bloc* getBloc();
+		vector<Variable*>* getVariables() { return this->s;}
+
+
+
 		void RajouterBloc (Bloc* bloc);
 		Bloc * getBloc() { return bloc; }
 		bool testReturn();
 };
 
 
+
 #endif
+
+
+

@@ -6,15 +6,15 @@
 #include <iostream>
 #include <map>
 
- 
-using namespace std;
 
+
+
+using namespace std;
 class Fonction;
 class Val;
 class Variable;
 class Bloc;
-
-
+class CFG;
 // ---- méthodes Utils --------
 
 // Cette méthode crée une string de préfixes
@@ -34,7 +34,8 @@ class Identifiable {
 		public : 
 			Identifiable(string id):id(id){}
 			string id;	
-			string getIdentifiant() {return id;}
+			string getIdentifiant() { cout << "getid" <<endl; return id;}
+			virtual ~Identifiable(){}
 };
 
 
@@ -47,12 +48,14 @@ class Instruction {
 		void setAncetre(Instruction * ancetre, string id = "") {/* DEBUG*/cout << "[a:"<<ancetre<<", c:"<<this<<" "<<id; this->ancetre = ancetre; cout <<"]"<<endl;}
 	protected:
 		Instruction * ancetre;
+
 };
 
 class Expression : public Instruction{
 	public:
 		Expression(){isInline = 0;}
 		virtual ~Expression() {}
+		std::string construireIR(CFG* cfg);
 		void setIsInline(int v) {isInline =v;}
 		virtual void Afficher(int nbtab) { 
 				if(isInline)
@@ -71,7 +74,9 @@ class Expression : public Instruction{
 class Identifiant : public Expression {
 	public:
 		Identifiant(string * id):Expression(),id(id){}
+		// TODO : Attribut public
 		string * id;
+		string* getId() { return this->id; }
 		void Afficher(int nbtab) {
 			Expression::Afficher(nbtab);
 			cout<<"ID ";
@@ -98,7 +103,8 @@ class RetourExpr : public Instruction {
 class Val : public Expression {
 	public:
 		Val(int valeur):Expression(), valeur(valeur) {}
-		int valeur;
+        // TODO : Pk val en public ?
+        int valeur;
 		void Afficher (int nbtab) {
 			 cout<<"VAL "<< valeur<<" ";
 		 }
@@ -107,6 +113,7 @@ class Val : public Expression {
 class Caractere : public Expression {
 	public:
 		Caractere(char c):Expression(), c(c) {}
+        // TODO : Pk char en public ?
 		char c;
 		void Afficher (int nbtab) {
 			 cout<<"CARACTERE"<< c;
@@ -126,6 +133,7 @@ class Programme {
 		pair<bool,string> testReturn();
 		bool testMain();
 		Bloc * getBloc() { return bloc; }
+		std::vector<Fonction*> getFonctions();
 	private :
 		Bloc * bloc; // Ce bloc corresponds au contexte du programme, il contiends simplement la table de symbole.
 		vector<Fonction*> *fonctions; //
@@ -148,6 +156,8 @@ class ExpreOpeBinaire : public Expression {
 	public:
 		ExpreOpeBinaire(Expression * membreG, Expression * membreD):Expression(), membreGauche(membreG), membreDroit(membreD) {}
 		virtual bool checkIDs(Bloc * b) { bool mg = membreGauche->checkIDs(b); bool md = membreDroit->checkIDs(b); return mg && md; }
+		Expression* getMembreGauche() { return membreGauche; }
+		Expression* getMembreDroit() { return membreDroit; }
 	protected:
 		Expression * membreGauche;
 		Expression * membreDroit;
@@ -226,6 +236,7 @@ public:
 			 cout<<" <= ";
 			 membreDroit->Afficher(nbtab);
 		 }
+
 };
 
 class OperateurEgal : public ExpreOpeBinaire {
@@ -318,6 +329,8 @@ public:
 	void ajouterParametre(Expression * expression) {parametres->push_back(expression);}
 	void setParametres(std::vector<Expression*>* liste_expressions) {this->parametres = liste_expressions;}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
+	std::vector<Expression*>* getParametres() { return this->parametres;}
+	Identifiant* getIdentifiant() { return this->identifiant;}
 	virtual ~AppelFonction() {delete this->parametres; }
 	bool checkIDs(Bloc *b) { int echec = 0; for(int i=0;i<parametres->size();i++){	if(!(*parametres)[i]->checkIDs(b)) echec++;		}	return (echec == 0); }	
 	void Afficher (int nbtab) {
@@ -339,6 +352,8 @@ public:
 	Affectation():Expression() {}
 	void setValeur(Expression* expression) {this->valeur = expression;}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
+	Expression* getValeur() { return this->valeur; }
+	Identifiant* getIdentifiant(){ return this->identifiant; }
 	void Afficher (int nbtab) {
 		Expression::Afficher(nbtab);
 		cout<<"AFFECTATION ";

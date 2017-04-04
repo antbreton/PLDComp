@@ -2,6 +2,7 @@
 #define PLDCOMP_IR_IR_H
 
 #include <iostream>
+#include <fstream>
 #include <string>
 #include <list>
 #include <vector>
@@ -20,6 +21,7 @@ class IR {
 		
 		std::string genererAssembleur();
 		void addCFG(CFG* cfg);
+		ofstream fichier;
 		
 	private:
 		list<CFG *> listeCFG;

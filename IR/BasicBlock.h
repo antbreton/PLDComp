@@ -6,24 +6,33 @@
 #include <vector>
 #include "IRInstr.h"
 #include "../Fonction.h"
-
-class CFG;
+#include "CFG.h"
+//class CFG;
 class BasicBlock {
 	public:
-		BasicBlock(); // Pour bloc vide, cf cours
-		BasicBlock(CFG* cfg, Bloc* bloc);
+
+		BasicBlock(std::string label);
+		BasicBlock(CFG* cfg, Bloc* bloc, std::string label);
 		~BasicBlock();
 		
 		std::string genererAssembleur();
-		void addInstrIR(IRInstr* instruction);
+		void ajouterInstrIR(IRInstr* instruction);
 		
 		CFG* getCFG();
+		std::string getLabel() {return label;};
+		void setLabel(std::string label) {label = label;};
+		bool estVarMappee(std::string nomVariable);
+		void ajouterVariableMappee(CFG* cfg, std::string nomVariable);
+		int getValeurMappee(std::string nomVariable);
+		int nbVariables;
 
 	private:
-		std::vector<IRInstr * > listeInstructionsIR;
+		std::vector<IRInstr * >* listeInstructionsIR;
 		BasicBlock* succCond; // Son successeur conditionnel
 		BasicBlock* succIncond; // Son sucesseur inconditionnel
+		map<std::string,int> mappingVarReg;
 		CFG* cfg;
+		std::string label;
 };
 
 
