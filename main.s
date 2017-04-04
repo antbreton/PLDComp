@@ -1,3 +1,4 @@
+
 .text        
 .global main 
 
@@ -5,12 +6,14 @@ main_bb:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-    LDCONST
-    movq   $107, %edi
-    CALL
-    call   putchar
+    subq    $16, %rsp 
+    WMEM
+    movq    $2, %rax
+    movq    %rax, -8(%rbp)
+    WMEM
+    movq    , %rax
+    movq    %rax, -16(%rbp)
 
     leave
     ret
-
 

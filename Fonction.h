@@ -20,7 +20,7 @@ class Bloc : public Instruction  {
 		virtual ~Bloc() {}
 		void AjouterInstr (Instruction* instr);
 		vector<Instruction*>* instrs;
-		
+		bool checkIDs();
 		void Afficher (int nbtab) {
 			string tab = getTabPrefix(nbtab);
 			cout<<endl<<tab<<"BEGIN_BLOC // nb instr : "<<instrs->size()<< " - tableSymb size : "<< tableSymboles->size();
@@ -30,7 +30,14 @@ class Bloc : public Instruction  {
 			}
 			cout<<endl<<tab<<"END_BLOC";
 		}
-		void ajouterListeVariable(vector<Variable*>* listeVariable);
+			void ajouterListeVariable(vector<Variable*>* listeVariable);
+			
+			// Cette méthode va récursivement ajouter ce bloc en ancetre de tous ses fils direct. Puis il va set l'ancetre du bloc courant.
+			void setRecursifBlocAncestorToAll(Bloc * ancetre);
+		Identifiable * getIdentifiableIfExist(string id);
+		map<string,Identifiable*>* getTableSymboles() { return tableSymboles; }
+			bool testReturn(bool nullable);
+
 		vector<Instruction*>* getInstructions();
 		int compterNbVariable();
 		void constructor_tableVariables();
@@ -49,7 +56,7 @@ class ParamDeclar {
 
 class Fonction : public Identifiable {
 	public:
-		Fonction(string type, string id, vector<Variable*>* s, Bloc* bloc = NULL): Identifiable(id), type(type), s(s), bloc(bloc) {}
+		Fonction(string type, string id, vector<Variable*>* s, Bloc* bloc = NULL);
 		Bloc* bloc;
 		string type;
 		vector<Variable*>* s;
@@ -70,14 +77,21 @@ class Fonction : public Identifiable {
 			if(bloc != NULL)
 				bloc->Afficher(nbtab);
 		}
-		void RajouterBloc (Bloc* bloc){
-			this->bloc=bloc;
-		}
-		Bloc* getBloc();
+
+		
+		//Bloc* getBloc();
 		vector<Variable*>* getVariables() { return this->s;}
+
+
+
+		void RajouterBloc (Bloc* bloc);
+		Bloc * getBloc() { return bloc; }
+		bool testReturn();
 };
 
 
 
-
 #endif
+
+
+

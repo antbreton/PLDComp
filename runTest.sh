@@ -30,7 +30,10 @@ for ((i=1; i<=$nombreTest; i++)) # On parcours les différents Tests
 	echo -e "\tTest$i : $description\n"
 
 	./gc+ <test/Test$i/test > test/Test$i/out 2> /dev/null
+	# on récupère le frontend
+	sed -i -n '/%%%Frontend%%%/,/%%%Backend%%%/ { //!p }' test/Test$i/out
 	sed -i '/^$/d' test/Test$i/out
+	
 	
 	diff -wB test/Test$i/out test/Test$i/expected >> /dev/null
 	stdoutValide=$?;
