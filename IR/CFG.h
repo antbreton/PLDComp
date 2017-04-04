@@ -23,6 +23,7 @@ class CFG {
 		std::string creerNouveauRegistre();
 		std::string creerNouveauRegistre(int nbRegVirt);
 		BasicBlock* getBlockCourant() {return this->blocCourant;}
+		void setBlockCourant(BasicBlock* blocC) {blocCourant = blocC;}
 		int getNbRegVirtuels();
 		void incrementerNbRegVirtuels(){ this->nbRegVirtuels++; }
 		std::string gen_prologue();

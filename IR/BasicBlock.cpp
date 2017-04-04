@@ -11,10 +11,13 @@ BasicBlock::BasicBlock(std::string label)
 BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 {
 	cout << "test 2" << endl;
+	cfg->setBlockCourant(this);
 	this->cfg = cfg;
 	this-> label = label;
 	cout << "debut const basicblock" << endl;
 	listeInstructionsIR = new vector<IRInstr*>();
+
+	cout << "SIZE listeInstructionsIR : " << listeInstructionsIR->size() << endl;
 
 	if(bloc!=NULL)
 	 {
@@ -70,6 +73,7 @@ string BasicBlock::genererAssembleur() {
 // Ajoute une instruction IR à la liste du bloc
 void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
 	cout << " debut ajouterInstrIR"<< endl;
+	cout << "SIZE listeInstructionsIR : " << listeInstructionsIR->size() << endl;
 	listeInstructionsIR->push_back(instruction);
 	cout << " fin ajouterInstrIR"<< endl;
 }
