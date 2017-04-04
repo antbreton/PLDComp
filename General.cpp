@@ -195,7 +195,7 @@ string Expression::construireIR(CFG* cfg) {
 		cerr << "TODO : Construire IR : Classe OperateurSup" << endl;
 		return "";
 	} else if(OperateurInf* opeInf = dynamic_cast<OperateurInf*>(this)) {
-
+		cerr << "IR : OperateurInfEgal" << endl;
 		// Operande 1
 		string regGauche = opeInf->getMembreGauche()->construireIR(cfg);
 		// Operande 2
@@ -214,7 +214,7 @@ string Expression::construireIR(CFG* cfg) {
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_LT, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 
-		cerr << "Construire IR : Classe OperateurInf" << endl;
+		cerr << "Fin IR : OperateurInf" << endl;
 		
 		return regGauche;
 
@@ -222,7 +222,7 @@ string Expression::construireIR(CFG* cfg) {
 		cerr << "TODO : Construire IR : Classe OperateurSupEgal" << endl;
 		return "";
 	} else if(OperateurInfEgal* opeInfEgal = dynamic_cast<OperateurInfEgal*>(this)) {
-
+		cerr << "IR : OperateurInfEgal" << endl;	
 		// Operande 1
 		string regGauche = opeInfEgal->getMembreGauche()->construireIR(cfg);
 		// Operande 2
@@ -241,12 +241,12 @@ string Expression::construireIR(CFG* cfg) {
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_LE, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 
-		cerr << "Construire IR : Classe OperateurInfEgal" << endl;
+		cerr << "Fin IR : OperateurInfEgal" << endl;
 		
 		return regGauche;
 
 	} else if(OperateurEgal* opeEgal = dynamic_cast<OperateurEgal*>(this)) {
-
+		cerr << "IR : OperateurEgal" << endl;
 		// Operande 1
 		string regGauche = opeEgal->getMembreGauche()->construireIR(cfg);
 		// Operande 2
@@ -265,7 +265,7 @@ string Expression::construireIR(CFG* cfg) {
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_EQ, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 
-		cerr << "Construire IR : Classe OperateurEgal" << endl;
+		cerr << "Fin IR : OperateurEgal" << endl;
 		
         return regGauche;
         
@@ -274,6 +274,7 @@ string Expression::construireIR(CFG* cfg) {
 		return "";
 	} else if(OperateurPlus* opePlus = dynamic_cast<OperateurPlus*>(this)) {
 
+		cerr << "IR : OperateurPlus" << endl;
 		// Operande 1
 		string regGauche = opePlus->getMembreGauche()->construireIR(cfg);
 		// Operande 2
@@ -292,11 +293,13 @@ string Expression::construireIR(CFG* cfg) {
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::ADD, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 
-		cerr << "Construire IR : Classe OperateurPlus" << endl;
+		cerr << "Fin IR : OperateurPlus" << endl;
 
 		return regGauche;
 
 	} else if(OperateurMoins* opeMoins = dynamic_cast<OperateurMoins*>(this)) {
+
+		cout << "IR : OperateurMoins" << endl;
 		
 		// Operande 1
 		string regGauche = opeMoins->getMembreGauche()->construireIR(cfg);
@@ -316,7 +319,7 @@ string Expression::construireIR(CFG* cfg) {
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::SUB, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 
-		cerr << "Construire IR : Classe OperateurMoins" << endl;
+		cerr << "Fin IR :  OperateurMoins" << endl;
 		
 		return regGauche;
 
@@ -373,7 +376,8 @@ string Expression::construireIR(CFG* cfg) {
 		params.push_back(to_string( static_cast<Val*>(this)->valeur) );
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::LDCONST, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
-		cerr << "Construire IR : Classe Val" << endl;
+
+		cerr << "Fin IR :  Val" << endl;
 
 		return reg;
 
@@ -384,15 +388,12 @@ string Expression::construireIR(CFG* cfg) {
 		// Creation d'un registre temporaire
 		string reg = cfg->creerNouveauRegistre();
 		BasicBlock* blocCourant = cfg->getBlockCourant();
-		cout<< "IR Caractere apres blockcourant" << endl;
 		vector<std::string> params;
 		params.push_back(reg);
 		params.push_back(to_string((int)(static_cast<Caractere*>(this)->c )));
-		cout<< "IR Caractere apres les pushback" << endl;
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::LDCONST, blocCourant, params);
-		cout<< "IR Caractere apres creation nouvelleInstr" << endl;
 		blocCourant->ajouterInstrIR(nouvelleInstr);
-		cout<< "IR Caractere apres ajouterInstrIR" << endl;
+
 		cerr << "Construire IR : Classe Caractere" << endl;
 
 		return reg;
@@ -404,6 +405,8 @@ string Expression::construireIR(CFG* cfg) {
 		return "";
 	
 	} else if(Identifiant* identifiant = dynamic_cast<Identifiant*>(this)) {
+
+		cout << "IR Identifiant" << endl;
 		
 		BasicBlock* blocCourant = cfg->getBlockCourant();
 		string nomVariable = *identifiant->getId();
@@ -413,21 +416,21 @@ string Expression::construireIR(CFG* cfg) {
 		} 
 			// Registre virtuel de l'identifiant
 			string reg = "!r" + blocCourant->getValeurMappee(nomVariable);
-				
+		
+		cout << "Fin IR : Identifiant" << endl;
+
 		return reg;
 
 	} else if(AppelFonction* appelFonction = dynamic_cast<AppelFonction*>(this)) {
 		
-		cout << "appel de fonction 1" << endl;
+		cout << "IR AppelFonction" << endl;
+
 		string reg = cfg->creerNouveauRegistre();
-		cout << "appel de fonction 2" << endl;
 		BasicBlock* blocCourant = cfg->getBlockCourant();
-		cout << "appel de fonction 3" << endl;
 		vector<std::string> params;
 
 		params.push_back(*appelFonction->getIdentifiant()->getId());
 		params.push_back(reg);
-		cout << "appel de fonction 4" << endl;
 		vector<Expression*>* listeParametresFonction = appelFonction->getParametres();
 		for(int i = 0; i < listeParametresFonction->size(); i++)
 		{
@@ -438,13 +441,14 @@ string Expression::construireIR(CFG* cfg) {
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CALL, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 
-		cerr << "Construire IR : Classe AppelFonction" << endl;
+		cerr << "Fin IR :  AppelFonction" << endl;
 
 		return reg;
 
 	} else if(Affectation* affectation = dynamic_cast<Affectation*>(this)) {
 
-		cout << "Affectation" << endl;
+		cout << "IR : Affectation" << endl;
+
 		BasicBlock* blocCourant = cfg->getBlockCourant();
 		string nomVariable = *affectation->getIdentifiant()->getId();
 		string reg;
@@ -457,7 +461,20 @@ string Expression::construireIR(CFG* cfg) {
 			reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
 
 			//Registre rightValue
-			string reg2 = 	affectation->getValeur()->construireIR(cfg);
+			//string reg2 = 	affectation->getValeur()->construireIR(cfg);
+
+			string reg2; 
+
+			if(Val* v = dynamic_cast<Val*>(affectation->getValeur()))
+			{
+				reg2 = to_string(v->valeur);
+			} else if (Caractere* car = dynamic_cast<Caractere*>(affectation->getValeur()))
+			{
+				reg2 = car->c;
+			}
+			else {
+				reg2 = affectation->getValeur()->construireIR(cfg);
+			}
 
 			vector<std::string> params;
 			params.push_back(reg); // Destination
@@ -465,7 +482,7 @@ string Expression::construireIR(CFG* cfg) {
 			IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::WMEM, blocCourant, params);
 			blocCourant->ajouterInstrIR(nouvelleInstr);
 
-			cerr << "Construire IR : Classe Affectation" << endl;
+		cerr << "Fin IR :  Affectation" << endl;
 
 			return reg;
 
