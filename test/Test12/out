@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID fonction1 // size : 1VAR INT32 z 
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
@@ -18,12 +17,3 @@ PROGRAMME // tableSymb size : 0
 			END_BLOC
 	END_BLOC
 END_PROGRAMME
-=======
-APLE CONSTR avec z
-APLE CONSTR avec fonction1
-APLE CONSTR avec z
-APLE CONSTR avec t
-APLE CONSTR avec main
-APLE CONSTR avec fTEST 10 :1
-TEST :0x1bae520
->>>>>>> Linker
