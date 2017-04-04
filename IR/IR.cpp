@@ -44,6 +44,7 @@ string IR::genererAssembleur()
 		// Code assembleur de début de fichier
 		codeAssembleur += ".text        \r\n";
 		codeAssembleur += ".globl main \r\n";
+		codeAssembleur += ".type main, @function\r\n";
 		codeAssembleur += "\r\n";
 		
 		cout << "Taille liste CFG : " << listeCFG.size() << endl;

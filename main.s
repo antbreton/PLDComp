@@ -1,5 +1,5 @@
 .text        
-.global main 
+.globl main 
 
 main_bb:
 
@@ -16,5 +16,4 @@ main_bb:
     leave
     ret
 
->>>>>>> 947642f6b50c953e652003e23a43887e9c22b91a
 
