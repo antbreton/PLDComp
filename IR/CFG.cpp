@@ -22,6 +22,7 @@ CFG::CFG(Fonction* fonction)
 	this->addBasicBlock(newBasicBlock);
 	
 	nbRegVirtuels = 0;
+	calculeTaille();
 }
 
 CFG::~CFG()
@@ -80,11 +81,12 @@ std::string CFG::gen_prologue()
 	codeAssembleur += "    pushq   %rbp \r\n";
 	codeAssembleur += "    movq    %rsp, %rbp \r\n";
 	  // addq ou subq ? Depend de la pile ? 
-	codeAssembleur += "    subq    $"+ to_string(this->calculeTaille()) +", %rsp \r\n";
-	codeAssembleur += "\r\n";
+	//codeAssembleur += "    subq    $"+ to_string(this->calculeTaille()) +", %rsp \r\n";
+	//codeAssembleur += "\r\n";
 	  
 	
 	//Offset pour chaque variable
+	/*
 	int i = 1;
 	std::map<string, IRVar*>* dico = this->getDicoRegTmp();
 	std::map<string, IRVar*>::iterator it;
@@ -103,7 +105,26 @@ std::string CFG::gen_prologue()
 			i++;
 		}
 	}
-	cout << "La probleme est la 2 " << endl;
+	*/
+	cout << endl << "GEN_PROLOGUE" << endl;
+	int i = 0;
+	if(taille != 0)
+	{
+		codeAssembleur += "    subq    $"+ to_string(taille) +", %rsp \r\n";
+
+		std::map<string, Variable*>* table = fonctionDuCFG->getBloc()->tableVariables;
+		std::map<string, Variable*>::iterator it;
+		for(it= table->begin(); it != table->end(); it++)
+		{
+			string key = it->first;
+			dicoRegTmp->find(key)->second->setOffset(8*i);
+			string instructionASM = "movq $" + to_string(dicoRegTmp->find(key)->second->getValeur()) + ", -" + to_string(dicoRegTmp->find(key)->second->getOffset())  +"(%rbp)\r\n";
+			codeAssembleur += instructionASM;
+			i++;
+		}
+	}
+
+
 	return codeAssembleur;
 }
 
@@ -122,9 +143,11 @@ std::string CFG::gen_epilogue()
 
 int CFG::calculeTaille()
 {
-	
-	int taille = 8*getNbRegVirtuels(); //8 octets par variable
-
+	cout << endl << "calculeTaille debut" << endl;
+	fonctionDuCFG->getBloc()->constructor_tableVariables(); //8 octets par variable
+	int taille = 8*fonctionDuCFG->getBloc()->tableVariables->size();
+	cout << endl << "calculeTaille fin" << endl;
+	setTaille(taille);
 	return taille;
 }
 

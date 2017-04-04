@@ -20,6 +20,8 @@ class CFG {
 		std::string genererAssembleur();
 		void addBasicBlock(BasicBlock* newBasicBlock);
 		int calculeTaille ();
+		int getTaille() {return taille;};
+		void setTaille(int a) {taille = a;};
 		std::string creerNouveauRegistre();
 		std::string creerNouveauRegistre(int nbRegVirt);
 		BasicBlock* getBlockCourant() {return this->blocCourant;}
@@ -37,6 +39,7 @@ class CFG {
 		int nbRegVirtuels;
 		std::map<string, IRVar*>* dicoRegTmp; // Table des symboles : On stockera ici nos registres virtuels
 		BasicBlock* blocCourant;
+		int taille;
 
 
 };

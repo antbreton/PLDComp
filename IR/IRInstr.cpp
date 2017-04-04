@@ -33,7 +33,8 @@ string IRInstr::genererAssembleur() {
 	  string parametre2 = "";
 	  string parametre3 = "";
 
-	  
+	  cout << "IRinstr::genererAssembleur 1" << endl;
+
 	  vector<string>::iterator iteParam = params.begin();
 	  if(nbParametres >= 1)
 	  { 
@@ -50,7 +51,9 @@ string IRInstr::genererAssembleur() {
 		parametre3 = *iteParam;
 		iteParam++;
 	  }
-	
+		
+
+
 	  CFG* cfg = blocParent->getCFG();
 	  map<string, IRVar*>* dicoRegTmp = cfg->getDicoRegTmp();
 	  // MODIFICATION
@@ -59,10 +62,13 @@ string IRInstr::genererAssembleur() {
 	  // Si c'est une constante :
 	  // On ajoute un $ devant.
 	  // && parametre1[1] == 'r'
+
+
+
 	  if(parametre1[0] == '!' ) 
 	  {
-		string nomVariable = parametre1.substr(1);
-		IRVar* variableIR = dicoRegTmp->find(nomVariable)->second;
+		
+		IRVar* variableIR = dicoRegTmp->find(parametre1)->second;
 		int varOffset = variableIR->getOffset();
 		// to_string est dans le C++11 sinon NumberToString
 		parametre1 = to_string(varOffset)+"(%rbp)";
@@ -72,8 +78,7 @@ string IRInstr::genererAssembleur() {
 	  
 	  if(parametre2[0] == '!') 
 	  {
-		string nomVariable = parametre2.substr(1);
-		IRVar* variableIR = dicoRegTmp->find(nomVariable)->second;
+		IRVar* variableIR = dicoRegTmp->find(parametre2)->second;
 		int varOffset = variableIR->getOffset();
 		// to_string est dans le C++11 sinon NumberToString
 		parametre2 = to_string(varOffset)+"(%rbp)";
@@ -83,8 +88,7 @@ string IRInstr::genererAssembleur() {
 	  
 	  if(parametre3[0] == '!') 
 	  {
-		string nomVariable = parametre3.substr(1);
-		IRVar* variableIR = dicoRegTmp->find(nomVariable)->second;
+		IRVar* variableIR = dicoRegTmp->find(parametre3)->second;
 		int varOffset = variableIR->getOffset();		
 		// to_string est dans le C++11 sinon NumberToString
 		parametre3 = to_string(varOffset)+"(%rbp)";

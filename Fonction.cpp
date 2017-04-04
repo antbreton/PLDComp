@@ -6,6 +6,7 @@ Bloc::Bloc() : Instruction()
 {
 	instrs = new vector <Instruction*>();
 	tableSymboles = new map<string,Identifiable*>(); 
+	tableVariables = new map<string,Variable*>();
 }
 
 void Bloc::ajouterListeVariable(vector<Variable*>* listeVariable)
