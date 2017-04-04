@@ -89,6 +89,8 @@ bool BasicBlock::estVarMappee(std::string nomVariable) {
 void BasicBlock::ajouterVariableMappee(CFG* cfg, std::string nomVariable) {
     int numeroRegistreVirtuel = cfg->getNbRegVirtuels();
     this->mappingVarReg.insert(std::pair<std::string, int>(nomVariable, numeroRegistreVirtuel));
+    cfg->creerNouveauRegistre();
+
 }
 
 int BasicBlock::getValeurMappee(std::string nomVariable) {

@@ -141,11 +141,18 @@ string Expression::construireIR(CFG* cfg) {
 	} else if(dynamic_cast<Not*>(this)) {
 		cerr << "TODO : Construire IR : Classe Not" << endl;
 		return "";
-	} else if(Identidiant* identifiant = dynamic_cast<Identifiant*>(this)) {
+	
+	} else if(Identifiant* identifiant = dynamic_cast<Identifiant*>(this)) {
+		
 		BasicBlock* blocCourant = cfg->getBlockCourant();
+		string nomVariable = *identifiant->getId();
+
+		if(!blocCourant->estVarMappee(nomVariable)){
+			blocCourant->ajouterVariableMappee(cfg, nomVariable);
+		} 
+			// Registre virtuel de l'identifiant
+			string reg = "!r" + blocCourant->getValeurMappee(nomVariable);
 				
-
-
 		return reg;
 	} else if(AppelFonction* appelFonction = dynamic_cast<AppelFonction*>(this)) {
 		
@@ -179,6 +186,7 @@ string Expression::construireIR(CFG* cfg) {
 			blocCourant->ajouterVariableMappee(cfg, nomVariable);
 		} 
 			// Registre leftValue
+			// TODO : Dans le poly, il faut ici rajouter un offset
 			reg = "!r" + blocCourant->getValeurMappee(nomVariable);
 
 			//Registre rightValue
