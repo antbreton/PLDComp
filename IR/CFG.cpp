@@ -6,7 +6,7 @@ using namespace std;
 CFG::CFG(Fonction* fonction)
 {
 	fonctionDuCFG = fonction;
-	
+	this->dicoRegTmp = NULL;
 	if(fonctionDuCFG->getBloc() == NULL) 
 	{cout << "bloc null skdfj" << endl;
 	}
@@ -127,10 +127,15 @@ int CFG::calculeTaille()
 }
 
 std::string CFG::creerNouveauRegistre() {
-        std::string nomRegistreVirtuel = "!r" + this->nbRegVirtuels ;
+        string nomRegistreVirtuel = "!r" + to_string(this->nbRegVirtuels) ;
         this->nbRegVirtuels++;
+		cout << "creerNewReg" << endl;
         IRVar* maVar = new IRVar(nomRegistreVirtuel);
-        this->dicoRegTmp->insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
+		cout << maVar->getNom() << endl;
+
+        this->dicoRegTmp->insert(make_pair(nomRegistreVirtuel, maVar));
+		
+		cout << "creerNewReg" << endl;
 }
 
 

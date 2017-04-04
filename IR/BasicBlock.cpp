@@ -27,9 +27,9 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 			
 			if(Expression* e = dynamic_cast<Expression*>(*ite))
 			{
-				cout << "debut if " << endl;
+				cout << "Avant construireIR " << endl;
 				e->construireIR(cfg);
-				cout << "fin if " << endl;
+				cout << "Après construireIR " << endl;
 			}
 				
 			

@@ -145,13 +145,16 @@ string Expression::construireIR(CFG* cfg) {
 		return "Identifiant";
 	} else if(AppelFonction* appelFonction = dynamic_cast<AppelFonction*>(this)) {
 		
+		cout << "appel de fonction" << endl;
 		string reg = cfg->creerNouveauRegistre();
+		cout << "appel de fonction" << endl;
 		BasicBlock* blocCourant = cfg->getBlockCourant();
+		cout << "appel de fonction" << endl;
 		vector<std::string> params;
 
 		params.push_back(*appelFonction->getIdentifiant()->getId());
 		params.push_back(reg);
-		
+		cout << "appel de fonction" << endl;
 		vector<Expression*>* listeParametresFonction = appelFonction->getParametres();
 		for(int i = 0; i < listeParametresFonction->size(); i++)
 		{
