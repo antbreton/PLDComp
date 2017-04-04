@@ -1,17 +1,18 @@
 .text        
-.global main 
+.globl main 
+.type main, @function
 
 main:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-    movl   $101, %edi
-    call   putchar
-    movl   $122, %edi
-    call   putchar
+    subq    $16, %rsp 
+    movq    $2, %rax
+    movq    %rax, -8(%rbp)
+    movq    f, %rax
+    movq    %rax, -16(%rbp)
 
     leave
     ret
 
->>>>>>> 903b5334776443f66bb7d90c59bcc04996ccdf3e
 
