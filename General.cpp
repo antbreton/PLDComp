@@ -334,7 +334,20 @@ string Expression::construireIR(CFG* cfg) {
 			reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
 
 			//Registre rightValue
-			string reg2 = 	affectation->getValeur()->construireIR(cfg);
+			//string reg2 = 	affectation->getValeur()->construireIR(cfg);
+
+			string reg2; 
+
+			if(Val* v = dynamic_cast<Val*>(affectation->getValeur()))
+			{
+				reg2 = to_string(v->valeur);
+			} else if (Caractere* car = dynamic_cast<Caractere*>(affectation->getValeur()))
+			{
+				reg2 = car->c;
+			}
+			else {
+				reg2 = affectation->getValeur()->construireIR(cfg);
+			}
 
 			vector<std::string> params;
 			params.push_back(reg); // Destination

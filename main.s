@@ -5,12 +5,13 @@ main_bb:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-    subq    $8, %rsp 
-    LDCONST
-    movq   $2, %edi
+    subq    $16, %rsp 
     WMEM
-    movq    -0(%rbp), %rax
+    movq    $2, %rax
     movq    %rax, -8(%rbp)
+    WMEM
+    movq    , %rax
+    movq    %rax, -16(%rbp)
 
     leave
     ret
