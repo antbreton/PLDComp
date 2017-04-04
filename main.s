@@ -1,19 +1,17 @@
 .text        
-.globl main 
+.global main 
 
-main_bb:
+main:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-    subq    $16, %rsp 
-    WMEM
-    movq    $2, %rax
-    movq    %rax, -8(%rbp)
-    WMEM
-    movq    , %rax
-    movq    %rax, -16(%rbp)
+    movl   $101, %edi
+    call   putchar
+    movl   $122, %edi
+    call   putchar
 
     leave
     ret
 
+>>>>>>> 903b5334776443f66bb7d90c59bcc04996ccdf3e
 

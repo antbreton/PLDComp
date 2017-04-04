@@ -2,5 +2,6 @@ void main(){
 int32_t a;
 a = 2;
 char c;
-c = ‘f’;
+c = 'f';
 }
+

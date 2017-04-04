@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2
@@ -6,3 +7,57 @@ PROGRAMME // tableSymb size : 0
 		END_BLOC
 	END_BLOC
 END_PROGRAMME
+=======
+APLE CONSTR avec z
+APLE CONSTR avec t
+APLE CONSTR avec main[a:0x19bd2a0, c:0x19bd260 ]
+[a:0x19bd2a0, c:0x19bd280 ]
+APLE CONSTR avec fgetid:f
+TEST 10 :1
+TEST :0x19bd440
+getid:f
+TEST :f
+getid:f
+0x19bd4f0
+JE SUIS la TEST
+JE SUIS ici TEST
+[a:0x19bd5d0, c:0x19bd2d0  st ]
+JE SUIS la TEST
+JE SUIS ici TEST
+[a:0x19bd1b0, c:0x19bd5d0  st ]
+TEST 10 :2
+TEST :0x19bd040
+getid:z
+TEST :z
+getid:z
+TEST :0x19bd130
+getid:t
+TEST :t
+getid:t
+[a:0x19b8d70, c:0x19bd1b0 ]
+%%%Frontend%%%
+PROGRAMME // tableSymb size : 0
+	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t TEST1
+TEST 3
+	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2
+blabla
+		BLOC_IF ( EGAL VAL 1  == VAL 1 )
+TEST 3
+		BEGIN_BLOC // nb instr : 1 - tableSymb size : 1
+blabla
+AFFECTATION ID f  = VAL 2  
+		END_BLOC
+	END_BLOCTEST2
+END_PROGRAMME
+Erreur semantique : erreur de return dans : main
+%%%Backend%%%
+Taille liste fonction : 1
+getid:main
+test 2
+calculeTaille debut
+getid:t
+getid:z
+calculeTaille fin
+Taille liste CFG : 1
+GEN_PROLOGUE
+>>>>>>> Linker

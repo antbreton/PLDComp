@@ -16,8 +16,13 @@ all : $(EXECNAME)
 
 $(EXECNAME) : $(OBJS)
 	$(COMPIL) -o $@ $(COMPILFLAGS) $(OPTIMISATIONFLAGS) $^
+	
 %.o : %.c
 	$(COMPIL)  -o $@ $(COMPILFLAGS) $(OPTIMISATIONFLAGS) -c $<
+
+assembleur:
+	as main.s -o main.o
+	g++ main.o -o exe
 	
 marche :
 	$(COMPIL) *.cpp *.c -o $(EXECNAME) 

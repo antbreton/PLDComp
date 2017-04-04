@@ -1,3 +1,4 @@
 void main(){
-putchar('k');
+putchar('e');
+putchar('z');
 }
