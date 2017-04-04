@@ -415,7 +415,7 @@ string Expression::construireIR(CFG* cfg) {
 			blocCourant->ajouterVariableMappee(cfg, nomVariable);
 		}
 			// Registre virtuel de l'identifiant
-			string reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
+		string reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
 		cout << reg << endl;
 		cout << "Fin IR : Identifiant" << endl;
 
@@ -474,7 +474,8 @@ string Expression::construireIR(CFG* cfg) {
 				reg2 = to_string(v->valeur);
 			} else if (Caractere* car = dynamic_cast<Caractere*>(affectation->getValeur()))
 			{
-				reg2 = car->c;
+				//reg2 = car->c;
+				reg2 = to_string((int)(static_cast<Caractere*>(car)->c ));
 			}
 			else {
 				reg2 = affectation->getValeur()->construireIR(cfg);
