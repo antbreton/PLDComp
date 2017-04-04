@@ -178,7 +178,7 @@ string Expression::construireIR(CFG* cfg) {
 			blocCourant->ajouterVariableMappee(cfg, nomVariable);
 		} 
 			// Registre leftValue
-			reg = "!r" + blocCourant->getValeurMappee(nomVariable);
+			reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
 
 			//Registre rightValue
 			string reg2 = 	affectation->getValeur()->construireIR(cfg);
