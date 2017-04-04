@@ -168,6 +168,31 @@ string Expression::construireIR(CFG* cfg) {
 		cerr << "Construire IR : Classe AppelFonction" << endl;
 
 		return reg;
+	} else if(Affectation* affectation = dynamic_cast<Affectation*>(this)) {
+
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+		string nomVariable = *affectation->getIdentifiant()->getId();
+		string reg;
+
+		if(!blocCourant->estVarMappee(nomVariable)){
+			blocCourant->ajouterVariableMappee(cfg, nomVariable);
+		} 
+			// Registre leftValue
+			reg = "!r" + blocCourant->getValeurMappee(nomVariable);
+
+			//Registre rightValue
+			string reg2 = 	affectation->getValeur()->construireIR(cfg);
+
+			vector<std::string> params;
+			params.push_back(reg); // Destination
+			params.push_back(reg2); // Source
+			IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::WMEM, blocCourant, params);
+			blocCourant->ajouterInstrIR(nouvelleInstr);
+
+			cerr << "Construire IR : Classe Affectation" << endl;
+
+			return reg;
+
 	} else {
 		return "Inconnu";
 	}

@@ -23,6 +23,7 @@ class CFG {
 		std::string creerNouveauRegistre();
 		BasicBlock* getBlockCourant() {return this->blocCourant;}
 		int getNbRegVirtuels();
+		void incrementerNbRegVirtuels(){ this->nbRegVirtuels++; }
 		std::string gen_prologue();
 		std::string gen_epilogue();
 		std::map<string, IRVar*>* getDicoRegTmp() const {return dicoRegTmp;};

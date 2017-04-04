@@ -327,6 +327,8 @@ public:
 	Affectation():Expression() {}
 	void setValeur(Expression* expression) {this->valeur = expression;}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
+	Expression* getValeur() { return this->valeur; }
+	Identifiant* getIdentifiant(){ return this->identifiant; }
 	void Afficher (int nbtab) {
 		Expression::Afficher(nbtab);
 		cout<<"AFFECTATION ";

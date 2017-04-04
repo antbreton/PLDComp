@@ -131,11 +131,13 @@ std::string CFG::creerNouveauRegistre() {
         this->nbRegVirtuels++;
 		cout << "creerNewReg" << endl;
         IRVar* maVar = new IRVar(nomRegistreVirtuel);
+
 		cout << maVar->getNom() << endl;
 
-        this->dicoRegTmp->insert(make_pair(nomRegistreVirtuel, maVar));
-		
 		cout << "creerNewReg" << endl;
+
+        this->dicoRegTmp->insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
+        return nomRegistreVirtuel;
 }
 
 
