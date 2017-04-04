@@ -1,6 +1,6 @@
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
-	BEGIN_BLOC // nb instr : 2 - tableSymb size : 2
+	BEGIN_BLOC // nb instr : 2 - tableSymb size : 4
 		AFFECTATION ID a  = CARACTEREi 
 		AFFECTATION ID a  = CARACTEREk 
 	END_BLOC

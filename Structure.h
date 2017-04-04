@@ -10,12 +10,13 @@ class Bloc;
 
 class StructureControle : public Instruction {
 	public:
-		StructureControle(Instruction * instrv): instrv(instrv){}
+		StructureControle(Instruction * instrv);
 		virtual ~StructureControle() {}	
 		Instruction* instrv;
 		virtual void Afficher (int nbtab){}
 		virtual void setRecursifBlocAncestorToAll(Bloc * bloc);
 		bool testReturn(bool nullable);
+		virtual bool checkIDs() {if(Bloc *b1 = dynamic_cast<Bloc *>(instrv))	return b1->checkIDs();	return true;}
 };
 
 class BlocIf : public StructureControle {
@@ -23,6 +24,7 @@ class BlocIf : public StructureControle {
 		BlocIf(Expression * expr, Instruction * instrv, Instruction * blocElse = NULL);
 		Expression* exprCondition;
 		Instruction * blocElse;
+		virtual bool checkIDs();
 		void setRecursifBlocAncestorToAll(Bloc * bloc);
 		void Afficher (int nbtab) {
 			nbtab++;
@@ -42,6 +44,7 @@ class BlocIf : public StructureControle {
 
 class BlocWhile : public StructureControle {
 	public:
+		virtual bool checkIDs();
 		BlocWhile(Expression * expr, Instruction * instrv):StructureControle(instrv), exprCondition(expr) {}
 		Expression* exprCondition;
 		void Afficher (int nbtab) {

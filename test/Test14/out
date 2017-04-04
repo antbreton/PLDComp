@@ -1,6 +1,6 @@
 PROGRAMME // tableSymb size : 0
 	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t 
-	BEGIN_BLOC // nb instr : 0 - tableSymb size : 0
+	BEGIN_BLOC // nb instr : 0 - tableSymb size : 2
 	END_BLOC
 END_PROGRAMME
 Erreur semantique : erreur de return dans : main

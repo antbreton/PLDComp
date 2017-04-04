@@ -1,6 +1,7 @@
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID aaaa // size : 2VAR INT32 z VAR INT64 t 
-	BEGIN_BLOC // nb instr : 1 - tableSymb size : 0		RETURN 
+	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2		RETURN 
 	END_BLOC
 END_PROGRAMME
 Erreur semantique : fonction main introuvable
+
