@@ -14,7 +14,8 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 	this->cfg = cfg;
 	this-> label = label;
 	cout << "debut const basicblock" << endl;
-	this->listeInstructionsIR = new vector<IRInstr*>();
+	listeInstructionsIR = new vector<IRInstr*>();
+
 	if(bloc!=NULL)
 	 {
 
@@ -69,7 +70,7 @@ string BasicBlock::genererAssembleur() {
 // Ajoute une instruction IR à la liste du bloc
 void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
 	cout << " debut ajouterInstrIR"<< endl;
-    listeInstructionsIR->push_back(instruction);
+	listeInstructionsIR->push_back(instruction);
 	cout << " fin ajouterInstrIR"<< endl;
 }
 
