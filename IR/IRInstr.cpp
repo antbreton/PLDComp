@@ -58,11 +58,12 @@ string IRInstr::genererAssembleur() {
 	  map<string, IRVar*>* dicoRegTmp = cfg->getDicoRegTmp();
 	  
 	  // MODIFICATION
+	  
 	  // Si c'est un registre/variable :
 	  // On cherche l'offset du parametre, et apres on y ajoute le (%rbp).
 	  // Si c'est une constante :
 	  // On ajoute un $ devant.
-	  cout << "PAREMETRE1" << parametre1 << endl;
+	  
 	  if(parametre1[0] == '!' ) 
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre1)->second;
@@ -104,7 +105,7 @@ string IRInstr::genererAssembleur() {
 		case LDCONST :
 		  codeAssembleur += "    LDCONST\r\n";
 		  if(parametre1=="-0(%rbp)"){ parametre1 = "%edi"; }
-		  codeAssembleur += "    movq   "+ parametre2 +", "+parametre1+"\r\n";
+		  codeAssembleur += "    movl   "+ parametre2 +", "+parametre1+"\r\n";
 		  break;
 		  
 		case WMEM :
@@ -142,6 +143,31 @@ string IRInstr::genererAssembleur() {
 		  codeAssembleur += "    movq    "+ parametre2 +", %rax\r\n";
 		  codeAssembleur += "    imul   "+ parametre3 +", %rax\r\n";
 		  codeAssembleur += "    movq    %rax, "+ parametre1 +"\r\n";
+		  break;
+		
+		case CMP_EQ :
+		  codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
+		  codeAssembleur += "    xor    "+parametre3+", %rax\r\n"; // bit a 1 si different, bit a 0 si egal.
+		  codeAssembleur += "    cmpq   $0, %rax \r\n"; // Est ce que Rax est a 0, si c'est a 0 c'est egal
+		  codeAssembleur += "    sete   %al \r\n";   // SETE = Set byte if equal ; AL is the lower 8 bits : Tous les bits de al passe a 1 si ils sont egaux
+		  codeAssembleur += "    movzbl %al, %rax \r\n"; // MOV, zero extend, Byte to Long : On étend ça a tout le %rax.
+		  codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
+		  break;
+		  
+		case CMP_LT :
+		  codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
+		  codeAssembleur += "    cmp    "+parametre3+", %rax \r\n";
+		  codeAssembleur += "    setl   %al  \r\n";  // SETL = Set byte if less
+		  codeAssembleur += "    movzbl %al, %rax \r\n";
+		  codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
+		  break;
+		  
+		case CMP_LE :
+		  codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
+		  codeAssembleur += "    cmp    "+parametre3+", %rax \r\n";
+		  codeAssembleur += "    setle   %al  \r\n"; // SETLE  = Set byte if less or equal 
+		  codeAssembleur += "    movzbl %al, %rax \r\n";
+		  codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
 		  break;
 		  
 	  }

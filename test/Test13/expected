@@ -1,0 +1,13 @@
+PROGRAMME // tableSymb size : 0
+	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
+	BEGIN_BLOC // nb instr : 0 - tableSymb size : 2
+	END_BLOC
+	FONCTION	VOID aaa // size : 0
+	BEGIN_BLOC // nb instr : 1 - tableSymb size : 0		RETURN 
+	END_BLOC
+	FONCTION	INT32 bbb // size : 0
+	BEGIN_BLOC // nb instr : 1 - tableSymb size : 0		RETURN VAL 5 
+	END_BLOC
+	FONCTION	INT32 ccc // size : 0
+	FONCTION	VOID ddd // size : 0
+END_PROGRAMME

@@ -1,0 +1,7 @@
+PROGRAMME // tableSymb size : 0
+	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
+	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2
+		ID a 
+	END_BLOC
+END_PROGRAMME
+Erreur de résolution de portée : 'a' est inconnue dans ce scope.

@@ -6,18 +6,26 @@
 
 using namespace std;
 
+class Bloc;
+
 class StructureControle : public Instruction {
 	public:
-		StructureControle(Instruction * instrv): instrv(instrv){}
+		StructureControle(Instruction * instrv);
 		virtual ~StructureControle() {}	
 		Instruction* instrv;
 		virtual void Afficher (int nbtab){}
+		virtual void setRecursifBlocAncestorToAll(Bloc * bloc);
+		bool testReturn(bool nullable);
+		virtual bool checkIDs() {if(Bloc *b1 = dynamic_cast<Bloc *>(instrv))	return b1->checkIDs();	return true;}
 };
+
 class BlocIf : public StructureControle {
 	public:
-		BlocIf(Expression * expr, Instruction * instrv, Instruction * blocElse = NULL):StructureControle(instrv), exprCondition(expr), blocElse(blocElse){}
+		BlocIf(Expression * expr, Instruction * instrv, Instruction * blocElse = NULL);
 		Expression* exprCondition;
 		Instruction * blocElse;
+		virtual bool checkIDs();
+		void setRecursifBlocAncestorToAll(Bloc * bloc);
 		void Afficher (int nbtab) {
 			nbtab++;
 			string tab = getTabPrefix(nbtab);
@@ -36,10 +44,14 @@ class BlocIf : public StructureControle {
 
 class BlocWhile : public StructureControle {
 	public:
+		virtual bool checkIDs();
 		BlocWhile(Expression * expr, Instruction * instrv):StructureControle(instrv), exprCondition(expr) {}
 		Expression* exprCondition;
 		void Afficher (int nbtab) {
-			cout<<"BLOC_WHILE ( "; exprCondition->Afficher(nbtab); cout<<" ) ";
+			nbtab++;
+			string tab = getTabPrefix(nbtab);
+			
+			cout<<endl<<tab<<"BLOC_WHILE ( "; exprCondition->Afficher(nbtab); cout<<" ) ";
 			instrv->Afficher(nbtab);
 		}
 };
@@ -51,7 +63,10 @@ class BlocFor : public StructureControle {
 		Expression* exprCondition;
 		Expression* exprIncrementation;
 		void Afficher (int nbtab) {
-			cout<<"BLOC_FOR ( "; exprInit->Afficher(nbtab); cout<<", "; exprCondition->Afficher(nbtab); cout<<", "; exprIncrementation->Afficher(nbtab); cout<<")";
+			nbtab++;
+			string tab = getTabPrefix(nbtab);
+			
+			cout<<endl<<tab<<"BLOC_FOR ( "; exprInit->Afficher(nbtab); cout<<", "; exprCondition->Afficher(nbtab); cout<<", "; exprIncrementation->Afficher(nbtab); cout<<")";
 			instrv->Afficher(nbtab);
 		}
 };

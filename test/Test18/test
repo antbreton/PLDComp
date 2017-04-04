@@ -1,0 +1,10 @@
+void main(int32_t z, int64_t t) {
+	int32_t a;
+	
+	if(1)
+	{
+		a=2;
+	}
+}
+
+
