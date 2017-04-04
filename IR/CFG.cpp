@@ -9,16 +9,10 @@ CFG::CFG(Fonction* fonction)
 	
 	this->dicoRegTmp = new map<string, IRVar*>();
 	
-	if(fonctionDuCFG->getBloc() == NULL) 
-	{cout << "bloc null skdfj" << endl;
-	}
 	Bloc* bloc = fonctionDuCFG->getBloc();
-	if(bloc == NULL) 
-	{cout << "bloc null skdfj" << endl;
-	}
-	cout << sizeof(bloc) << endl;
+
 	BasicBlock* newBasicBlock = new BasicBlock(this, bloc, fonctionDuCFG->getIdentifiant()+"_bb");
-	cout << "test"<<endl;
+
 	this->addBasicBlock(newBasicBlock);
 	
 	nbRegVirtuels = 0;
@@ -57,6 +51,7 @@ string CFG::genererAssembleur() {
 	// CORPS
 	// Pour chaque basicBlock dans le CFG on genere son code assembleur.
   	list<BasicBlock *>::iterator ite = listeBasicBlocks.begin() ;
+
   	while (ite != listeBasicBlocks.end()) 
   	{
 		codeAssembleur += (*ite)->genererAssembleur();
@@ -90,21 +85,20 @@ std::string CFG::gen_prologue()
 	int i = 1;
 	std::map<string, IRVar*>* dico = this->getDicoRegTmp();
 	std::map<string, IRVar*>::iterator it;
-	cout << "La probleme est la" << endl;
 	
 	// Si il y a au moins une instruction dans le programme
 	if(dico != NULL)
 	{
-		cout << "Le dico n'est pas null" << endl;
+
 		for(it=dico->begin(); it!=dico->end(); ++it)
 		{
-			cout << "probleme resolu ? " << endl;
 			it->second->setOffset(8*i);
 			string instructionASM = "movq $" + to_string(it->second->getValeur()) + ", -" + to_string(it->second->getOffset())  +"(%rbp)\r\n";
 			codeAssembleur += instructionASM;
 			i++;
 		}
 	}
+
 	*/
 	cout << endl << "GEN_PROLOGUE" << endl;
 	int i = 0;
@@ -154,15 +148,11 @@ int CFG::calculeTaille()
 std::string CFG::creerNouveauRegistre() {
         string nomRegistreVirtuel = "!r" + to_string(this->nbRegVirtuels) ;
         this->nbRegVirtuels++;
-		cout << "creerNewReg" << endl;
+
         IRVar* maVar = new IRVar(nomRegistreVirtuel);
 
-		cout << maVar->getNom() << endl;
-
-		cout << "creerNewReg avant insert" << endl;
-
         this->dicoRegTmp->insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
-		cout << "creerNewReg apres insert" << endl;
+
         return nomRegistreVirtuel;
 }
 

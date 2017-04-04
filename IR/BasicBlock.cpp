@@ -10,14 +10,14 @@ BasicBlock::BasicBlock(std::string label)
 
 BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 {
+
 	cout << "test 2" << endl;
 	cfg->setBlockCourant(this); //TODO : faut-il maj ailleur de bloc courant ?
+
 	this->cfg = cfg;
 	this-> label = label;
-	cout << "debut const basicblock" << endl;
-	listeInstructionsIR = new vector<IRInstr*>();
 
-	cout << "SIZE listeInstructionsIR : " << listeInstructionsIR->size() << endl;
+	listeInstructionsIR = new vector<IRInstr*>();
 
 	if(bloc!=NULL)
 	{
@@ -28,13 +28,10 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 
 		for(ite = listeIntruc->begin(); ite!=listeIntruc->end(); ++ite)
 		{
-		  cout << "debut boucle " << endl;
 			
 			if(Expression* e = dynamic_cast<Expression*>(*ite))
 			{
-				cout << "Avant construireIR " << endl;
 				e->construireIR(cfg);
-				cout << "Après construireIR " << endl;
 			}
 		}
 	
@@ -60,6 +57,7 @@ string BasicBlock::genererAssembleur() {
     string codeAssembleur;
     
     vector<IRInstr *>::iterator ite = listeInstructionsIR->begin();
+
     while(ite != listeInstructionsIR->end()) {
       codeAssembleur += (*ite)->genererAssembleur();
       ite++;
@@ -71,10 +69,7 @@ string BasicBlock::genererAssembleur() {
 
 // Ajoute une instruction IR à la liste du bloc
 void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
-	cout << " debut ajouterInstrIR"<< endl;
-	cout << "SIZE listeInstructionsIR : " << listeInstructionsIR->size() << endl;
 	listeInstructionsIR->push_back(instruction);
-	cout << " fin ajouterInstrIR"<< endl;
 }
 
 
