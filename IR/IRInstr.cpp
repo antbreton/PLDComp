@@ -62,6 +62,7 @@ string IRInstr::genererAssembleur() {
 	  // On cherche l'offset du parametre, et apres on y ajoute le (%rbp).
 	  // Si c'est une constante :
 	  // On ajoute un $ devant.
+	  cout << "PAREMETRE1" << parametre1 << endl;
 	  if(parametre1[0] == '!' ) 
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre1)->second;
@@ -78,19 +79,20 @@ string IRInstr::genererAssembleur() {
 		IRVar* variableIR = dicoRegTmp->find(parametre2)->second;
 		int varOffset = variableIR->getOffset();
 		// to_string est dans le C++11 sinon NumberToString
-		parametre2 = to_string(varOffset)+"(%rbp)";
+		parametre2 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre2[0]))
 	  {
 		  parametre2 = "$"+parametre2;
 	  }
+
 	  
 	  if(parametre3[0] == '!') 
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre3)->second;
 		int varOffset = variableIR->getOffset();		
 		// to_string est dans le C++11 sinon NumberToString
-		parametre3 = to_string(varOffset)+"(%rbp)";
+		parametre3 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre3[0]))
 	  {
@@ -100,33 +102,36 @@ string IRInstr::genererAssembleur() {
 	  
 	  switch(mnemoniqueAction) {
 		case LDCONST :
+		  codeAssembleur += "    LDCONST\r\n";
+		  if(parametre1=="-0(%rbp)"){ parametre1 = "%edi"; }
 		  codeAssembleur += "    movq   "+ parametre2 +", "+parametre1+"\r\n";
 		  break;
 		  
 		case WMEM :
+		codeAssembleur += "    WMEM\r\n";
 		  codeAssembleur += "    movq    "+ parametre2 +", %rax\r\n";
 		  codeAssembleur += "    movq    %rax, "+ parametre1 +"\r\n";
 		  break;
 		  
 		case RMEM :
+		codeAssembleur += "    RMEM\r\n";
 		  codeAssembleur += "    movq    "+ parametre1 +", %rax\r\n";
 		  codeAssembleur += "    movq    "+ parametre2 +", %r10\r\n";
 		  codeAssembleur += "    movq    %r10, (%rax)\r\n";
 		  break;
 		  
 		case CALL :
+		codeAssembleur += "    CALL\r\n";
 		  codeAssembleur += "    call   "+ parametre1 +"\r\n";
 		  break;
 		  
 		case ADD :
+		codeAssembleur += "    ADD\r\n";
 		  codeAssembleur += "    movq    "+ parametre2 +", %rax\r\n";
 		  codeAssembleur += "    addq    "+ parametre3 +", %rax\r\n";
 		  codeAssembleur += "    movq    %rax, "+ parametre1 +"\r\n";
 		  break;
 		  
-		  
-		/* 
-		// les deux sont fait pour la suite
 		case SUB :
 		  codeAssembleur += "    movq    "+ parametre2 +", %rax\r\n";
 		  codeAssembleur += "    subq    "+ parametre3 +", %rax\r\n";
@@ -138,7 +143,6 @@ string IRInstr::genererAssembleur() {
 		  codeAssembleur += "    imul   "+ parametre3 +", %rax\r\n";
 		  codeAssembleur += "    movq    %rax, "+ parametre1 +"\r\n";
 		  break;
-		 */ 
 		  
 	  }
 	  

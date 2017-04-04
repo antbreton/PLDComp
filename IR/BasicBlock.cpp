@@ -28,9 +28,11 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 
 		for(ite = listeIntruc->begin(); ite!=listeIntruc->end(); ++ite)
 		{
+			cout << "------ FOR ----------" << endl;
 			
 			if(Expression* e = dynamic_cast<Expression*>(*ite))
 			{
+				cout << "------ IF ----------" << endl;
 				e->construireIR(cfg);
 			}
 		}
