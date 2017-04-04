@@ -25,9 +25,9 @@ class IRInstr {
 			RMEM,
 			WMEM,
 			CALL,
-			//cmp_eq,
-			//cmp_lt,
-			//cmp_le
+			CMP_EQ,
+			CMP_LT, // Less than
+			CMP_LE // Less than or Equal
 		};
 		IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std::string> params);
 		~IRInstr();
