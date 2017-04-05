@@ -15,11 +15,19 @@ class Val;
 class Variable;
 class Bloc;
 class CFG;
+class Affectation;
 // ---- méthodes Utils --------
 
 // Cette méthode crée une string de préfixes
 string getTabPrefix(int n);
 
+class declarationGrammaire
+{
+	public :
+		void push_back(Variable * v) { variables->push_back(v); }
+		vector<Variable*>* variables;
+		Affectation * affectation;
+};
 // ---- méthodes Utils --------
 /*
 class Noeud
@@ -74,6 +82,7 @@ class Expression : public Instruction{
 class Identifiant : public Expression {
 	public:
 		Identifiant(string * id):Expression(),id(id){}
+		Identifiant(string id):Expression(),id(new string(id)){}
 		// TODO : Attribut public
 		string * id;
 		string* getId() { return this->id; }
@@ -350,6 +359,7 @@ private:
 class Affectation : public Expression {
 public:
 	Affectation():Expression() {}
+	Affectation(string id, Expression * e):Expression(),valeur(e) {identifiant= new Identifiant(id);}
 	void setValeur(Expression* expression) {this->valeur = expression;}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
 	Expression* getValeur() { return this->valeur; }

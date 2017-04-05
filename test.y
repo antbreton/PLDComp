@@ -40,7 +40,7 @@ int yylex(void);
    Val* valeur;
    Caractere* cval;
    Expression* expression;
-   std::vector<Variable*>* declaration;
+   declarationGrammaire* declaration;
    Variable* variable;
    Fonction* fonc;
    ParamDeclar* paramDeclar;
@@ -151,25 +151,38 @@ suffixe_tab : CROCHOUVR valeur_variable CROCHFERM {$$ = $2;}
 
 declaration_droite : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$1,*$2);};
 
-separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->push_back(new Variable(*$3));}	// A chaque appel on push l'identifiant courant dans la liste
-                | /* vide */ { $$ = new std::vector<Variable*>();};			// On crée la liste d'identifiant quand on est sur vide
+separateur_decl : separateur_decl VIRGULE IDENTIFIANT { $$->variables->push_back(new Variable(*$3));}	// A chaque appel on push l'identifiant courant dans la liste
+                | /* vide */ {$$ = new declarationGrammaire();  $$->variables = new std::vector<Variable*>();};			// On crée la liste d'identifiant quand on est sur vide
 
-declaration : declaration_droite separateur_decl PV { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());}} // On crée un vecteur de variables qui auront toutes le type de la première déclaration
-            | declaration_droite separateur_decl EGAL_AFFECTATION expression PV { $$ = $2; $$->push_back($1); for(int i=0; i<$$->size();i++) {(*$$)[i]->setType($1->getType());} if($$->size()==1) {(*$$)[0]->setValeur($4);} else {(*$$)[$$->size()-2]->setValeur($4);}  } ; /* on recupere la liste dans $2 et on rajoute le premier $1 en dernier. Ensuite on recupere le type de $1 et on l'affecte a tout ceux de la liste. Ensuite on affecte la valeur au dernier de la liste(donc l'avant dernier du vecteur) ou bien a la seul variable*/
+declaration : declaration_droite separateur_decl PV { $$ = $2; $$->push_back($1); for(int i=0; i<$$->variables->size();i++) {(*($$->variables))[i]->setType($1->getType());}} // On crée un vecteur de variables qui auront toutes le type de la première déclaration
+            | declaration_droite separateur_decl EGAL_AFFECTATION expression PV { $$ = $2; 
+            $$->variables->push_back($1); 
+            for(int i=0; i<$$->variables->size();i++) {
+
+            (*($$->variables))[i]->setType($1->getType());
+            }
+            if($$->variables->size()==1) {
+            // Faire affectation
+            $$->affectation = new Affectation((*($$->variables))[0]->getIdentifiant(),$4);
+            } 
+            else 
+            {
+            // Faire affectation
+            $$->affectation = new Affectation((*($$->variables))[$$->variables->size()-2]->getIdentifiant(),$4);} }; /* on recupere la liste dans $2 et on rajoute le premier $1 en dernier. Ensuite on recupere le type de $1 et on l'affecte a tout ceux de la liste. Ensuite on affecte la valeur au dernier de la liste(donc l'avant dernier du vecteur) ou bien a la seul variable*/
 
 //fonction
 fonction : prototype PV {$$ = $1;}
          | prototype bloc {$$=$1; $$->RajouterBloc($2);};
 
 // Instancie la fonction avec son type, son ID et en lui ajoutant sa liste de variable. 
-prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Fonction (*$1, *$2, $4);};
+prototype : type IDENTIFIANT PAROUVR parametre_declaration PARFERM {$$ = new Fonction (*$1, *$2, $4->variables);};
 
 declaration_param_fonction : type IDENTIFIANT suffixe_tab { $$ = new Variable(*$1,*$2); }; /* TODO gerer les tabs */
 
 // Crée une liste de variable
-parametre_declaration : parametre_declaration VIRGULE declaration_param_fonction {$$->push_back($3);} // on ajoute la variable
-                      | parametre_declaration declaration_param_fonction { $$->push_back($2);} // on ajoute la variable correspondante
-                      | {$$ = new std::vector<Variable*>();}; // on crée le vecteur de variable
+parametre_declaration : parametre_declaration VIRGULE declaration_param_fonction {$$->variables->push_back($3);} // on ajoute la variable
+                      | parametre_declaration declaration_param_fonction { $$->variables->push_back($2);} // on ajoute la variable correspondante
+                      | {$$ = new declarationGrammaire(); $$->variables=new std::vector<Variable*>();}; // on crée le vecteur de variable
 
 appel_fonction : IDENTIFIANT PAROUVR liste_expression PARFERM { $$ = new AppelFonction(); $$->setIdentifiant(new Identifiant($1)); $$->setParametres($3); };
 
@@ -192,7 +205,7 @@ instr : expression PV {$$ = $1; $1->setIsInline(1); /*$1->setAncetre($$);*/}
 
 
 programme : programme fonction {$$=$1; $$->ajouterFonction($2); if($2->getBloc() != NULL) $2->getBloc()->setAncetre($$->getBloc());}
-          | programme declaration {$$=$1; $$->ajouterListeVariable($2);}
+          | programme declaration {$$=$1; $$->ajouterListeVariable($2->variables);}
           |{ $$ = new Programme();};
 
 expression : NOT expression { $$ = new Not($2); $1->setAncetre($$);}
@@ -247,7 +260,7 @@ bloc_while : WHILE PAROUVR expression PARFERM instr { $$ = new BlocWhile($3,$5);
 
 bloc : ACCOLOUVR contenu_bloc ACCOLFERM {$$ = $2;};
 
-contenu_bloc :contenu_bloc declaration {$$->ajouterListeVariable($2);} // On ajoute la liste des variables résultantes de la déclaration dans le bloc
+contenu_bloc :contenu_bloc declaration {$$->ajouterListeVariable($2->variables); if($2->affectation != NULL){ $2->affectation->setIsInline(1);$$->AjouterInstr($2->affectation);}} // On ajoute la liste des variables résultantes de la déclaration dans le bloc
 							// Dans ce cas, nous devons traiter le cas ou l'instruction est elle même un bloc et lui désigné le bloc courant comme ancêtre
 						 | contenu_bloc instr { $$->AjouterInstr($2);}
 						 | {$$ = new Bloc();};
