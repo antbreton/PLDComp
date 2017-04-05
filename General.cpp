@@ -296,7 +296,7 @@ string Expression::construireIR(CFG* cfg) {
 
 		cerr << "Fin IR : OperateurPlus" << endl;
 
-		return regGauche;
+		return regResultat;
 
 	} else if(OperateurMoins* opeMoins = dynamic_cast<OperateurMoins*>(this)) {
 

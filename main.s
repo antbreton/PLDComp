@@ -5,15 +5,17 @@ main:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-    subq    $32, %rsp 
-    movq    $2, %rax
+    subq    $56, %rsp 
+    movq    $99, %rax
     movq    %rax, -8(%rbp)
-    movl   $1, -24(%rbp)
-    movq    -8(%rbp), %rax
-    addq    -24(%rbp), %rax
-    movq    %rax, -32(%rbp)
-    movq    -8(%rbp), %rax
-    movq    %rax, -16(%rbp)
+    movl   $101, -24(%rbp)
+    call   putchar
+    movl   $122, -40(%rbp)
+    call   putchar
+    movq    -56(%rbp), %rax
+    movq    -8(%rbp), %rdi
+    movq    %rdi, (%rax)
+    call   putchar
 
     leave
     ret

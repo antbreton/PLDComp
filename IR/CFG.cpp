@@ -121,7 +121,7 @@ std::string CFG::gen_prologue()
 	std::map<string, IRVar*>::iterator it;
 	
 	int j = 1;
-	if(dico->size() != NULL){
+	if(dico->size() != 0){
 
 		codeAssembleur += "    subq    $"+ to_string(8*dico->size()) +", %rsp \r\n";
 
@@ -171,7 +171,7 @@ std::string CFG::creerNouveauRegistre() {
 }
 
 std::string CFG::creerNouveauRegistre(int nbRegVirt) {
-		std::string nomRegistreVirtuel = "!r" + nbRegVirt ;
+		std::string nomRegistreVirtuel = "!r" + to_string(nbRegVirt) ;
         IRVar* maVar = new IRVar(nomRegistreVirtuel);
         this->dicoRegTmp->insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
         return nomRegistreVirtuel;
