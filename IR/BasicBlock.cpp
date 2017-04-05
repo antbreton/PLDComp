@@ -1,4 +1,5 @@
 #include "BasicBlock.h"
+#include "../Structure.h"
 using namespace std;
 
 
@@ -7,11 +8,15 @@ BasicBlock::BasicBlock(std::string label)
 {
 	
 }
+BasicBlock::BasicBlock(CFG* cfg)
+{
+	cfg->setBlockCourant(this);
+	this->cfg = cfg;
 
+}
 BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 {
 
-	cout << "test 2" << endl;
 	cfg->setBlockCourant(this); //TODO : faut-il maj ailleur de bloc courant ?
 
 	this->cfg = cfg;
@@ -34,6 +39,10 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 			{
 				cout << "------ IF ----------" << endl;
 				e->construireIR(cfg);
+			} else if (StructureControle* s = dynamic_cast<StructureControle*>(*ite))
+			{
+				cout << "INSTRUCTION STRUCTURE DE CONTROLE" << endl;
+				s->construireIR(cfg);
 			}
 		}
 	
@@ -42,6 +51,18 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 	// On regarde son type, et selon celui-ci
 	// on recupere le code IR associee (on appelle le getIR de chaque classe) 
 	
+}
+
+BasicBlock::BasicBlock(CFG* cfg, Instruction* instr)
+{
+	cfg->setBlockCourant(this);
+	this->cfg = cfg;	
+	listeInstructionsIR = new vector<IRInstr*>();
+
+	if(Expression* e = dynamic_cast<Expression*>(instr))
+	{
+		e->construireIR(cfg);
+	}
 }
 
 BasicBlock::~BasicBlock()

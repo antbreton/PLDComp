@@ -4,7 +4,7 @@
 #include "IR/CFG.h"
 #include "IR/IRInstr.h"
 #include <iostream>
-
+#include "Structure.h"
 
  
 using namespace std;
@@ -526,5 +526,39 @@ string Expression::construireIR(CFG* cfg) {
 
 	} else {
 		return "Inconnu";
+	}
+}
+
+void StructureControle::construireIR(CFG* cfg){
+	if(BlocIf* blocIf = dynamic_cast<BlocIf*>(this))
+	{	
+		cerr << "IR : BlocIf" << endl;
+		//On evalue l'expression
+		blocIf->exprCondition->construireIR(cfg);
+		
+		BasicBlock* testBB = cfg->getBlockCourant();
+
+		BasicBlock* thenBB = new BasicBlock(cfg, blocIf->instrv);
+		BasicBlock* elseBB = new BasicBlock(cfg, blocIf->blocElse);
+		
+		BasicBlock* afterIfBB = new BasicBlock(cfg);
+		afterIfBB->setSuccCond(testBB->getSuccCond());
+		afterIfBB->setSuccIncond(testBB->getSuccIncond());
+
+		testBB->setSuccCond(thenBB);
+		testBB->setSuccIncond(elseBB);
+
+		thenBB->setSuccCond(afterIfBB);
+		thenBB->setSuccIncond(NULL);
+
+		elseBB->setSuccCond(afterIfBB) ;
+		elseBB->setSuccIncond(NULL) ;
+
+		cfg->setBlockCourant(afterIfBB);
+
+		cerr << "Fin IR : BlocIf" << endl;
+	} 
+	else if (dynamic_cast<BlocWhile*>(this))
+	{
 	}
 }

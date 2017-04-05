@@ -13,6 +13,8 @@ class BasicBlock {
 
 		BasicBlock(std::string label);
 		BasicBlock(CFG* cfg, Bloc* bloc, std::string label);
+		BasicBlock(CFG* cfg, Instruction* instr);
+		BasicBlock(CFG* cfg);
 		~BasicBlock();
 		
 		std::string genererAssembleur();
@@ -25,6 +27,11 @@ class BasicBlock {
 		void ajouterVariableMappee(CFG* cfg, std::string nomVariable);
 		int getValeurMappee(std::string nomVariable);
 		int nbVariables;
+
+		BasicBlock* getSuccCond() {return succCond;};
+		BasicBlock* getSuccIncond() {return succIncond;};
+		void setSuccCond(BasicBlock* bb) {succCond = bb;};
+		void setSuccIncond(BasicBlock* bb) {succIncond = bb;};
 
 	private:
 		std::vector<IRInstr * >* listeInstructionsIR;
