@@ -106,7 +106,7 @@ string IRInstr::genererAssembleur() {
 		case LDCONST :
 		//  codeAssembleur += "    LDCONST\r\n";
 		  //if(parametre1=="-0(%rbp)"){ parametre1 = "%edi"; }
-		  codeAssembleur += "    movl   "+ parametre2 +", "+parametre1+"\r\n";
+		  codeAssembleur += "    movq   "+ parametre2 +", %rdi"+"\r\n";
 		  break;
 		  
 		case WMEM :
@@ -119,7 +119,7 @@ string IRInstr::genererAssembleur() {
 		//codeAssembleur += "    RMEM\r\n";
 		  if(parametre1 !="-0(%rbp)"){ codeAssembleur += "    movq    "+ parametre1 +", %rax\r\n"; }
 		  codeAssembleur += "    movq    "+ parametre2 +", %rdi\r\n";
-		  codeAssembleur += "    movq    %rdi, (%rax)\r\n";
+		  codeAssembleur += "    movq    %rdi, %rax\r\n";
 		  break;
 		  
 		case CALL :

@@ -12,14 +12,14 @@
 entier [0-9]+
 string [a-zA-Z0-9_]+
 texte "[a-zA-Z]+"
-caractere '[a-zA-Z]{1}' 
+caractere '([\x20-\x7F]|\\n|\\t)'
 
 %%
 "#.*\n" { /* ignore */ }
 [ \n\t]  	{ /* ignore */ }
 
 
-{caractere}	{ yylval.cval = new Caractere(yytext[1]); return CARACTERE; }
+{caractere}	{ if( strlen(yytext)==3){yylval.cval = new Caractere(yytext[1]);} else if (yytext[2]=='n'){yylval.cval = new Caractere(10);}  else if (yytext[2]=='t'){yylval.cval = new Caractere(9);} return CARACTERE; }
 "("      	{ return PAROUVR; }
 ")"      	{ return PARFERM; }
 "int32_t"	{ return INT32;}

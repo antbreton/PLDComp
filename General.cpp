@@ -277,9 +277,14 @@ string Expression::construireIR(CFG* cfg) {
 		cerr << "IR : OperateurPlus" << endl;
 		// Operande 1
 		string regGauche =opePlus->getMembreGauche()->construireIR(cfg);
+		if(Val* v = dynamic_cast<Val*>(opePlus->getMembreGauche())){
+			regGauche = "%rdi";
+		}
 		// Operande 2
 		string regDroit = opePlus->getMembreDroit()->construireIR(cfg);
-
+		if(Val* v = dynamic_cast<Val*>(opePlus->getMembreDroit())){
+			regDroit = "%rdi";
+		}
 		// Destination
 		string regResultat = cfg->creerNouveauRegistre();
 
@@ -304,8 +309,16 @@ string Expression::construireIR(CFG* cfg) {
 		
 		// Operande 1
 		string regGauche = opeMoins->getMembreGauche()->construireIR(cfg);
+				if(Val* v = dynamic_cast<Val*>(opeMoins->getMembreGauche())){
+			regGauche = "%rdi";
+		}
 		// Operande 2
 		string regDroit = opeMoins->getMembreDroit()->construireIR(cfg);
+		if(Val* v = dynamic_cast<Val*>(opeMoins->getMembreDroit())){
+			regDroit = "%rdi";
+		}
+		// Operande 2
+		//string regDroit = opeMoins->getMembreDroit()->construireIR(cfg);
 		// Destination
 		string regResultat = cfg->creerNouveauRegistre();
 
@@ -322,7 +335,7 @@ string Expression::construireIR(CFG* cfg) {
 
 		cerr << "Fin IR :  OperateurMoins" << endl;
 		
-		return regGauche;
+		return regResultat;
 
 	} else if(OperateurMultiplier* opeMult = dynamic_cast<OperateurMultiplier*>(this)) {
 		

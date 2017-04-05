@@ -1,0 +1,11 @@
+void main() {
+	char a,b,c;
+	a='0';
+	b=a;
+	c='K';
+	a='1';
+	putchar(b);
+	putchar(c);
+	putchar(a);
+	putchar(' ');
+}

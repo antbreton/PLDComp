@@ -1,7 +1,3 @@
 void main(){
-char car;
-car = 'c';
-putchar('e');
-putchar('z');
-putchar(car);
+putchar('1');
 }
