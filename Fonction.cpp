@@ -111,6 +111,40 @@ bool Bloc::checkIDs()
 	return true;
 }
 
+void Bloc::paramInit() {
+	
+	 
+	//cout<<"PARAM INIT SIZE :"<<instrs->size()<<endl;
+	vector<Affectation*>* vecAffec = new vector <Affectation*>();
+	for(int i=0;i<instrs->size();i++)
+	{
+		if (Affectation* affec = dynamic_cast<Affectation*>((*instrs)[i])) 
+		{
+			vecAffec->push_back(affec);
+			//cout<<"Affec :"<<*affec->getIdentifiant()->id<<endl;
+		}
+	}
+	//cout<<"PARAM INIT nb affec :"<<vecAffec->size();
+
+	for(map<string,Identifiable*>::iterator it = tableSymboles->begin();it!=tableSymboles->end();it++)
+	{
+		if (Variable* var = dynamic_cast<Variable*>(it->second) )
+		{
+			string s =  it->first;
+			//cout<<"PARAM INIT MAP :"<<s<<endl;
+			for (int i=0;i<vecAffec->size();i++){
+				Affectation* a = ((*vecAffec)[i]);
+				
+				if(s==*a->getIdentifiant()->id)
+				{
+					//cout<<"MATCH"<<endl;
+					var->initialisation=true;
+				}
+			}
+		}
+	}	
+
+}
 bool Bloc::testReturn(bool nullable){
 	bool returnFind=false;
 	for(int i=0; i<instrs->size();i++)
@@ -158,6 +192,12 @@ bool Bloc::testReturn(bool nullable){
 }
 
 // Réalisation de fonction ----------
+void Fonction::paramInit() {
+	if( bloc != NULL)
+	{
+		bloc->paramInit();
+	}
+}
 bool Fonction::testReturn() {	
 	if(type!="VOID")
 	{
@@ -236,10 +276,12 @@ void Bloc::constructor_tableVariables(){
 	{
 		if(Variable* v = dynamic_cast<Variable*>(it->second))
 		{
-			if (v->initialisation) {
-			std::pair<string, Variable*> pairAdded (v->getIdentifiant(), v);
-			tableVariables->insert(pairAdded);
-		}
+			if(v->initialisation)
+			{
+				cout<<"INIT : "<<v->initialisation<<endl;
+				std::pair<string, Variable*> pairAdded (v->getIdentifiant(), v);
+				tableVariables->insert(pairAdded);
+			}
 		}
 	}
 

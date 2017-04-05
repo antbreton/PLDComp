@@ -134,6 +134,7 @@ class Programme {
 		bool testMain();
 		Bloc * getBloc() { return bloc; }
 		std::vector<Fonction*> getFonctions();
+		void paramInit();
 	private :
 		Bloc * bloc; // Ce bloc corresponds au contexte du programme, il contiends simplement la table de symbole.
 		vector<Fonction*> *fonctions; //
@@ -350,7 +351,15 @@ private:
 class Affectation : public Expression {
 public:
 	Affectation():Expression() {}
-	void setValeur(Expression* expression) {this->valeur = expression;}
+	void setValeur(Expression* expression) {
+		cout<<"TEST  TEST1"<<endl;
+		this->valeur = expression;
+		/*if(Vari$able* var = dynamic_cast<Variable*>(identifiant)){
+				cout<<"TEST2"<<endl;
+		
+		}*/
+
+}
 	void setIdentifiant(Identifiant* id) {this->identifiant = id;}
 	Expression* getValeur() { return this->valeur; }
 	Identifiant* getIdentifiant(){ return this->identifiant; }
@@ -376,7 +385,9 @@ class Variable : public Identifiable
 		Variable(string type , string id);
 		Variable(string type, string id, Expression * expr);
 		void setValeur(Expression * expr){
+		//	cout<<"TEST  TEST2"<<endl;
 			this->expr=expr;
+			//this->initialisation =true;
 		}
 		void Afficher(int nbtab)
 		{

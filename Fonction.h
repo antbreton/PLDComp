@@ -37,6 +37,7 @@ class Bloc : public Instruction  {
 		Identifiable * getIdentifiableIfExist(string id);
 		map<string,Identifiable*>* getTableSymboles() { return tableSymboles; }
 			bool testReturn(bool nullable);
+			void paramInit();
 
 		vector<Instruction*>* getInstructions();
 		int compterNbVariable();
@@ -61,6 +62,7 @@ class Fonction : public Identifiable {
 		string type;
 		vector<Variable*>* s;
 		virtual ~Fonction() {}
+		void paramInit();
 		void Afficher (int nbtab) {
 			string tab = getTabPrefix(nbtab);
 			

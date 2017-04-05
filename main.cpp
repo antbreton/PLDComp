@@ -11,9 +11,10 @@ using namespace std;
 
 void passe1(Programme* programme);
 void passe2(Programme* programme);
+void passe3(Programme* programme);
 
 int main(void) {
-   yydebug = 1;
+  // yydebug = 1;
 	Programme* programme = new Programme();
 	yyparse(&programme);
 	bool error = false;
@@ -24,6 +25,7 @@ int main(void) {
 	
 	passe1(programme);
 	passe2(programme);
+	passe3(programme);
 	
 		
 
@@ -69,3 +71,6 @@ void passe2(Programme* programme) { // test main
 	
 }
 
+void passe3(Programme* programme) {
+	programme->paramInit();
+}

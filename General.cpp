@@ -48,6 +48,13 @@ void Programme::Afficher (int nbtab)
 	}
 	cout<<endl<<"END_PROGRAMME"<<endl;
 }
+void Programme::paramInit() {
+	
+	for(int i=0;i<fonctions->size();i++)
+	{
+		(*fonctions)[i]->paramInit();
+	}
+}
 
 void Programme::ajouterListeVariable(vector<Variable*>* listeVariable)
 {
