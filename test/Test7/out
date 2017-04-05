@@ -1,12 +1,30 @@
-<<<<<<< HEAD
+[a:0x7ffe99d003f0, c:0x7ffe99d003b0 ]
+[a:0x7ffe99d003f0, c:0x7ffe99d003d0 ]
+getid
+[a:0x7ffe99e00040, c:0x7ffe99e00000 ]
+[a:0x7ffe99e00040, c:0x7ffe99e00020 ]
+getid
+getid
+[a:0x7ffe99e00300, c:0x7ffe99e00070  st ]
+[a:0x7ffe99e00330, c:0x7ffe99d00420  st ]
+[a:0x7ffe99d00320, c:0x7ffe99e00330  st ]
+getid
+getid
+[a:0x7ffe99d00040, c:0x7ffe99d00320 ]
+%%%Frontend%%%
+
+
+
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2
 		BLOC_IF ( EGAL VAL 1  == VAL 1 )
+
 		BEGIN_BLOC // nb instr : 0 - tableSymb size : 1
 		END_BLOC
 		BLOC_ELSE
 			BLOC_IF ( EGAL VAL 1  == VAL 2 )
+
 			BEGIN_BLOC // nb instr : 0 - tableSymb size : 1
 			END_BLOC
 			BLOC_ELSE
@@ -14,90 +32,28 @@ PROGRAMME // tableSymb size : 0
 			END_BLOC
 	END_BLOC
 END_PROGRAMME
-=======
-APLE CONSTR avec z
-APLE CONSTR avec t
-APLE CONSTR avec main[a:0xe782a0, c:0xe78260 ]
-[a:0xe782a0, c:0xe78280 ]
-APLE CONSTR avec fgetid:f
-TEST 10 :1
-TEST :0xe78440
-getid:f
-TEST :f
-getid:f
-0xe784f0
-JE SUIS la TEST
-JE SUIS ici TEST
-[a:0xe78610, c:0xe785d0 ]
-[a:0xe78610, c:0xe785f0 ]
-APLE CONSTR avec fgetid:f
-TEST 10 :1
-TEST :0xe787b0
-getid:f
-TEST :f
-getid:f
-0xe78860
-JE SUIS la TEST
-JE SUIS ici TEST
-APLE CONSTR avec fgetid:f
-TEST 10 :1
-TEST :0xe78ab0
-getid:f
-TEST :f
-getid:f
-0xe78b60
-JE SUIS la TEST
-JE SUIS ici TEST
-[a:0xe78c40, c:0xe78640  st ]
-[a:0xe78c70, c:0xe782d0  st ]
-JE SUIS la TEST
-JE SUIS ici TEST
-[a:0xe781b0, c:0xe78c70  st ]
-TEST 10 :2
-TEST :0xe78040
-getid:z
-TEST :z
-getid:z
-TEST :0xe78130
-getid:t
-TEST :t
-getid:t
-[a:0xe73d70, c:0xe781b0 ]
-%%%Frontend%%%
-PROGRAMME // tableSymb size : 0
-	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t TEST1
-TEST 3
-	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2
-blabla
-		BLOC_IF ( EGAL VAL 1  == VAL 1 )
-TEST 3
-		BEGIN_BLOC // nb instr : 1 - tableSymb size : 1
-blabla
-AFFECTATION ID f  = VAL 2  
-		END_BLOC
-		BLOC_ELSE
-			BLOC_IF ( EGAL VAL 1  == VAL 2 )
-TEST 3
-			BEGIN_BLOC // nb instr : 1 - tableSymb size : 1
-blabla
-AFFECTATION ID f  = VAL 3  
-			END_BLOC
-			BLOC_ELSETEST 3
-			BEGIN_BLOC // nb instr : 1 - tableSymb size : 1
-blabla
-AFFECTATION ID f  = VAL 4  
-			END_BLOC
-	END_BLOCTEST2
-END_PROGRAMME
-Erreur semantique : erreur de return dans : main
+
 %%%Backend%%%
 Taille liste fonction : 1
-getid:main
+getid
 test 2
-calculeTaille debut
-getid:t
-getid:z
-calculeTaille fin
+------ FOR ----------
+getid
+getid
 Taille liste CFG : 1
+
 GEN_PROLOGUE
->>>>>>> Linker
+.text        
+.global main 
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $16, %rsp 
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme

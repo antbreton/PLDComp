@@ -1,4 +1,14 @@
-<<<<<<< HEAD
+[a:0x7fab8bc02c50, c:0x7fab8bc02c10 ]
+[a:0x7fab8bc02c50, c:0x7fab8bc02c30 ]
+getid
+[a:0x7fab8bc02930, c:0x7fab8bc02b60 ]
+getid
+getid
+[a:0x7fab8bc02930, c:0x7fab8bc02ef0 ]
+%%%Frontend%%%
+
+
+
 PROGRAMME // tableSymb size : 0
 	FONCTION	INT64 myFunc // size : 1VAR INT64 a 
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 1		RETURN ADD ID a  + VAL 1 
@@ -9,73 +19,78 @@ PROGRAMME // tableSymb size : 0
 		APPEL FONCTION ID myFunct ID t 
 	END_BLOC
 END_PROGRAMME
-=======
-APLE CONSTR avec a
-APLE CONSTR avec myFunc[a:0x1314230, c:0x13141e0 ]
-[a:0x1314230, c:0x1314210 ]
-JE SUIS la TEST
-JE SUIS ici TEST
-TEST 10 :1
-TEST :0x1314040
-getid:a
-TEST :a
-getid:a
-[a:0x130fd70, c:0x13140c0 ]
-APLE CONSTR avec z
-APLE CONSTR avec t
-APLE CONSTR avec mainJE SUIS la TEST
-JE SUIS ici TEST
-JE SUIS la TEST
-JE SUIS ici TEST
-TEST 10 :2
-TEST :0x1314480
-getid:z
-TEST :z
-getid:z
-TEST :0x1314570
-getid:t
-TEST :t
-getid:t
-[a:0x130fd70, c:0x13145f0 ]
-%%%Frontend%%%
-PROGRAMME // tableSymb size : 0
-	FONCTION	INT64 myFunc // size : 1VAR INT64 a TEST1
-TEST 3
-	BEGIN_BLOC // nb instr : 1 - tableSymb size : 1
-blabla
-		RETURN ADD ID a  + VAL 1 
-	END_BLOCTEST2
-	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t TEST1
-TEST 3
-	BEGIN_BLOC // nb instr : 2 - tableSymb size : 2
-blabla
-		AFFECTATION ID t  = APPEL FONCTION ID myFunc ID t  blabla
-		APPEL FONCTION ID myFunct ID t 
-	END_BLOCTEST2
-END_PROGRAMME
-Erreur semantique : erreur de return dans : main
+
 %%%Backend%%%
 Taille liste fonction : 2
-getid:myFunc
+getid
 test 2
-calculeTaille debut
-getid:a
-calculeTaille fin
-getid:main
+------ FOR ----------
+getid
+getid
 test 2
-Affectation
-appel de fonction 1
-appel de fonction 2
-appel de fonction 3
-appel de fonction 4
-appel de fonction 1
-appel de fonction 2
-appel de fonction 3
-appel de fonction 4
-calculeTaille debut
-getid:t
-getid:z
-calculeTaille fin
+------ FOR ----------
+------ IF ----------
+IR : Affectation
+IR AppelFonction
+IR Identifiant
+!r0
+Fin IR : Identifiant
+------ FOR ----------
+------ IF ----------
+IR AppelFonction
+IR Identifiant
+!r0
+Fin IR : Identifiant
+getid
+getid
 Taille liste CFG : 2
+
 GEN_PROLOGUE
->>>>>>> Linker
+
+GEN_PROLOGUE
+genererAssem IRinstr
+IRinstr::genererAssembleur 1
+
+genererAssem IRinstr
+IRinstr::genererAssembleur 1
+
+genererAssem IRinstr
+IRinstr::genererAssembleur 1
+
+genererAssem IRinstr
+IRinstr::genererAssembleur 1
+
+genererAssem IRinstr
+IRinstr::genererAssembleur 1
+
+.text        
+.global main 
+
+myFunc:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $8, %rsp 
+
+    leave
+    ret
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $16, %rsp 
+    movq    -8(%rbp), %rdi
+    movq    %rdi, (%rax)
+    call   myFunc
+    movq    -0(%rbp), %rax
+    movq    %rax, -8(%rbp)
+    movq    -8(%rbp), %rdi
+    movq    %rdi, (%rax)
+    call   myFunct
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme

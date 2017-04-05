@@ -1,3 +1,16 @@
+getid
+[a:0x7fa0b7402930, c:0x7fa0b7402b60 ]
+getid
+[a:0x7fa0b74030f0, c:0x7fa0b7403090 ]
+[a:0x7fa0b74030f0, c:0x7fa0b74030d0 ]
+[a:0x7fa0b7402e60, c:0x7fa0b7402fe0  bloc ]
+getid
+getid
+[a:0x7fa0b7402930, c:0x7fa0b7402e60 ]
+%%%Frontend%%%
+
+
+
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID fonc // size : 1VAR INT32 a 
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 1VAL 1 
@@ -9,4 +22,50 @@ PROGRAMME // tableSymb size : 0
 	END_BLOC
 	END_BLOC
 END_PROGRAMME
+
 Erreur de résolution de portée : 'b' est inconnue dans ce scope.
+%%%Backend%%%
+Taille liste fonction : 2
+getid
+test 2
+------ FOR ----------
+------ IF ----------
+IR Val
+getid
+getid
+test 2
+------ FOR ----------
+getid
+getid
+getid
+Taille liste CFG : 2
+
+GEN_PROLOGUE
+genererAssem IRinstr
+IRinstr::genererAssembleur 1
+
+GEN_PROLOGUE
+.text        
+.global main 
+
+fonc:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $8, %rsp 
+    movl   $1, %edi
+
+    leave
+    ret
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $24, %rsp 
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme

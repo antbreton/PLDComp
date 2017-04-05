@@ -1,15 +1,64 @@
-<<<<<<< HEAD
+getid
+getid
+getid
+getid
+[a:0x7fd14b402930, c:0x7fd14b402c00 ]
+%%%Frontend%%%
+
+
+
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
-	BEGIN_BLOC // nb instr : 2 - tableSymb size : 4
+	BEGIN_BLOC // nb instr : 3 - tableSymb size : 4
 		AFFECTATION ID a  = CARACTEREi 
 		AFFECTATION ID a  = CARACTEREk 
+		AFFECTATION ID b  = CARACTEREj 
 	END_BLOC
 END_PROGRAMME
-=======
-APLE CONSTR avec z
-APLE CONSTR avec t
-APLE CONSTR avec main
-APLE CONSTR avec aTEST 10 :1
-TEST :0x25e3300
->>>>>>> Linker
+
+%%%Backend%%%
+Taille liste fonction : 1
+getid
+test 2
+------ FOR ----------
+------ IF ----------
+IR : Affectation
+------ FOR ----------
+------ IF ----------
+IR : Affectation
+------ FOR ----------
+------ IF ----------
+IR : Affectation
+getid
+getid
+getid
+getid
+Taille liste CFG : 1
+
+GEN_PROLOGUE
+genererAssem IRinstr
+IRinstr::genererAssembleur 1
+genererAssem IRinstr
+IRinstr::genererAssembleur 1
+genererAssem IRinstr
+IRinstr::genererAssembleur 1
+.text        
+.global main 
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $32, %rsp 
+    movq    $105, %rax
+    movq    %rax, -8(%rbp)
+    movq    $107, %rax
+    movq    %rax, -8(%rbp)
+    movq    $106, %rax
+    movq    %rax, -16(%rbp)
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme

@@ -1,4 +1,19 @@
-<<<<<<< HEAD
+[a:0x7fa898c02da0, c:0x7fa898c02d40 ]
+[a:0x7fa898c02da0, c:0x7fa898c02d80 ]
+[a:0x7fa898c02e50, c:0x7fa898c02e10 ]
+[a:0x7fa898c02e50, c:0x7fa898c02e30 ]
+getid
+[a:0x7fa898c030d0, c:0x7fa898c03090 ]
+[a:0x7fa898c030d0, c:0x7fa898c030b0 ]
+[a:0x7fa898c03160, c:0x7fa898c02ed0  st ]
+[a:0x7fa898c02c00, c:0x7fa898c03160  st ]
+getid
+getid
+[a:0x7fa898c02930, c:0x7fa898c02c00 ]
+%%%Frontend%%%
+
+
+
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2
@@ -8,55 +23,28 @@ PROGRAMME // tableSymb size : 0
 		END_BLOC
 	END_BLOC
 END_PROGRAMME
-=======
-APLE CONSTR avec z
-APLE CONSTR avec t
-APLE CONSTR avec main[a:0x185b430, c:0x185b380 ]
-[a:0x185b430, c:0x185b400 ]
-[a:0x185b550, c:0x185b500 ]
-[a:0x185b550, c:0x185b530 ]
-[a:0x185b7a0, c:0x185b750 ]
-[a:0x185b7a0, c:0x185b780 ]
-JE SUIS la TEST
-JE SUIS ici TEST
-[a:0x185b850, c:0x185b5e0  st ]
-JE SUIS la TEST
-JE SUIS ici TEST
-[a:0x185b1b0, c:0x185b850  st ]
-TEST 10 :2
-TEST :0x185b040
-getid:z
-TEST :z
-getid:z
-TEST :0x185b130
-getid:t
-TEST :t
-getid:t
-[a:0x1856d70, c:0x185b1b0 ]
-%%%Frontend%%%
-PROGRAMME // tableSymb size : 0
-	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t TEST1
-TEST 3
-	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2
-blabla
-		BLOC_FOR ( AFFECTATION ID a  = VAL 0  , INF ID a  < ID z , AFFECTATION ID a  = ADD ID a  + VAL 1  )TEST 3
-		BEGIN_BLOC // nb instr : 1 - tableSymb size : 0
-blabla
-			AFFECTATION ID t  = ADD ID t  + VAL 1  
-		END_BLOC
-	END_BLOCTEST2
-END_PROGRAMME
-Erreur semantique : erreur de return dans : main
-Erreur de résolution de portée : 't' est inconnue dans ce scope.
-Erreur de résolution de portée : 't' est inconnue dans ce scope.
+
 %%%Backend%%%
 Taille liste fonction : 1
-getid:main
+getid
 test 2
-calculeTaille debut
-getid:t
-getid:z
-calculeTaille fin
+------ FOR ----------
+getid
+getid
 Taille liste CFG : 1
+
 GEN_PROLOGUE
->>>>>>> Linker
+.text        
+.global main 
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $16, %rsp 
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme

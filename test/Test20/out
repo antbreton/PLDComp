@@ -1,7 +1,43 @@
+getid
+getid
+[a:0x7faaaec02930, c:0x7faaaec02c00 ]
+%%%Frontend%%%
+
+
+
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2
 		ID a 
 	END_BLOC
 END_PROGRAMME
+
 Erreur de résolution de portée : 'a' est inconnue dans ce scope.
+%%%Backend%%%
+Taille liste fonction : 1
+getid
+test 2
+------ FOR ----------
+------ IF ----------
+IR Identifiant
+!r0
+Fin IR : Identifiant
+getid
+getid
+Taille liste CFG : 1
+
+GEN_PROLOGUE
+.text        
+.global main 
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $16, %rsp 
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme

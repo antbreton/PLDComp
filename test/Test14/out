@@ -1,6 +1,37 @@
+getid
+getid
+[a:0x7ff0fd402930, c:0x7ff0fd402c00 ]
+%%%Frontend%%%
+
+
+
 PROGRAMME // tableSymb size : 0
 	FONCTION	INT32 main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 0 - tableSymb size : 2
 	END_BLOC
 END_PROGRAMME
 Erreur semantique : erreur de return dans : main
+
+%%%Backend%%%
+Taille liste fonction : 1
+getid
+test 2
+getid
+getid
+Taille liste CFG : 1
+
+GEN_PROLOGUE
+.text        
+.global main 
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $16, %rsp 
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme

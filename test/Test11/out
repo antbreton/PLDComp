@@ -1,4 +1,13 @@
-<<<<<<< HEAD
+getid
+[a:0x7f8da9600100, c:0x7f8da96000c0 ]
+[a:0x7f8da9600100, c:0x7f8da96000e0 ]
+getid
+getid
+[a:0x7f8da9402930, c:0x7f8da9500050 ]
+%%%Frontend%%%
+
+
+
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID fonction1 // size : 1VAR INT32 z 
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
@@ -7,12 +16,8 @@ PROGRAMME // tableSymb size : 0
 		APPEL FONCTION ID fonction1 VAL 2 
 	END_BLOC
 END_PROGRAMME
-=======
-APLE CONSTR avec z
-APLE CONSTR avec fonction1
-APLE CONSTR avec z
-APLE CONSTR avec t
-APLE CONSTR avec main
-APLE CONSTR avec fTEST 10 :1
-TEST :0x1d22520
->>>>>>> Linker
+
+%%%Backend%%%
+Taille liste fonction : 2
+getid
+test 2

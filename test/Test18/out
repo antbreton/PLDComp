@@ -1,10 +1,47 @@
+getid
+[a:0x7fad3c402ed0, c:0x7fad3c402da0  st ]
+[a:0x7fad3c402c00, c:0x7fad3c402ed0  st ]
+getid
+getid
+[a:0x7fad3c402930, c:0x7fad3c402c00 ]
+%%%Frontend%%%
+
+
+
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 3
 		BLOC_IF ( VAL 1 )
+
 		BEGIN_BLOC // nb instr : 1 - tableSymb size : 0
 			AFFECTATION ID a  = VAL 2  
 		END_BLOC
 	END_BLOC
 END_PROGRAMME
+
 Erreur de résolution de portée : 'a' est inconnue dans ce scope.
+%%%Backend%%%
+Taille liste fonction : 1
+getid
+test 2
+------ FOR ----------
+getid
+getid
+getid
+Taille liste CFG : 1
+
+GEN_PROLOGUE
+.text        
+.global main 
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $24, %rsp 
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme
