@@ -277,17 +277,9 @@ string Expression::construireIR(CFG* cfg) {
 		cerr << "IR : OperateurPlus" << endl;
 		// Operande 1
 		string regGauche =opePlus->getMembreGauche()->construireIR(cfg);
-		if(Val* v = dynamic_cast<Val*>(opePlus->getMembreGauche()))
-		{
-			
-			regGauche = "%edi";
-		}
 		// Operande 2
 		string regDroit = opePlus->getMembreDroit()->construireIR(cfg);
-		if(Val* v = dynamic_cast<Val*>(opePlus->getMembreDroit()))
-		{
-			regDroit = "%edi";
-		}
+
 		// Destination
 		string regResultat = cfg->creerNouveauRegistre();
 

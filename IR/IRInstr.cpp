@@ -105,7 +105,7 @@ string IRInstr::genererAssembleur() {
 	  switch(mnemoniqueAction) {
 		case LDCONST :
 		//  codeAssembleur += "    LDCONST\r\n";
-		  if(parametre1=="-0(%rbp)"){ parametre1 = "%edi"; }
+		  //if(parametre1=="-0(%rbp)"){ parametre1 = "%edi"; }
 		  codeAssembleur += "    movl   "+ parametre2 +", "+parametre1+"\r\n";
 		  break;
 		  
