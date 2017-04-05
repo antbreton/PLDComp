@@ -96,6 +96,7 @@ std::string CFG::gen_prologue()
 
 	*/
 	cout << endl << "GEN_PROLOGUE" << endl;
+	/*
 	int i = 1;
 	if(taille != 0)
 	{
@@ -113,6 +114,23 @@ std::string CFG::gen_prologue()
 			//string instructionASM = "movq $" + to_string(dicoRegTmp->find(key)->second->getValeur()) + ", -" + to_string(dicoRegTmp->find(key)->second->getOffset())  +"(%rbp)\r\n";
 			//codeAssembleur += instructionASM;
 			i++;
+		}
+	}
+	*/
+	std::map<string, IRVar*>* dico = this->getDicoRegTmp();
+	std::map<string, IRVar*>::iterator it;
+	
+	int j = 1;
+	if(dico->size() != NULL){
+
+		codeAssembleur += "    subq    $"+ to_string(8*dico->size()) +", %rsp \r\n";
+
+	
+
+		for(it=dico->begin(); it!=dico->end(); ++it)
+		{
+			it->second->setOffset(8*j);
+			j++;
 		}
 	}
 

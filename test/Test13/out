@@ -1,3 +1,12 @@
+getid
+getid
+[a:0x7fc4c2402930, c:0x7fc4c2402c00 ]
+[a:0x7fc4c2402930, c:0x7fc4c2402dc0 ]
+[a:0x7fc4c2402930, c:0x7fc4c2402f40 ]
+%%%Frontend%%%
+
+
+
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 0 - tableSymb size : 2
@@ -11,3 +20,18 @@ PROGRAMME // tableSymb size : 0
 	FONCTION	INT32 ccc // size : 0
 	FONCTION	VOID ddd // size : 0
 END_PROGRAMME
+
+%%%Backend%%%
+Taille liste fonction : 5
+getid
+test 2
+getid
+getid
+getid
+test 2
+------ FOR ----------
+getid
+test 2
+------ FOR ----------
+getid
+test 2

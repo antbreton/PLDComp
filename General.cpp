@@ -276,9 +276,10 @@ string Expression::construireIR(CFG* cfg) {
 
 		cerr << "IR : OperateurPlus" << endl;
 		// Operande 1
-		string regGauche = opePlus->getMembreGauche()->construireIR(cfg);
+		string regGauche =opePlus->getMembreGauche()->construireIR(cfg);
 		// Operande 2
 		string regDroit = opePlus->getMembreDroit()->construireIR(cfg);
+
 		// Destination
 		string regResultat = cfg->creerNouveauRegistre();
 
@@ -295,7 +296,7 @@ string Expression::construireIR(CFG* cfg) {
 
 		cerr << "Fin IR : OperateurPlus" << endl;
 
-		return regGauche;
+		return regResultat;
 
 	} else if(OperateurMoins* opeMoins = dynamic_cast<OperateurMoins*>(this)) {
 
