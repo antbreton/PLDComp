@@ -1,10 +1,6 @@
 void main(){
 	int32_t a;
 	int32_t b;
-	a = 1;
+	a = 2;
 	b = a + 1;
-
-	putchar('o');
-	putchar('k');
-
 }

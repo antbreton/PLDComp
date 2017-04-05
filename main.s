@@ -5,10 +5,15 @@ main:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-<<<<<<< HEAD
     subq    $16, %rsp 
-=======
->>>>>>> 48c947840616c21ec14edd64eea45d5e0c404fa8
+    movq    $2, %rax
+    movq    %rax, -8(%rbp)
+    movl   $1, %edi
+    movq    -8(%rbp), %rax
+    addq    %edi, %rax
+    movq    %rax, -0(%rbp)
+    movq    -8(%rbp), %rax
+    movq    %rax, -16(%rbp)
 
     leave
     ret
