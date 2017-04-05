@@ -236,9 +236,10 @@ void Bloc::constructor_tableVariables(){
 	{
 		if(Variable* v = dynamic_cast<Variable*>(it->second))
 		{
+			if (v->initialisation) {
 			std::pair<string, Variable*> pairAdded (v->getIdentifiant(), v);
 			tableVariables->insert(pairAdded);
-			
+		}
 		}
 	}
 

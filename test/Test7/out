@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [a:0x7ffe99d003f0, c:0x7ffe99d003b0 ]
 [a:0x7ffe99d003f0, c:0x7ffe99d003d0 ]
 getid
@@ -15,6 +16,8 @@ getid
 
 
 
+=======
+>>>>>>> 48c947840616c21ec14edd64eea45d5e0c404fa8
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2
@@ -32,6 +35,7 @@ PROGRAMME // tableSymb size : 0
 			END_BLOC
 	END_BLOC
 END_PROGRAMME
+<<<<<<< HEAD
 
 %%%Backend%%%
 Taille liste fonction : 1
@@ -57,3 +61,5 @@ main:
 
 
 Fin de l'analyse du programme
+=======
+>>>>>>> 48c947840616c21ec14edd64eea45d5e0c404fa8
