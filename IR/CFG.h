@@ -18,6 +18,7 @@ class CFG {
 		~CFG();
 		
 		std::string genererAssembleur();
+		void genererIR();
 		void addBasicBlock(BasicBlock* newBasicBlock);
 		int calculeTaille ();
 		int getTaille() {return taille;};

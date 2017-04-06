@@ -408,7 +408,7 @@ string Expression::construireIR(CFG* cfg) {
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::LDCONST, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 
-		cerr << "Construire IR : Classe Caractere" << endl;
+		cerr << "Fin IR : Caractere" << endl;
 
 		return reg;
 

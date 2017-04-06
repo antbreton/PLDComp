@@ -8,22 +8,36 @@ BasicBlock::BasicBlock(std::string label)
 {
 	
 }
+
+
 BasicBlock::BasicBlock(CFG* cfg)
 {
 	cfg->setBlockCourant(this);
 	this->cfg = cfg;
 
+	listeInstructionsIR = new vector<IRInstr*>();
+	listeInstructionsAST = new vector<Instruction*>();
 }
+
+
 BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 {
 
-	cfg->setBlockCourant(this); //TODO : faut-il maj ailleur de bloc courant ?
+	//TODO : faut-il maj ailleur de bloc courant ?
 
 	this->cfg = cfg;
 	this-> label = label;
 
 	listeInstructionsIR = new vector<IRInstr*>();
+	listeInstructionsAST = new vector<Instruction*>();
 
+	if(bloc != NULL)
+	{
+		listeInstructionsAST = bloc->getInstructions();
+	}
+
+	/* AVANT CREATION BRANCHE
+	cfg->setBlockCourant(this); 
 	if(bloc!=NULL)
 	{
 
@@ -44,25 +58,40 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 				cout << "INSTRUCTION STRUCTURE DE CONTROLE" << endl;
 				s->construireIR(cfg);
 			}
-		}
-	
+		}	
 	}
+	*/
 	// TODO : POur chaque instruction dans le bloc : 
 	// On regarde son type, et selon celui-ci
-	// on recupere le code IR associee (on appelle le getIR de chaque classe) 
-	
+	// on recupere le code IR associee (on appelle le getIR de chaque classe) 	
 }
 
 BasicBlock::BasicBlock(CFG* cfg, Instruction* instr)
 {
+	cout << "BB::BB(CFG, Instruction)" << endl;
+
+
+
 	cfg->setBlockCourant(this);
 	this->cfg = cfg;	
 	listeInstructionsIR = new vector<IRInstr*>();
+	listeInstructionsAST = new vector<Instruction*>();
 
+	if(Bloc* b = dynamic_cast<Bloc*>(instr))
+	{
+		cout << "instruction est un bloc" << endl;
+		listeInstructionsAST = b->getInstructions();
+
+	}
+
+	//listeInstructionsAST->push_back(instr);
+
+	/*
 	if(Expression* e = dynamic_cast<Expression*>(instr))
 	{
 		e->construireIR(cfg);
 	}
+	*/
 }
 
 BasicBlock::~BasicBlock()
@@ -71,8 +100,45 @@ BasicBlock::~BasicBlock()
 }
 
 
-
 // Methodes
+
+
+void BasicBlock::genererIR()
+{
+	vector<Instruction*>:: iterator ite;
+
+
+	for(ite = listeInstructionsAST->begin(); ite!=listeInstructionsAST->end(); ++ite)
+	{
+		cfg->setBlockCourant(this);
+		cout << "------ FOR ----------" << endl;
+		
+		if(Expression* e = dynamic_cast<Expression*>(*ite))
+		{
+			cout << "------ IF ----------" << endl;
+			e->construireIR(cfg);
+		} else if (StructureControle* s = dynamic_cast<StructureControle*>(*ite))
+		{
+			cout << "INSTRUCTION STRUCTURE DE CONTROLE" << endl;
+			s->construireIR(cfg);
+
+			if(succCond != nullptr){
+				cout << "succCond non NULL" << endl;
+				succCond->genererIR();
+				if (succIncond != nullptr){
+					cout << "succIncond non NULL" << endl;
+					succIncond->genererIR();
+				}
+			}
+
+		} else if (Bloc* b = dynamic_cast<Bloc*>(*ite))
+		{
+			cout << "INSTRUCTION DE TYPE BLOC" << endl;
+		}
+	}	 
+
+
+}
 
 // Genere le code assembleur du bloc, pour cela on appelle chaque methode genererAssembleur
 // de chaque Instruction IR.
@@ -85,6 +151,16 @@ string BasicBlock::genererAssembleur() {
       codeAssembleur += (*ite)->genererAssembleur();
       ite++;
     }
+
+    if(succCond != nullptr){
+		cout << "succCond assembleur" << endl;
+		codeAssembleur += succCond->genererAssembleur();
+		
+		if (succIncond != nullptr){
+			cout << "succIncond assembleur" << endl;
+			codeAssembleur += succIncond->genererAssembleur();
+		}
+	}
   
     return codeAssembleur;
 }

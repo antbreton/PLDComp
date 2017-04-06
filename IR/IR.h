@@ -20,6 +20,7 @@ class IR {
 		~IR();
 		
 		std::string genererAssembleur();
+		void genererIR();
 		void addCFG(CFG* cfg);
 		ofstream fichier;
 		

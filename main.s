@@ -5,7 +5,7 @@ main:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-    subq    $24, %rsp 
+    subq    $56, %rsp 
     movq   $1, %rdi
     movq   $2, %rdi
     movq    -8(%rbp), %rax 
@@ -14,6 +14,10 @@ main:
     sete   %al 
     movzbl %al, %rax 
     movq    %rax, -24(%rbp) 
+    movq   $86, %rdi
+    call   putchar
+    movq   $70, %rdi
+    call   putchar
 
     leave
     ret

@@ -33,8 +33,11 @@ class BasicBlock {
 		void setSuccCond(BasicBlock* bb) {succCond = bb;};
 		void setSuccIncond(BasicBlock* bb) {succIncond = bb;};
 
+		void genererIR();
+
 	private:
 		std::vector<IRInstr * >* listeInstructionsIR;
+		std::vector<Instruction*>* listeInstructionsAST;
 		BasicBlock* succCond; // Son successeur conditionnel
 		BasicBlock* succIncond; // Son sucesseur inconditionnel
 		map<std::string,int> mappingVarReg;

@@ -63,6 +63,21 @@ string CFG::genererAssembleur() {
 	return codeAssembleur;
 }
 
+
+void CFG::genererIR()
+{
+
+	cout<< "CFG::genererIR" << endl;
+	list<BasicBlock *>::iterator ite = listeBasicBlocks.begin() ;
+
+  	while (ite != listeBasicBlocks.end()) 
+  	{
+		(*ite)->genererIR();
+		ite++;
+  	}
+}
+
+
 std::string CFG::gen_prologue()
 {
 	string codeAssembleur;
@@ -75,48 +90,9 @@ std::string CFG::gen_prologue()
 	codeAssembleur += "    pushq   %rbp \r\n";
 	codeAssembleur += "    movq    %rsp, %rbp \r\n";  
 	
-	//Offset pour chaque variable
-	/*
-	int i = 1;
-	std::map<string, IRVar*>* dico = this->getDicoRegTmp();
-	std::map<string, IRVar*>::iterator it;
-	
-	// Si il y a au moins une instruction dans le programme
-	if(dico != NULL)
-	{
 
-		for(it=dico->begin(); it!=dico->end(); ++it)
-		{
-			it->second->setOffset(8*i);
-			string instructionASM = "movq $" + to_string(it->second->getValeur()) + ", -" + to_string(it->second->getOffset())  +"(%rbp)\r\n";
-			codeAssembleur += instructionASM;
-			i++;
-		}
-	}
-
-	*/
 	cout << endl << "GEN_PROLOGUE" << endl;
-	/*
-	int i = 1;
-	if(taille != 0)
-	{
-		codeAssembleur += "    subq    $"+ to_string(taille) +", %rsp \r\n";
 
-		std::map<string, Variable*>* table = fonctionDuCFG->getBloc()->tableVariables;
-		std::map<string, Variable*>::iterator it;
-		for(it= table->begin(); it != table->end(); it++)
-		{
-
-			int numReg = getBlockCourant()->getValeurMappee(it->first);
-			string key = "!r" + to_string(numReg);
-
-			dicoRegTmp->find(key)->second->setOffset(8*i);
-			//string instructionASM = "movq $" + to_string(dicoRegTmp->find(key)->second->getValeur()) + ", -" + to_string(dicoRegTmp->find(key)->second->getOffset())  +"(%rbp)\r\n";
-			//codeAssembleur += instructionASM;
-			i++;
-		}
-	}
-	*/
 	std::map<string, IRVar*>* dico = this->getDicoRegTmp();
 	std::map<string, IRVar*>::iterator it;
 	
