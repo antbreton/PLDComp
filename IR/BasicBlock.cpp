@@ -92,14 +92,19 @@ string BasicBlock::genererAssembleur() {
     
     vector<IRInstr *>::iterator ite = listeInstructionsIR->begin();
 
-
-    codeAssembleur = label + ":\r\n";
-
+	if (label.compare("main")) // TODO etendre a toute fonciton
+    {
+		codeAssembleur = label + ":\r\n";
+	}
 
     while(ite != listeInstructionsIR->end()) {
       codeAssembleur += (*ite)->genererAssembleur();
       ite++;
     }
+    if (jumpIRIntr != NULL)
+    {
+		codeAssembleur += jumpIRIntr->genererAssembleur();
+	}
 
     //if(succCond != nullptr && label != "blocIF"){
     if(succCond != nullptr)
@@ -122,6 +127,9 @@ void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
 	listeInstructionsIR->push_back(instruction);
 }
 
+void BasicBlock::ajouterInstrIRJump(IRInstr *instruction) {
+	jumpIRIntr = instruction;
+}
 
 // GETTER / SETTER
 

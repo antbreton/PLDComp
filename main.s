@@ -5,8 +5,7 @@ main:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-    subq    $72, %rsp 
-main:
+    subq    $56, %rsp 
     movq    $2, %rax
     movq    %rax, -8(%rbp)
     movq   $1, %rdi
@@ -14,15 +13,13 @@ main:
     xor    -8(%rbp), %rax
     cmpq   $0, %rax 
     sete   %al 
-    movzbl %al, %rax 
+    movl %al, %rax 
     movq    %rax, -24(%rbp) 
     jne blocELSE
-    movq   $71, %rdi
-    call   putchar
 blocIF:
-    jmp blocAfter
     movq   $86, %rdi
     call   putchar
+    jmp blocAfter
 blocELSE:
     movq   $70, %rdi
     call   putchar

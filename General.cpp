@@ -540,8 +540,9 @@ void StructureControle::construireIR(CFG* cfg){
 		vector<std::string> params;
 		params.push_back(labelElse);
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::IF_, testBB, params);
-		testBB->ajouterInstrIR(nouvelleInstr);
-		
+		//testBB->ajouterInstrIR(nouvelleInstr);
+		testBB->ajouterInstrIRJump(nouvelleInstr);
+
 		
 
 		Bloc* bIf = dynamic_cast<Bloc *>(blocPereIf->instrv);
@@ -550,8 +551,8 @@ void StructureControle::construireIR(CFG* cfg){
 		vector<std::string> params2;
 		params2.push_back(labelAfter);
 		IRInstr* nouvelleInstr2 = new IRInstr(IRInstr::Mnemonique::THEN_, thenBB, params2);
-		thenBB->ajouterInstrIR(nouvelleInstr2);
-
+		//thenBB->ajouterInstrIR(nouvelleInstr2);
+		thenBB->ajouterInstrIRJump(nouvelleInstr2);
 		Bloc* bElse = dynamic_cast<Bloc *>(blocPereIf->blocElse);
 		BasicBlock* elseBB = new BasicBlock(cfg,bElse, labelElse);
 		

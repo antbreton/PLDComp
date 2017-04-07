@@ -18,6 +18,7 @@ class BasicBlock {
 		
 		std::string genererAssembleur();
 		void ajouterInstrIR(IRInstr* instruction);
+		void ajouterInstrIRJump(IRInstr* instruction);
 		
 		CFG* getCFG();
 		std::string getLabel() {return label;};
@@ -36,6 +37,7 @@ class BasicBlock {
 
 	private:
 		std::vector<IRInstr * >* listeInstructionsIR;
+		IRInstr* jumpIRIntr;
 		std::vector<Instruction*>* listeInstructionsAST;
 		BasicBlock* succCond; // Son successeur conditionnel
 		BasicBlock* succIncond; // Son sucesseur inconditionnel

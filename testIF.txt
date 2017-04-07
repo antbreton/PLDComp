@@ -6,7 +6,4 @@ void main (){
 	} else {
 		putchar('F');
 	}
-
-	putchar('G');
-
 }
