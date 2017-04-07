@@ -8,21 +8,22 @@ main:
     subq    $56, %rsp 
     movq    $2, %rax
     movq    %rax, -8(%rbp)
-    movq   $1, %rdi
-    movq    -16(%rbp), %rax 
-    xor    -8(%rbp), %rax
+    movq   $2, %rdi
+    movq    -8(%rbp), %rax 
+    xor    -16(%rbp), %rax
     cmpq   $0, %rax 
     sete   %al 
-    movl %al, %rax 
+    movzbq %al, %rax 
     movq    %rax, -24(%rbp) 
     jne blocELSE
 blocIF:
     movq   $86, %rdi
     call   putchar
-    jmp blocAfter
-blocELSE:
-    movq   $70, %rdi
+    movq   $10, %rdi
     call   putchar
+    jmp blocAfter
+blocAfter:
+blocELSE:
 blocAfter:
 
     leave
