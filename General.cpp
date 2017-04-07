@@ -560,14 +560,21 @@ void StructureControle::construireIR(CFG* cfg){
 		afterIfBB->setSuccCond(testBB->getSuccCond());
 		afterIfBB->setSuccIncond(testBB->getSuccIncond());
 
+
 		testBB->setSuccCond(thenBB);
 		testBB->setSuccIncond(elseBB);
+		
+		if(blocPereIf->blocElse == nullptr)
+		{
+			thenBB->setSuccCond(afterIfBB);
+		} else {
+			thenBB->setSuccCond(NULL);
+		}
 
-		thenBB->setSuccCond(afterIfBB);
 		thenBB->setSuccIncond(NULL);
-
 		elseBB->setSuccCond(afterIfBB) ;
 		elseBB->setSuccIncond(NULL) ;
+		
 
 		cfg->setBlockCourant(afterIfBB);
 

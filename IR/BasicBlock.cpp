@@ -69,10 +69,10 @@ void BasicBlock::genererIR()
 				succCond->genererIR();
 			}
 
-							if (succIncond != nullptr){
+			if (succIncond != nullptr){
 					cout << "succIncond non NULL" << endl;
 					succIncond->genererIR();
-				}
+			}
 
 
 		} else if (Bloc* b = dynamic_cast<Bloc*>(*ite))
@@ -80,14 +80,15 @@ void BasicBlock::genererIR()
 			cout << "INSTRUCTION DE TYPE BLOC" << endl;
 		}
 	}	 
-
-
 }
 
 // Genere le code assembleur du bloc, pour cela on appelle chaque methode genererAssembleur
 // de chaque Instruction IR.
 string BasicBlock::genererAssembleur() {
     string codeAssembleur;
+
+    //cfg->setBlockCourant(this);
+
     
     vector<IRInstr *>::iterator ite = listeInstructionsIR->begin();
 
@@ -100,14 +101,16 @@ string BasicBlock::genererAssembleur() {
       ite++;
     }
 
-    if(succCond != nullptr){
+    //if(succCond != nullptr && label != "blocIF"){
+    if(succCond != nullptr)
+    {
 		cout << "succCond assembleur" << endl;
-		codeAssembleur += succCond->genererAssembleur();
-		
-		if (succIncond != nullptr){
-			cout << "succIncond assembleur" << endl;
-			codeAssembleur += succIncond->genererAssembleur();
-		}
+		codeAssembleur += succCond->genererAssembleur();	
+	} 
+
+	if (succIncond != nullptr){
+		cout << "succIncond assembleur" << endl;
+		codeAssembleur += succIncond->genererAssembleur();
 	}
   
     return codeAssembleur;

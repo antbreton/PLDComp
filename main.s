@@ -23,7 +23,6 @@ blocIF:
     jmp blocAfter
     movq   $86, %rdi
     call   putchar
-blocAfter:
 blocELSE:
     movq   $70, %rdi
     call   putchar

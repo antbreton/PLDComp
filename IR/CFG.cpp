@@ -38,6 +38,7 @@ void CFG::addBasicBlock(BasicBlock* newBasicBlock)
 	this->listeBasicBlocks.push_back(newBasicBlock);
 }
 
+
 // Parcours le CFG et en genere le code assembleur.
 string CFG::genererAssembleur() {
 		
