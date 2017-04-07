@@ -13,7 +13,6 @@ class BasicBlock {
 
 		BasicBlock(std::string label);
 		BasicBlock(CFG* cfg, Bloc* bloc, std::string label);
-		BasicBlock(CFG* cfg, Instruction* instr);
 		BasicBlock(CFG* cfg);
 		~BasicBlock();
 		

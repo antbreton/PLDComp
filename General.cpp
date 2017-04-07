@@ -530,18 +530,33 @@ string Expression::construireIR(CFG* cfg) {
 }
 
 void StructureControle::construireIR(CFG* cfg){
-	if(BlocIf* blocIf = dynamic_cast<BlocIf*>(this))
+	if(BlocIf* blocPereIf = dynamic_cast<BlocIf*>(this))
 	{	
 		cerr << "IR : BlocIf" << endl;
-		//On evalue l'expression
-		blocIf->exprCondition->construireIR(cfg);
-		
 		BasicBlock* testBB = cfg->getBlockCourant();
-
-		BasicBlock* thenBB = new BasicBlock(cfg, blocIf->instrv);
-		BasicBlock* elseBB = new BasicBlock(cfg, blocIf->blocElse);
+		//On evalue l'expression
+		blocPereIf->exprCondition->construireIR(cfg);
+		string labelElse = "blocELSE";
+		vector<std::string> params;
+		params.push_back(labelElse);
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::IF_, testBB, params);
+		testBB->ajouterInstrIR(nouvelleInstr);
 		
-		BasicBlock* afterIfBB = new BasicBlock(cfg);
+		
+
+		Bloc* bIf = dynamic_cast<Bloc *>(blocPereIf->instrv);
+		BasicBlock* thenBB = new BasicBlock(cfg,bIf,"blocIF");
+		string labelAfter = "blocAfter";
+		vector<std::string> params2;
+		params2.push_back(labelAfter);
+		IRInstr* nouvelleInstr2 = new IRInstr(IRInstr::Mnemonique::THEN_, thenBB, params2);
+		thenBB->ajouterInstrIR(nouvelleInstr2);
+
+		Bloc* bElse = dynamic_cast<Bloc *>(blocPereIf->blocElse);
+		BasicBlock* elseBB = new BasicBlock(cfg,bElse, labelElse);
+		
+		
+		BasicBlock* afterIfBB = new BasicBlock(cfg, NULL, labelAfter);
 		afterIfBB->setSuccCond(testBB->getSuccCond());
 		afterIfBB->setSuccIncond(testBB->getSuccIncond());
 
