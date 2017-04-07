@@ -6,14 +6,13 @@ using namespace std;
 IR::IR(Programme* programme)
 {
 	vector<Fonction*>::iterator fonction;
-
-
 	
 	// Pour chaque fonction dans le programme (donc chaque AST), on cree son CFG.
 	// et on l'ajoute a la liste.
 	vector<Fonction*> listeDeFonctions = programme->getFonctions();
 	
-	cout << "Taille liste fonction : " << listeDeFonctions.size() << endl;
+	// On recupere le nom de la toute premiere fonction
+	premiereFctNom = listeDeFonctions[0]->getIdentifiant();
 	
 	for(fonction = listeDeFonctions.begin() ; fonction != listeDeFonctions.end() ; ++fonction)
 	{
@@ -43,11 +42,9 @@ string IR::genererAssembleur()
 		
 		// Code assembleur de début de fichier
 		codeAssembleur += ".text        \r\n";
-		codeAssembleur += ".globl main \r\n";
-		codeAssembleur += ".type main, @function\r\n";
+		codeAssembleur += ".globl "+premiereFctNom+" \r\n";
+		codeAssembleur += ".type "+premiereFctNom+", @function\r\n";
 		codeAssembleur += "\r\n";
-		
-		cout << "Taille liste CFG : " << listeCFG.size() << endl;
 		
 		// On itere pour chaque CFG
 		list<CFG*>::iterator ite;

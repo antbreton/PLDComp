@@ -25,6 +25,7 @@ class IR {
 		
 	private:
 		list<CFG *> listeCFG;
+		string premiereFctNom;
 
 };
 

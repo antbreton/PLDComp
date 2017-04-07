@@ -24,6 +24,7 @@ class IRInstr {
 			MUL,
 			RMEM,
 			WMEM,
+			WMEM_SR,
 			CALL,
 			CMP_EQ,
 			CMP_LT, // Less than

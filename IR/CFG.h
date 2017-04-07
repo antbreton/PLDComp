@@ -32,14 +32,24 @@ class CFG {
 		std::string gen_epilogue();
 		std::map<string, IRVar*>* getDicoRegTmp() const {return dicoRegTmp;}
 		
+		// params
+		IRVar* getVariable(string nom);
+		void addVariable(IRVar* var);
+		int giveOffsets();
+		bool estUnParametre(string nomVariable);
+		
 
 	private:
 		std::list<BasicBlock* > listeBasicBlocks;
 		Fonction* fonctionDuCFG;
 		int nbRegVirtuels;
 		std::map<string, IRVar*>* dicoRegTmp; // Table des symboles : On stockera ici nos registres virtuels
+		//****
+		std::map <string,IRVar*> variableMap; // Parametres
+		//****
 		BasicBlock* blocCourant;
 		int taille;
+		int taillePileParam;
 
 
 };

@@ -1,0 +1,8 @@
+void main(){
+int32_t g;
+g=6;
+int32_t f;
+f=10;
+int32_t h;
+h=f-g;
+}

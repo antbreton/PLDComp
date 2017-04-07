@@ -29,12 +29,16 @@ string IRInstr::genererAssembleur() {
      
 	  string codeAssembleur;
 	  int nbParametres = this->params.size();
-	  cout << "genererAssem IRinstr" << endl;
+	  
+	  // DE 3 à 8 car seulement 6 registres disponibles pour le call. Un par parametre de la fonction.
 	  string parametre1 = "";
 	  string parametre2 = "";
 	  string parametre3 = "";
-
-	  cout << "IRinstr::genererAssembleur 1" << endl;
+	  string parametre4 = "";
+	  string parametre5 = "";
+	  string parametre6 = "";
+	  string parametre7 = "";
+	  string parametre8 = "";
 
 	  vector<string>::iterator iteParam = params.begin();
 	  if(nbParametres >= 1)
@@ -50,6 +54,31 @@ string IRInstr::genererAssembleur() {
 	  if(nbParametres >= 3) 
 	  {
 		parametre3 = *iteParam;
+		iteParam++;
+	  }
+	  if(nbParametres >= 4) 
+	  {
+		parametre4 = *iteParam;
+		iteParam++;
+	  }
+	  if(nbParametres >= 5) 
+	  {
+		parametre5 = *iteParam;
+		iteParam++;
+	  }
+	  if(nbParametres >= 6) 
+	  {
+		parametre6 = *iteParam;
+		iteParam++;
+	  }
+	  if(nbParametres >= 7) 
+	  {
+		parametre7 = *iteParam;
+		iteParam++;
+	  }
+	  if(nbParametres >= 8) 
+	  {
+		parametre8 = *iteParam;
 		iteParam++;
 	  }
 
@@ -101,12 +130,71 @@ string IRInstr::genererAssembleur() {
 		  parametre3 = "$"+parametre3;
 	  }
 	  
+	  if(parametre4[0] == '!') 
+	  {
+		IRVar* variableIR = dicoRegTmp->find(parametre4)->second;
+		int varOffset = variableIR->getOffset();		
+		// to_string est dans le C++11 sinon NumberToString
+		parametre4 = "-"+to_string(varOffset)+"(%rbp)";
+	  }
+	  else if(isdigit(parametre4[0]))
+	  {
+		  parametre4 = "$"+parametre4;
+	  }
+	  
+	  if(parametre5[0] == '!') 
+	  {
+		IRVar* variableIR = dicoRegTmp->find(parametre5)->second;
+		int varOffset = variableIR->getOffset();		
+		// to_string est dans le C++11 sinon NumberToString
+		parametre5 = "-"+to_string(varOffset)+"(%rbp)";
+	  }
+	  else if(isdigit(parametre5[0]))
+	  {
+		  parametre5 = "$"+parametre5;
+	  }
+	  
+	  if(parametre6[0] == '!') 
+	  {
+		IRVar* variableIR = dicoRegTmp->find(parametre6)->second;
+		int varOffset = variableIR->getOffset();		
+		// to_string est dans le C++11 sinon NumberToString
+		parametre6 = "-"+to_string(varOffset)+"(%rbp)";
+	  }
+	  else if(isdigit(parametre6[0]))
+	  {
+		  parametre6 = "$"+parametre3;
+	  }
+	  
+	  if(parametre7[0] == '!') 
+	  {
+		IRVar* variableIR = dicoRegTmp->find(parametre7)->second;
+		int varOffset = variableIR->getOffset();		
+		// to_string est dans le C++11 sinon NumberToString
+		parametre7 = "-"+to_string(varOffset)+"(%rbp)";
+	  }
+	  else if(isdigit(parametre7[0]))
+	  {
+		  parametre7 = "$"+parametre7;
+	  }
+	  
+	  if(parametre8[0] == '!') 
+	  {
+		IRVar* variableIR = dicoRegTmp->find(parametre8)->second;
+		int varOffset = variableIR->getOffset();		
+		// to_string est dans le C++11 sinon NumberToString
+		parametre8 = "-"+to_string(varOffset)+"(%rbp)";
+	  }
+	  else if(isdigit(parametre8[0]))
+	  {
+		  parametre8 = "$"+parametre8;
+	  }
+	  
 	  
 	  switch(mnemoniqueAction) {
 		case LDCONST :
-		//  codeAssembleur += "    LDCONST\r\n";
-		  //if(parametre1=="-0(%rbp)"){ parametre1 = "%edi"; }
-		  codeAssembleur += "    movl   "+ parametre2 +", "+parametre1+"\r\n";
+		  //codeAssembleur += "    LDCONST\r\n";
+		  codeAssembleur += "    movl   "+ parametre2 +", "+ parametre1 +"\r\n";
 		  break;
 		  
 		case WMEM :
@@ -114,18 +202,29 @@ string IRInstr::genererAssembleur() {
 		  codeAssembleur += "    movq    "+ parametre2 +", %rax\r\n";
 		  codeAssembleur += "    movq    %rax, "+ parametre1 +"\r\n";
 		  break;
-		  
+		
+		case WMEM_SR :
+		//codeAssembleur += "    WMEM SR\r\n";
+		  codeAssembleur += "    mov    "+parametre2+", "+parametre1+"\r\n";
+		  break;
+
 		case RMEM :
 		//codeAssembleur += "    RMEM\r\n";
 		  if(parametre1 !="-0(%rbp)"){ codeAssembleur += "    movq    "+ parametre1 +", %rax\r\n"; }
 		  codeAssembleur += "    movq    "+ parametre2 +", %rdi\r\n";
-		  codeAssembleur += "    movq    %rdi, (%rax)\r\n";
+		  codeAssembleur += "    movq    %rdi, %rax\r\n";
 		  break;
 		  
 		case CALL :
 		//codeAssembleur += "    CALL\r\n";
-		  codeAssembleur += "    call   "+ parametre1 +"\r\n";
-		  break;
+			if(parametre3 != "") { codeAssembleur += "    mov    "+parametre3+", %rdi \r\n"; }
+			if(parametre4 != "") { codeAssembleur += "    mov    "+parametre4+", %rsi \r\n"; }
+			if(parametre5 != "") { codeAssembleur += "    mov    "+parametre5+", %rdx \r\n"; }
+			if(parametre6 != "") { codeAssembleur += "    mov    "+parametre6+", %rcx \r\n"; }
+			if(parametre7 != "") { codeAssembleur += "    mov    "+parametre7+", %r8 \r\n"; }
+			if(parametre8 != "") { codeAssembleur += "    mov    "+parametre8+", %r9 \r\n"; }
+			codeAssembleur += "    call   "+ parametre1 +"\r\n";
+			break;
 		  
 		case ADD :
 		//codeAssembleur += "    ADD\r\n";
@@ -180,11 +279,7 @@ string IRInstr::genererAssembleur() {
 
 
 // GETTER / SETTER
-/*
-CFG* IRInstr::getCFG() {
-    return cfg;
-}
-*/
+
 IRInstr::Mnemonique IRInstr::getMnemonique() {
   return this->mnemoniqueAction;
 }

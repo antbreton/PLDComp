@@ -195,41 +195,7 @@ vector<Instruction*>* Bloc::getInstructions()
 {
 	return this->instrs;
 }
-/*
-void Bloc::AjouterInstr(Instruction* instr) 
-{
-	instrs->push_back(instr);
-}
-*/
-/*
-int Bloc::compterNbVariable () 
-{
-	int nbVar = 0;
 
-	
-	//Parcours de la table des symboles pour recuperer les variables du bloc
-	for(map<string,Identifiable*>::iterator it = tableSymboles->begin(); it != tableSymboles->end(); it++)
-	{
-		if(dynamic_cast<Variable*>(it->second))
-		{
-			nbVar++;
-		}
-	}
-
-	//Parcours récursif des Blocs
-	for(vector<Instruction*>::iterator it = instrs->begin(); it != instrs->end(); it++){
-		if(Bloc* b = dynamic_cast<Bloc*>(*it))
-		{ 
-			nbVar += b->compterNbVariable();
-		}
-	}
-	
-
-	//nbVar = tableVariables->size();
-
-	return nbVar;
-}
-*/
 void Bloc::constructor_tableVariables(){
 	//1: parcours de la table des symboles, on recupere les Identifiable de type Variable
 	for(map<string,Identifiable*>::iterator it = tableSymboles->begin(); it != tableSymboles->end(); it++)
@@ -253,16 +219,7 @@ void Bloc::constructor_tableVariables(){
 		}
 	}
 }
-/*
-Bloc* Fonction::getBloc()
-{
-	cout << "getbloc 1" <<endl;
-	cout << this->bloc << endl;
-	cout << "getbloc 2" <<endl;
-	return this->bloc;
-}
 
-*/
 
 
 

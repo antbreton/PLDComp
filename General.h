@@ -115,7 +115,7 @@ class Caractere : public Expression {
 		Caractere(char c):Expression(), c(c) {}
         // TODO : Pk char en public ?
 		char c;
-		void Afficher (int nbtab) {
+		void Afficher () {
 			 cout<<"CARACTERE"<< c;
 		 }
 };

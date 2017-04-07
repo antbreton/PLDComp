@@ -4,7 +4,7 @@
 #include "IR/CFG.h"
 #include "IR/IRInstr.h"
 #include <iostream>
-
+#include "Structure.h"
 
  
 using namespace std;
@@ -225,14 +225,15 @@ string Expression::construireIR(CFG* cfg) {
 		cerr << "IR : OperateurInfEgal" << endl;	
 		// Operande 1
 		string regGauche = opeInfEgal->getMembreGauche()->construireIR(cfg);
+		
 		// Operande 2
 		string regDroit = opeInfEgal->getMembreDroit()->construireIR(cfg);
+		
 		// Destination
 		string regResultat = cfg->creerNouveauRegistre();
-
 		BasicBlock* blocCourant = cfg->getBlockCourant();
-
 		vector<std::string> params;
+		
 		// Destination - Operande 1 - Operande 2
 		params.push_back(regResultat);
 		params.push_back(regGauche);
@@ -249,14 +250,15 @@ string Expression::construireIR(CFG* cfg) {
 		cerr << "IR : OperateurEgal" << endl;
 		// Operande 1
 		string regGauche = opeEgal->getMembreGauche()->construireIR(cfg);
+		
 		// Operande 2
 		string regDroit = opeEgal->getMembreDroit()->construireIR(cfg);
+		
 		// Destination
 		string regResultat = cfg->creerNouveauRegistre();
-
 		BasicBlock* blocCourant = cfg->getBlockCourant();
-
 		vector<std::string> params;
+		
 		// Destination - Operande 1 - Operande 2
 		params.push_back(regResultat);
 		params.push_back(regGauche);
@@ -277,12 +279,12 @@ string Expression::construireIR(CFG* cfg) {
 		cerr << "IR : OperateurPlus" << endl;
 		// Operande 1
 		string regGauche =opePlus->getMembreGauche()->construireIR(cfg);
+		
 		// Operande 2
 		string regDroit = opePlus->getMembreDroit()->construireIR(cfg);
-
+		
 		// Destination
 		string regResultat = cfg->creerNouveauRegistre();
-
 		BasicBlock* blocCourant = cfg->getBlockCourant();
 		
 		vector<std::string> params;
@@ -304,14 +306,15 @@ string Expression::construireIR(CFG* cfg) {
 		
 		// Operande 1
 		string regGauche = opeMoins->getMembreGauche()->construireIR(cfg);
+
 		// Operande 2
 		string regDroit = opeMoins->getMembreDroit()->construireIR(cfg);
+
 		// Destination
 		string regResultat = cfg->creerNouveauRegistre();
-
 		BasicBlock* blocCourant = cfg->getBlockCourant();
-		
 		vector<std::string> params;
+		
 		// Destination - Operande 1 - Operande 2
 		params.push_back(regResultat);
 		params.push_back(regGauche);
@@ -322,20 +325,21 @@ string Expression::construireIR(CFG* cfg) {
 
 		cerr << "Fin IR :  OperateurMoins" << endl;
 		
-		return regGauche;
+		return regResultat;
 
 	} else if(OperateurMultiplier* opeMult = dynamic_cast<OperateurMultiplier*>(this)) {
 		
 		// Operande 1
 		string regGauche = opeMult->getMembreGauche()->construireIR(cfg);
+		
 		// Operande 2
 		string regDroit = opeMult->getMembreDroit()->construireIR(cfg);
+		
 		// Destination
 		string regResultat = cfg->creerNouveauRegistre();
-
 		BasicBlock* blocCourant = cfg->getBlockCourant();
-
 		vector<std::string> params;
+		
 		// Destination - Operande 1 - Operande 2
 		params.push_back(regResultat);
 		params.push_back(regGauche);
@@ -353,14 +357,6 @@ string Expression::construireIR(CFG* cfg) {
 		return "";
 	} else if(dynamic_cast<OperateurDivise*>(this)) {
 
-		//string reg1 = membreGauche->getType()->construireIR(cfg);
-		//string reg2 = membreDroit->construireIR(cfg);
-
-		//string reg3 = creerNouveauRegistre();
-
-		//string ir = reg3 + " <- " + reg1 + " / " + reg2;
-		//cfg->ajouterInstruction(ir);
-
 		cerr << "TODO : Construire IR : Classe OperateurDivise" << endl;
 
 		return "";
@@ -369,12 +365,14 @@ string Expression::construireIR(CFG* cfg) {
 		
 		cout<< "IR Val" << endl;
 
-		// Creation d'un registre temporaire
 		string reg = cfg->creerNouveauRegistre();
 		BasicBlock* blocCourant = cfg->getBlockCourant();
 		vector<std::string> params;
+		
+		// Destination - Source
 		params.push_back(reg);
 		params.push_back(to_string( static_cast<Val*>(this)->valeur) );
+		
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::LDCONST, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 
@@ -385,17 +383,20 @@ string Expression::construireIR(CFG* cfg) {
 	} else if(dynamic_cast<Caractere*>(this)) {
 		
 		cout<< "IR Caractere" << endl;
-		
-		// Creation d'un registre temporaire
+
 		string reg = cfg->creerNouveauRegistre();
 		BasicBlock* blocCourant = cfg->getBlockCourant();
 		vector<std::string> params;
+		
+		// Destination - Source
 		params.push_back(reg);
 		params.push_back(to_string((int)(static_cast<Caractere*>(this)->c )));
+		
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::LDCONST, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 
 		cerr << "Construire IR : Classe Caractere" << endl;
+
 
 		return reg;
 
@@ -411,13 +412,26 @@ string Expression::construireIR(CFG* cfg) {
 		
 		BasicBlock* blocCourant = cfg->getBlockCourant();
 		string nomVariable = *identifiant->getId();
-
-		if(!blocCourant->estVarMappee(nomVariable)){
+		string reg = "";
+		
+		// Si ce n'est pas une variables mappée et que c'est pas un parametre, on ajoute une variable mappee
+		if(!blocCourant->estVarMappee(nomVariable) && !blocCourant->getCFG()->estUnParametre(nomVariable))
+		{
 			blocCourant->ajouterVariableMappee(cfg, nomVariable);
 		}
-			// Registre virtuel de l'identifiant
-		string reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
-		cout << reg << endl;
+		
+		// Si c'est un paramètre, la destination sera l'offset du registre de ce parametre
+		if(blocCourant->getCFG()->estUnParametre(nomVariable))
+		{
+			int regOffset = blocCourant->getCFG()->getVariable(nomVariable)->getOffset();
+			cout << "nomvariable " <<  nomVariable << endl;
+			cout << "reg offset " <<  regOffset << endl;
+			reg = to_string(regOffset) + "(%rbp)";
+		}
+		else {	// Registre virtuel de l'identifiant
+			reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
+		}
+		
 		cout << "Fin IR : Identifiant" << endl;
 
 		return reg;
@@ -425,41 +439,68 @@ string Expression::construireIR(CFG* cfg) {
 	} else if(AppelFonction* appelFonction = dynamic_cast<AppelFonction*>(this)) {
 		
 		cout << "IR AppelFonction" << endl;
-
-		string reg = cfg->creerNouveauRegistre();
+		
+		string reg = "";
+		string nomFonction = *appelFonction->getIdentifiant()->getId();
 		BasicBlock* blocCourant = cfg->getBlockCourant();
-		vector<std::string> params;
-
-		params.push_back(*appelFonction->getIdentifiant()->getId());
-		params.push_back(reg);
-		vector<Expression*>* listeParametresFonction = appelFonction->getParametres();
-		for(int i = 0; i < listeParametresFonction->size(); i++)
+		
+		if(nomFonction == "putchar")
 		{
-			Expression* expI = (*listeParametresFonction)[i]; 
-			string regI = expI->construireIR(cfg);
-
-			if(Identifiant* identifiant = dynamic_cast<Identifiant*>(expI)) {
-				cerr << "C'est une variable !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-				
-				string regValIdent = cfg->creerNouveauRegistre();
-				
-				vector<std::string> paramsI;
-				paramsI.push_back(regValIdent);
-				paramsI.push_back(regI);
-				IRInstr* nouvelleInstrI = new IRInstr(IRInstr::Mnemonique::RMEM, blocCourant, paramsI);
-				blocCourant->ajouterInstrIR(nouvelleInstrI);
-
-				params.push_back(regValIdent);	
-			} else {
-				
-				cerr << "regI" << regI << endl;
-				params.push_back(regI);	
-			}
+			vector<Expression *>::iterator i = appelFonction->getParametres()->begin() ;
+			Expression *expr = *i;
+			string inputVar = expr->construireIR(cfg);
 			
+			vector<string> params;
+			params.push_back("%edi");
+			params.push_back(inputVar);
+			IRInstr *instr = new IRInstr(IRInstr::Mnemonique::WMEM_SR, blocCourant,params);
+			blocCourant->ajouterInstrIR(instr);
+			
+			vector<string> params2;
+			params2.push_back("putchar");
+			params2.push_back("inutilisee");
+			IRInstr *instr2 = new IRInstr(IRInstr::Mnemonique::CALL,blocCourant,params2);
+			blocCourant->ajouterInstrIR(instr2);
 		}
+		else 
+		{
+			reg = cfg->creerNouveauRegistre();
+			BasicBlock* blocCourant = cfg->getBlockCourant();
+			vector<std::string> params;
+			
+			// Label et destination
+			params.push_back(*appelFonction->getIdentifiant()->getId());
+			params.push_back(reg);
+			
+			vector<Expression*>* listeParametresFonction = appelFonction->getParametres();
+			for(int i = 0; i < listeParametresFonction->size(); i++)
+			{
+				Expression* expI = (*listeParametresFonction)[i]; 
+				string regI = expI->construireIR(cfg);
 
-		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CALL, blocCourant, params);
-		blocCourant->ajouterInstrIR(nouvelleInstr);
+				if(Identifiant* identifiant = dynamic_cast<Identifiant*>(expI)) {
+					
+					string regValIdent = cfg->creerNouveauRegistre();
+					
+					vector<std::string> paramsI;
+					paramsI.push_back(regValIdent);
+					paramsI.push_back(regI);
+					IRInstr* nouvelleInstrI = new IRInstr(IRInstr::Mnemonique::RMEM, blocCourant, paramsI);
+					blocCourant->ajouterInstrIR(nouvelleInstrI);
+					
+					// Parametre de la fonction
+					params.push_back(regValIdent);	
+				} 
+				else
+				{
+					params.push_back(regI);	
+				}
+				
+			}
+
+			IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CALL, blocCourant, params);
+			blocCourant->ajouterInstrIR(nouvelleInstr);
+		}
 
 		cerr << "Fin IR :  AppelFonction" << endl;
 		return reg;
@@ -481,12 +522,19 @@ string Expression::construireIR(CFG* cfg) {
 			cerr << "Affectation :: La variable " << nomVariable << " existe  : Valeur : " 
 				 << to_string(blocCourant->getValeurMappee(nomVariable))	 << endl;
 		}
-			// Registre leftValue
-			// TODO : Dans le poly, il faut ici rajouter un offset
+		
+		// Si c'est un parametre, dans ce cas on reprend le registre où il est placé. 
+		if(blocCourant->getCFG()->estUnParametre(nomVariable))
+		{
+			int regOffset = blocCourant->getCFG()->getVariable(nomVariable)->getOffset();
+			cout << "nomvariable " <<  nomVariable << endl;
+			cout << "reg offset " <<  regOffset << endl;
+			reg = to_string(regOffset) + "(%rbp)";
+		}
+		else 
+		{
 			reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
-
-			//Registre rightValue
-			//string reg2 = 	affectation->getValeur()->construireIR(cfg);
+		}
 
 			string reg2; 
 
@@ -503,16 +551,52 @@ string Expression::construireIR(CFG* cfg) {
 			}
 
 			vector<std::string> params;
+			
 			params.push_back(reg); // Destination
 			params.push_back(reg2); // Source
+			
 			IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::WMEM, blocCourant, params);
 			blocCourant->ajouterInstrIR(nouvelleInstr);
 
 		cerr << "Fin IR :  Affectation" << endl;
 
-			return reg;
+		return reg;
 
 	} else {
 		return "Inconnu";
+	}
+}
+
+void StructureControle::construireIR(CFG* cfg){
+	if(BlocIf* blocIf = dynamic_cast<BlocIf*>(this))
+	{	
+		cerr << "IR : BlocIf" << endl;
+		//On evalue l'expression
+		blocIf->exprCondition->construireIR(cfg);
+		
+		BasicBlock* testBB = cfg->getBlockCourant();
+
+		BasicBlock* thenBB = new BasicBlock(cfg, blocIf->instrv);
+		BasicBlock* elseBB = new BasicBlock(cfg, blocIf->blocElse);
+		
+		BasicBlock* afterIfBB = new BasicBlock(cfg);
+		afterIfBB->setSuccCond(testBB->getSuccCond());
+		afterIfBB->setSuccIncond(testBB->getSuccIncond());
+
+		testBB->setSuccCond(thenBB);
+		testBB->setSuccIncond(elseBB);
+
+		thenBB->setSuccCond(afterIfBB);
+		thenBB->setSuccIncond(NULL);
+
+		elseBB->setSuccCond(afterIfBB) ;
+		elseBB->setSuccIncond(NULL) ;
+
+		cfg->setBlockCourant(afterIfBB);
+
+		cerr << "Fin IR : BlocIf" << endl;
+	} 
+	else if (dynamic_cast<BlocWhile*>(this))
+	{
 	}
 }

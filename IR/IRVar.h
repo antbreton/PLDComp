@@ -7,16 +7,18 @@
 class IRVar {
 public:
 	IRVar(std::string nom) : nom(nom){}// Ajouter le type et le nom plus tard
+	IRVar(std::string Type, std::string Nom, int unOffset):type(Type),nom(Nom),offset(unOffset) {} ;
 	void setOffset(int offsetAdd) {this->offset = offsetAdd;};
 	int getOffset() {return offset;};
 	int getValeur() {return valeur;};
+	std::string getType() {return type;};
 	std::string getNom() {return nom;};
 	~IRVar();
 
 private:
-	int type; // Mettre une enum de types ?
+	std::string type; // Mettre une enum de types ?
 	std::string nom; // Le nom de la variable
-	int offset; // TODO : Quentin et Nathan en parlaient
+	int offset; 
 	int valeur;
 };
 

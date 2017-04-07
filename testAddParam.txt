@@ -1,0 +1,5 @@
+int32_t add3(int32_t a, int32_t b, int32_t c) { 
+  int32_t d; 
+  d = a + b + c; 
+  return d; 
+} 
