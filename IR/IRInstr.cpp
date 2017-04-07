@@ -250,8 +250,13 @@ string IRInstr::genererAssembleur() {
 		  codeAssembleur += "    xor    "+parametre3+", %rax\r\n"; // bit a 1 si different, bit a 0 si egal.
 		  codeAssembleur += "    cmpq   $0, %rax \r\n"; // Est ce que Rax est a 0, si c'est a 0 c'est egal
 		  codeAssembleur += "    sete   %al \r\n";   // SETE = Set byte if equal ; AL is the lower 8 bits : Tous les bits de al passe a 1 si ils sont egaux
-		  codeAssembleur += "    movzbl %al, %rax \r\n"; // MOV, zero extend, Byte to Long : On étend ça a tout le %rax.
+		  codeAssembleur += "    movzbq %al, %rax \r\n"; // MOV, zero extend, Byte to Long : On étend ça a tout le %rax.
 		  codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
+		  
+		  
+		  
+		//  codeAssembleur += "	test	"+parametre1+", "+parametre2+"\r\n"; 
+		  
 		  break;
 		  
 		case CMP_LT :
@@ -269,6 +274,14 @@ string IRInstr::genererAssembleur() {
 		  codeAssembleur += "    movzbl %al, %rax \r\n";
 		  codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
 		  break;
+
+		case IF_ : // instruction apres la condition de test
+			codeAssembleur += "    jne " + parametre1 + "\r\n";
+			break;
+
+		case THEN_ :
+			codeAssembleur += "    jmp " + parametre1 + "\r\n";
+			break;
 		  
 	  }
 	  

@@ -8,25 +8,31 @@ BasicBlock::BasicBlock(std::string label)
 {
 	
 }
+
+
 BasicBlock::BasicBlock(CFG* cfg)
 {
 	cfg->setBlockCourant(this);
 	this->cfg = cfg;
 
+	listeInstructionsIR = new vector<IRInstr*>();
+	listeInstructionsAST = new vector<Instruction*>();
 }
+
+
 BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 {
-
-	cfg->setBlockCourant(this); //TODO : faut-il maj ailleur de bloc courant ?
 
 	this->cfg = cfg;
 	this-> label = label;
 
 	listeInstructionsIR = new vector<IRInstr*>();
+	listeInstructionsAST = new vector<Instruction*>();
 
-	if(bloc!=NULL)
+	if(bloc != NULL)
 	{
 
+		listeInstructionsAST = bloc->getInstructions();
 		vector<Instruction*>* listeIntruc = bloc->getInstructions();
 		vector<Instruction*>:: iterator ite;
 
@@ -44,21 +50,10 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 			}
 		}
 	
-	}
-	
+	}	
+			
 }
 
-BasicBlock::BasicBlock(CFG* cfg, Instruction* instr)
-{
-	cfg->setBlockCourant(this);
-	this->cfg = cfg;	
-	listeInstructionsIR = new vector<IRInstr*>();
-
-	if(Expression* e = dynamic_cast<Expression*>(instr))
-	{
-		e->construireIR(cfg);
-	}
-}
 
 BasicBlock::~BasicBlock()
 {
@@ -66,20 +61,81 @@ BasicBlock::~BasicBlock()
 }
 
 
-
 // Methodes
+
+
+void BasicBlock::genererIR()
+{
+	vector<Instruction*>:: iterator ite;
+
+
+	for(ite = listeInstructionsAST->begin(); ite!=listeInstructionsAST->end(); ++ite)
+	{
+		cfg->setBlockCourant(this);
+		cout << "------ FOR ----------" << endl;
+		
+		if(Expression* e = dynamic_cast<Expression*>(*ite))
+		{
+			cout << "------ IF ----------" << endl;
+			e->construireIR(cfg);
+		} else if (StructureControle* s = dynamic_cast<StructureControle*>(*ite))
+		{
+			cout << "INSTRUCTION STRUCTURE DE CONTROLE" << endl;
+			s->construireIR(cfg);
+
+			if(succCond != nullptr){
+				cout << "succCond non NULL" << endl;
+				succCond->genererIR();
+			}
+
+			if (succIncond != nullptr){
+					cout << "succIncond non NULL" << endl;
+					succIncond->genererIR();
+			}
+
+
+		} else if (Bloc* b = dynamic_cast<Bloc*>(*ite))
+		{
+			cout << "INSTRUCTION DE TYPE BLOC" << endl;
+		}
+	}	 
+}
 
 // Genere le code assembleur du bloc, pour cela on appelle chaque methode genererAssembleur
 // de chaque Instruction IR.
 string BasicBlock::genererAssembleur() {
     string codeAssembleur;
+
+    //cfg->setBlockCourant(this);
+
     
     vector<IRInstr *>::iterator ite = listeInstructionsIR->begin();
+
+	if (label.compare("main")) // TODO etendre a toute fonciton
+    {
+		codeAssembleur = label + ":\r\n";
+	}
 
     while(ite != listeInstructionsIR->end()) {
       codeAssembleur += (*ite)->genererAssembleur();
       ite++;
     }
+    if (jumpIRIntr != NULL)
+    {
+		codeAssembleur += jumpIRIntr->genererAssembleur();
+	}
+
+    //if(succCond != nullptr && label != "blocIF"){
+    if(succCond != nullptr)
+    {
+		cout << "succCond assembleur" << endl;
+		codeAssembleur += succCond->genererAssembleur();	
+	} 
+
+	if (succIncond != nullptr){
+		cout << "succIncond assembleur" << endl;
+		codeAssembleur += succIncond->genererAssembleur();
+	}
   
     return codeAssembleur;
 }
@@ -90,6 +146,9 @@ void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
 	listeInstructionsIR->push_back(instruction);
 }
 
+void BasicBlock::ajouterInstrIRJump(IRInstr *instruction) {
+	jumpIRIntr = instruction;
+}
 
 // GETTER / SETTER
 

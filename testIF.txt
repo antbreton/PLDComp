@@ -1,7 +1,8 @@
 void main (){
-	if(1 == 2){
+	int32_t a;
+	a = 2;
+	if(a == 2){
 		putchar('V');
-	} else {
-		putchar('F');
-	}
+		putchar(10);
+	} 
 }

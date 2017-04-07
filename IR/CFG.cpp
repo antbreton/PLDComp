@@ -59,6 +59,7 @@ void CFG::addBasicBlock(BasicBlock* newBasicBlock)
 	this->listeBasicBlocks.push_back(newBasicBlock);
 }
 
+
 // Parcours le CFG et en genere le code assembleur.
 string CFG::genererAssembleur() {
 		
@@ -83,6 +84,21 @@ string CFG::genererAssembleur() {
 
 	return codeAssembleur;
 }
+
+
+void CFG::genererIR()
+{
+
+	cout<< "CFG::genererIR" << endl;
+	list<BasicBlock *>::iterator ite = listeBasicBlocks.begin() ;
+
+  	while (ite != listeBasicBlocks.end()) 
+  	{
+		(*ite)->genererIR();
+		ite++;
+  	}
+}
+
 
 std::string CFG::gen_prologue()
 {
