@@ -34,16 +34,28 @@ class BasicBlock {
 		void setSuccIncond(BasicBlock* bb) {succIncond = bb;};
 
 		void genererIR();
-
+		
+		string getJumpInstr() {return jumpInstr;};
+		void setJumpInstr(string jumpInstrAdd ) { jumpInstr = jumpInstrAdd;};
+		Bloc* getBloc() {return bloc;};
+		//bool estVide(){return estVide;};
+		bool getEstVide(){return estVide;};
+		void setEstDernierBlocIf(bool choix){estDernierBlocIf=choix;};
+		bool getEstDernierBlocIf(){return estDernierBlocIf;};
+		
 	private:
 		std::vector<IRInstr * >* listeInstructionsIR;
 		IRInstr* jumpIRIntr;
+		string jumpInstr;
 		std::vector<Instruction*>* listeInstructionsAST;
 		BasicBlock* succCond; // Son successeur conditionnel
 		BasicBlock* succIncond; // Son sucesseur inconditionnel
-		map<std::string,int> mappingVarReg;
+		std::map<std::string,int> mappingVarReg;
 		CFG* cfg;
 		std::string label;
+		Bloc* bloc;
+		bool estVide;
+		bool estDernierBlocIf;
 };
 
 

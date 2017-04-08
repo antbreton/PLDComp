@@ -20,26 +20,30 @@ BasicBlock::BasicBlock(CFG* cfg)
 }
 
 
-BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
+BasicBlock::BasicBlock(CFG* cfg, Bloc* blocAdd, string label)
 {
 
+	cout << "BasicBlock constructeur" << endl;
+	cfg->setBlockCourant(this);
+	this->bloc= blocAdd;
 	this->cfg = cfg;
 	this-> label = label;
-
+	estDernierBlocIf = false;
+	
+	//mappingVarReg = new map<string,int> ();
+	
 	listeInstructionsIR = new vector<IRInstr*>();
 	listeInstructionsAST = new vector<Instruction*>();
 
 	if(bloc != NULL)
 	{
-
-		listeInstructionsAST = bloc->getInstructions();
+		/*
+		//listeInstructionsAST = bloc->getInstructions();
 		vector<Instruction*>* listeIntruc = bloc->getInstructions();
 		vector<Instruction*>:: iterator ite;
 
-
 		for(ite = listeIntruc->begin(); ite!=listeIntruc->end(); ++ite)
 		{
-			
 			if(Expression* e = dynamic_cast<Expression*>(*ite))
 			{
 				e->construireIR(cfg);
@@ -49,8 +53,13 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 				s->construireIR(cfg);
 			}
 		}
+		*/
+		listeInstructionsAST = bloc->getInstructions();
 	
-	}	
+	}
+	else {
+		estVide=true;
+	}
 			
 }
 
@@ -66,6 +75,7 @@ BasicBlock::~BasicBlock()
 
 void BasicBlock::genererIR()
 {
+	cout << "BasicBlock genererIR" << endl;
 	vector<Instruction*>:: iterator ite;
 
 
@@ -78,7 +88,8 @@ void BasicBlock::genererIR()
 		{
 			cout << "------ IF ----------" << endl;
 			e->construireIR(cfg);
-		} else if (StructureControle* s = dynamic_cast<StructureControle*>(*ite))
+		} 
+		else if (StructureControle* s = dynamic_cast<StructureControle*>(*ite))
 		{
 			cout << "INSTRUCTION STRUCTURE DE CONTROLE" << endl;
 			s->construireIR(cfg);
@@ -93,50 +104,95 @@ void BasicBlock::genererIR()
 					succIncond->genererIR();
 			}
 
-
-		} else if (Bloc* b = dynamic_cast<Bloc*>(*ite))
+		}
+		else if (Bloc* b = dynamic_cast<Bloc*>(*ite))
 		{
 			cout << "INSTRUCTION DE TYPE BLOC" << endl;
 		}
 	}	 
 }
 
+
 // Genere le code assembleur du bloc, pour cela on appelle chaque methode genererAssembleur
 // de chaque Instruction IR.
 string BasicBlock::genererAssembleur() {
     string codeAssembleur;
-
+	cout << "BasicBlock genererAssembleur" << endl;
     //cfg->setBlockCourant(this);
 
     
     vector<IRInstr *>::iterator ite = listeInstructionsIR->begin();
-
+	
+	
 	if (label.compare("main")) // TODO etendre a toute fonciton
     {
 		codeAssembleur = label + ":\r\n";
 	}
-
+	
+	
     while(ite != listeInstructionsIR->end()) {
       codeAssembleur += (*ite)->genererAssembleur();
       ite++;
     }
-    if (jumpIRIntr != NULL)
-    {
-		codeAssembleur += jumpIRIntr->genererAssembleur();
+	
+		// Gestion des sauts
+    
+    if(succIncond != NULL) {
+		
+		cout << "succIncond assembleur" << endl;
+		  if(succCond != NULL && jumpIRIntr != NULL) 
+		  {
+			  cout << "succCond jumpIRIntr" << endl;
+			
+			cout << "succCond jumpIRIntr" << jumpInstr <<  endl;
+			int varOffset = this->getCFG()->getVariableReg(jumpInstr)->getOffset();
+			cout << "succCond jumpIRIntr varOffset" << varOffset <<  endl;
+			string offsetDestEgal = "-"+to_string(varOffset)+"(%rbp)";
+			
+			codeAssembleur += "    cmpq    $1, "+offsetDestEgal+" \r\n";
+			codeAssembleur += "    je      "+succCond->getLabel()+" \r\n"; // Jump si egal : then
+			codeAssembleur += "    jmp     "+succIncond->getLabel()+" \r\n"; // Jump classique : else
+			
+		  } 
+		  else 
+		  {
+			codeAssembleur += "    jmp     "+succIncond->getLabel()+" \r\n";
+		  }
+		  codeAssembleur += " \r\n";
 	}
+	
+	
+	// ON genere les deux successeurs.
+	//****************************************************************
 
-    //if(succCond != nullptr && label != "blocIF"){
-    if(succCond != nullptr)
+    if(succCond != NULL)
     {
+
 		cout << "succCond assembleur" << endl;
 		codeAssembleur += succCond->genererAssembleur();	
 	} 
+	
+	// Bloc ELSE
+	if (succIncond != NULL){
+		
+		if(!this->getSuccIncond()->getEstVide())
+		{
+			cout << "succIncond assembleur" << endl;
+			codeAssembleur += succIncond->genererAssembleur();
+		}
+		else // Si il est vide
+		{
+			if(this->getEstDernierBlocIf()) // et que c'est le dernier bloc
+			{
+				codeAssembleur += succIncond->genererAssembleur();
+			}
+		}
 
-	if (succIncond != nullptr){
-		cout << "succIncond assembleur" << endl;
-		codeAssembleur += succIncond->genererAssembleur();
 	}
-  
+	
+	//****************************************************************
+	
+
     return codeAssembleur;
 }
 
@@ -147,6 +203,7 @@ void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
 }
 
 void BasicBlock::ajouterInstrIRJump(IRInstr *instruction) {
+	cout << "BasicBlock ajouterInstrIRJump" << endl;
 	jumpIRIntr = instruction;
 }
 
@@ -158,9 +215,13 @@ CFG* BasicBlock::getCFG() {
 
 
 bool BasicBlock::estVarMappee(std::string nomVariable) {
+	cout << "BasicBlock : estVarMappee " << endl;
+
     if(this->mappingVarReg.count(nomVariable) == 0) {
         return false;
     }
+
+	cout << "BasicBlock : estVarMappee 2" << endl;
     return true;
 }
 

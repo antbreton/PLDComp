@@ -194,7 +194,7 @@ string IRInstr::genererAssembleur() {
 	  switch(mnemoniqueAction) {
 		case LDCONST :
 		  //codeAssembleur += "    LDCONST\r\n";
-		  codeAssembleur += "    movl   "+ parametre2 +", "+ parametre1 +"\r\n";
+		  codeAssembleur += "    movq   "+ parametre2 +", "+ parametre1 +"\r\n";
 		  break;
 		  
 		case WMEM :
@@ -282,7 +282,11 @@ string IRInstr::genererAssembleur() {
 		case THEN_ :
 			codeAssembleur += "    jmp " + parametre1 + "\r\n";
 			break;
-		  
+			
+		case JMP :
+		//codeAssembleur += "    JMP\r\n";
+		  codeAssembleur += "    jmp    "+ parametre1 +" \r\n";
+		  break;  
 	  }
 	  
 	return codeAssembleur;

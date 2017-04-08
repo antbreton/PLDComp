@@ -198,14 +198,15 @@ string Expression::construireIR(CFG* cfg) {
 		cerr << "IR : OperateurInfEgal" << endl;
 		// Operande 1
 		string regGauche = opeInf->getMembreGauche()->construireIR(cfg);
+		
 		// Operande 2
 		string regDroit = opeInf->getMembreDroit()->construireIR(cfg);
+		
 		// Destination
 		string regResultat = cfg->creerNouveauRegistre();
-
 		BasicBlock* blocCourant = cfg->getBlockCourant();
-
 		vector<std::string> params;
+		
 		// Destination - Operande 1 - Operande 2
 		params.push_back(regResultat);
 		params.push_back(regGauche);
@@ -244,7 +245,7 @@ string Expression::construireIR(CFG* cfg) {
 
 		cerr << "Fin IR : OperateurInfEgal" << endl;
 		
-		return regGauche;
+		return regResultat;
 
 	} else if(OperateurEgal* opeEgal = dynamic_cast<OperateurEgal*>(this)) {
 		cerr << "IR : OperateurEgal" << endl;
@@ -266,10 +267,11 @@ string Expression::construireIR(CFG* cfg) {
 
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_EQ, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
-
+		blocCourant->setJumpInstr(regResultat);
+		
 		cerr << "Fin IR : OperateurEgal" << endl;
 		
-        return regGauche;
+        return regResultat;
         
 	} else if(dynamic_cast<OperateurDifferent*>(this)) {
 		cerr << "TODO : Construire IR : Classe OperateurDifferent" << endl;
@@ -514,15 +516,17 @@ string Expression::construireIR(CFG* cfg) {
 		BasicBlock* blocCourant = cfg->getBlockCourant();
 		string nomVariable = *affectation->getIdentifiant()->getId();
 		string reg;
-
+		cout << "IR : Affectation 2 " << endl;
 		if(!blocCourant->estVarMappee(nomVariable)){
+			cout << "IR : Affectation 25 " << endl;
 			blocCourant->ajouterVariableMappee(cfg, nomVariable);
 			cerr << "Affectation :: La variable " << nomVariable << " n existe pas : On la cree" << endl;
 		} else {
+			cout << "IR : Affectation 24 " << endl;
 			cerr << "Affectation :: La variable " << nomVariable << " existe  : Valeur : " 
 				 << to_string(blocCourant->getValeurMappee(nomVariable))	 << endl;
 		}
-		
+		cout << "IR : Affectation 3" << endl;
 		// Si c'est un parametre, dans ce cas on reprend le registre où il est placé. 
 		if(blocCourant->getCFG()->estUnParametre(nomVariable))
 		{
@@ -554,7 +558,7 @@ string Expression::construireIR(CFG* cfg) {
 			
 			params.push_back(reg); // Destination
 			params.push_back(reg2); // Source
-			
+
 			IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::WMEM, blocCourant, params);
 			blocCourant->ajouterInstrIR(nouvelleInstr);
 
@@ -572,47 +576,64 @@ void StructureControle::construireIR(CFG* cfg){
 	{	
 		cerr << "IR : BlocIf" << endl;
 		BasicBlock* testBB = cfg->getBlockCourant();
-		//On evalue l'expression
+		
+		string cfgName = cfg->getFonction()->getIdentifiant();
+		//On evalue l'expression du IF
 		blocPereIf->exprCondition->construireIR(cfg);
-		string labelElse = "blocELSE";
+		
+		string labelElse = "blocELSE_"+cfgName;
+		
+		// Inutil a mon gout
 		vector<std::string> params;
 		params.push_back(labelElse);
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::IF_, testBB, params);
-		//testBB->ajouterInstrIR(nouvelleInstr);
 		testBB->ajouterInstrIRJump(nouvelleInstr);
 
 		
-
+		// On construit le basicblock THEN
 		Bloc* bIf = dynamic_cast<Bloc *>(blocPereIf->instrv);
-		BasicBlock* thenBB = new BasicBlock(cfg,bIf,"blocIF");
-		string labelAfter = "blocAfter";
+		BasicBlock* thenBB = new BasicBlock(cfg,bIf,"blocIF_"+cfgName);
+		string labelAfter = "blocAfter_"+cfgName;
+		
+		
 		vector<std::string> params2;
 		params2.push_back(labelAfter);
 		IRInstr* nouvelleInstr2 = new IRInstr(IRInstr::Mnemonique::THEN_, thenBB, params2);
-		//thenBB->ajouterInstrIR(nouvelleInstr2);
 		thenBB->ajouterInstrIRJump(nouvelleInstr2);
+		
+		// ELSE
 		Bloc* bElse = dynamic_cast<Bloc *>(blocPereIf->blocElse);
 		BasicBlock* elseBB = new BasicBlock(cfg,bElse, labelElse);
 		
 		
 		BasicBlock* afterIfBB = new BasicBlock(cfg, NULL, labelAfter);
-		afterIfBB->setSuccCond(testBB->getSuccCond());
+		afterIfBB->setSuccCond(NULL);
 		afterIfBB->setSuccIncond(testBB->getSuccIncond());
-
-
-		testBB->setSuccCond(thenBB);
-		testBB->setSuccIncond(elseBB);
 		
-		if(blocPereIf->blocElse == nullptr)
+		if(elseBB->getEstVide())
 		{
-			thenBB->setSuccCond(afterIfBB);
-		} else {
-			thenBB->setSuccCond(NULL);
+			testBB->setSuccCond(thenBB);
+			testBB->setSuccIncond(afterIfBB);
+		}
+		else {
+			testBB->setSuccCond(thenBB);
+			testBB->setSuccIncond(elseBB);
 		}
 
-		thenBB->setSuccIncond(NULL);
-		elseBB->setSuccCond(afterIfBB) ;
-		elseBB->setSuccIncond(NULL) ;
+		
+		
+		if(blocPereIf->blocElse == NULL)
+		{
+			thenBB->setSuccCond(NULL);
+			thenBB->setEstDernierBlocIf(true);
+		} else {
+			thenBB->setSuccCond(NULL);
+			elseBB->setEstDernierBlocIf(true);
+		}
+
+		thenBB->setSuccIncond(afterIfBB);
+		elseBB->setSuccCond(NULL) ;
+		elseBB->setSuccIncond(afterIfBB) ;
 		
 
 		cfg->setBlockCourant(afterIfBB);

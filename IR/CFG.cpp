@@ -6,6 +6,7 @@ using namespace std;
 // Constructeur et Destructeur
 CFG::CFG(Fonction* fonction)
 {
+	cout << "CFG Constructeur" << endl;
 	fonctionDuCFG = fonction;
 	this->dicoRegTmp = new map<string, IRVar*>();
 	Bloc* bloc = fonctionDuCFG->getBloc();
@@ -62,7 +63,9 @@ void CFG::addBasicBlock(BasicBlock* newBasicBlock)
 
 // Parcours le CFG et en genere le code assembleur.
 string CFG::genererAssembleur() {
-		
+	
+	cout << "CFG genererAssembleur" << endl;	
+	
 	string codeAssembleur;
 
 	// PROLOGUE
@@ -88,7 +91,6 @@ string CFG::genererAssembleur() {
 
 void CFG::genererIR()
 {
-
 	cout<< "CFG::genererIR" << endl;
 	list<BasicBlock *>::iterator ite = listeBasicBlocks.begin() ;
 
@@ -125,7 +127,9 @@ std::string CFG::gen_prologue()
 
 		for(it=dico->begin(); it!=dico->end(); ++it)
 		{
+			cout << it->first << endl;
 			it->second->setOffset(8*j + taillePileParam);
+			cout << it->second->getOffset() << endl;
 			j++;
 		}
 	}
@@ -219,6 +223,13 @@ IRVar* CFG::getVariable(string nom)
 {
     map<string,IRVar*>::iterator varIte;
     varIte = variableMap.find(nom);
+    return (varIte->second);
+}
+
+IRVar* CFG::getVariableReg(string nom) 
+{
+    map<string,IRVar*>::iterator varIte;
+    varIte = dicoRegTmp->find(nom);
     return (varIte->second);
 }
 

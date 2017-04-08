@@ -35,9 +35,11 @@ class CFG {
 		
 		// params
 		IRVar* getVariable(string nom);
+		IRVar* getVariableReg(string nom);
 		void addVariable(IRVar* var);
 		int giveOffsets();
 		bool estUnParametre(string nomVariable);
+		Fonction* getFonction() {return fonctionDuCFG;};
 		
 
 	private:
