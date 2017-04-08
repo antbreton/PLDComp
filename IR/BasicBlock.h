@@ -38,6 +38,8 @@ class BasicBlock {
 		void setListeInstructionAST(vector<Instruction*>* v) {listeInstructionsAST = v; };
 		void genererIR();
 
+		bool bbreak = false;
+
 	private:
 		std::vector<IRInstr * >* listeInstructionsIR;
 		IRInstr* jumpIRIntr;

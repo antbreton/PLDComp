@@ -34,6 +34,7 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 	if(bloc != NULL)
 	{
 		listeInstructionsAST = bloc->getInstructions();
+		cout << "BasicBlock::listeInstructionsAST->size() " << listeInstructionsAST->size() << endl;
 	}
 	
 }
@@ -51,11 +52,11 @@ void BasicBlock::genererIR()
 {
 	vector<Instruction*>:: iterator ite;
 
-
+	cout << "BB:genererIR()::listeInstructionsAST->size()" << listeInstructionsAST->size() << endl;
 	for(ite = listeInstructionsAST->begin(); ite!=listeInstructionsAST->end(); ++ite)
 	{
 		cfg->setBlockCourant(this);
-		cout << "------ FOR ----------" << endl;
+		cout << "------ FOR ----------  " << label << endl;
 		
 		if(Expression* e = dynamic_cast<Expression*>(*ite))
 		{
@@ -66,22 +67,27 @@ void BasicBlock::genererIR()
 		{
 			cout << "INSTRUCTION STRUCTURE DE CONTROLE" << endl;
 			s->construireIR(cfg,ite);
-
 		} else if (Bloc* b = dynamic_cast<Bloc*>(*ite))
 		{
 			cout << "INSTRUCTION DE TYPE BLOC" << endl;
 		}
 
-		if(succCond != nullptr){
-			succCond->genererIR();
-			if(succIncond != nullptr){
-				succIncond->genererIR();
-			}
+
+
+		if(bbreak) {
+			cout << "BREAK"<<  label << endl;
 			break;
 		}
 
 		cout << "------ FIN FOR ----------" << endl;
-	}	 
+	}	
+
+	if(succCond != nullptr){
+		succCond->genererIR();
+		if(succIncond != nullptr){
+			succIncond->genererIR();
+		}
+	} 
 }
 
 

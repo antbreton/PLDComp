@@ -753,6 +753,7 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 	{	
 		cerr << "IR : BlocIf" << endl;
 		BasicBlock* testBB = cfg->getBlockCourant();
+		testBB->bbreak = true;
 
 		//std::vector<Instruction * >* instrAstBlocPere = testBB->getListeInstructionsAST();
 
@@ -776,8 +777,16 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 		IRInstr* nouvelleInstr2 = new IRInstr(IRInstr::Mnemonique::THEN_, thenBB, params2);
 		thenBB->ajouterInstrIRJump(nouvelleInstr2);
 		
-		Bloc* bElse = dynamic_cast<Bloc *>(blocPereIf->blocElse);
-		BasicBlock* elseBB = new BasicBlock(cfg,bElse, labelElse);
+
+		BasicBlock* elseBB = nullptr;
+
+		if(blocPereIf->blocElse != nullptr)
+		{
+			Bloc* bElse = dynamic_cast<Bloc *>(blocPereIf->blocElse);
+			BasicBlock* elseBB = new BasicBlock(cfg,bElse, labelElse);
+		}
+
+
 		
 		vector<Instruction*>* instrAstAfterBB = new vector<Instruction*>(); 
 		vector<Instruction*>::iterator it;
@@ -794,21 +803,22 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 
 		testBB->setSuccCond(thenBB);
 		testBB->setSuccIncond(elseBB);
+
 		
 		if(blocPereIf->blocElse == nullptr)
 		{
 			thenBB->setSuccCond(afterIfBB);
+
 		} else {
 			thenBB->setSuccCond(NULL);
+			elseBB->setSuccCond(afterIfBB) ;
+			elseBB->setSuccIncond(NULL) ;
 		}
 
 		thenBB->setSuccIncond(NULL);
-		elseBB->setSuccCond(afterIfBB) ;
-		elseBB->setSuccIncond(NULL) ;
+
 		
-		cout << "POINTEUR GENERAL 1 " << cfg->getBlockCourant() << endl;
 		cfg->setBlockCourant(afterIfBB);
-		cout << "POINTEUR GENERAL 2 " << cfg->getBlockCourant() << endl;
 
 		cerr << "Fin IR : BlocIf" << endl;
 	} 

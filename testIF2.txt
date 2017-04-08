@@ -5,9 +5,7 @@ void main (){
 		putchar('V');
 		putchar(10);
 	}
-	else {
-		putchar('X');
-		putchar(10);
-	}
 
+	putchar('X');
+	putchar(10);
 }
