@@ -567,32 +567,67 @@ string Expression::construireIR(CFG* cfg) {
 	}
 }
 
-void StructureControle::construireIR(CFG* cfg){
-	if(BlocIf* blocIf = dynamic_cast<BlocIf*>(this))
+void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator itCourant){
+	if(BlocIf* blocPereIf = dynamic_cast<BlocIf*>(this))
 	{	
 		cerr << "IR : BlocIf" << endl;
-		//On evalue l'expression
-		blocIf->exprCondition->construireIR(cfg);
-		
 		BasicBlock* testBB = cfg->getBlockCourant();
 
-		BasicBlock* thenBB = new BasicBlock(cfg, blocIf->instrv);
-		BasicBlock* elseBB = new BasicBlock(cfg, blocIf->blocElse);
+		//std::vector<Instruction * >* instrAstBlocPere = testBB->getListeInstructionsAST();
+
+		//On evalue l'expression
+		blocPereIf->exprCondition->construireIR(cfg);
+		string labelElse = "blocELSE";
+		vector<std::string> params;
+		params.push_back(labelElse);
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::IF_, testBB, params);
+		//testBB->ajouterInstrIR(nouvelleInstr);
+		testBB->ajouterInstrIRJump(nouvelleInstr);
+		string labelAfter = "blocAfter";
+		BasicBlock* afterIfBB = new BasicBlock(cfg, NULL, labelAfter);
+
+
+
+		Bloc* bIf = dynamic_cast<Bloc *>(blocPereIf->instrv);
+		BasicBlock* thenBB = new BasicBlock(cfg,bIf,"blocIF");
+		vector<std::string> params2;
+		params2.push_back(labelAfter);
+		IRInstr* nouvelleInstr2 = new IRInstr(IRInstr::Mnemonique::THEN_, thenBB, params2);
+		thenBB->ajouterInstrIRJump(nouvelleInstr2);
 		
-		BasicBlock* afterIfBB = new BasicBlock(cfg);
+		Bloc* bElse = dynamic_cast<Bloc *>(blocPereIf->blocElse);
+		BasicBlock* elseBB = new BasicBlock(cfg,bElse, labelElse);
+		
+		vector<Instruction*>* instrAstAfterBB = new vector<Instruction*>(); 
+		vector<Instruction*>::iterator it;
+		int i = 1;
+		for(it=itCourant+1; it !=  testBB->getListeInstructionsAST()->end(); it++)
+		{	
+			instrAstAfterBB->push_back(*it);
+		}
+		afterIfBB->setListeInstructionAST(instrAstAfterBB);
+
 		afterIfBB->setSuccCond(testBB->getSuccCond());
 		afterIfBB->setSuccIncond(testBB->getSuccIncond());
 
+
 		testBB->setSuccCond(thenBB);
 		testBB->setSuccIncond(elseBB);
+		
+		if(blocPereIf->blocElse == nullptr)
+		{
+			thenBB->setSuccCond(afterIfBB);
+		} else {
+			thenBB->setSuccCond(NULL);
+		}
 
-		thenBB->setSuccCond(afterIfBB);
 		thenBB->setSuccIncond(NULL);
-
 		elseBB->setSuccCond(afterIfBB) ;
 		elseBB->setSuccIncond(NULL) ;
-
+		
+		cout << "POINTEUR GENERAL 1 " << cfg->getBlockCourant() << endl;
 		cfg->setBlockCourant(afterIfBB);
+		cout << "POINTEUR GENERAL 2 " << cfg->getBlockCourant() << endl;
 
 		cerr << "Fin IR : BlocIf" << endl;
 	} 
