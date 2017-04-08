@@ -54,6 +54,7 @@ string CFG::genererAssembleur() {
 
   	while (ite != listeBasicBlocks.end()) 
   	{
+  		cout << "CFG:genererAssembleur" << endl;
 		codeAssembleur += (*ite)->genererAssembleur();
 		ite++;
   	}
@@ -73,7 +74,16 @@ void CFG::genererIR()
 
   	while (ite != listeBasicBlocks.end()) 
   	{
+  		blocCourant = (*ite);
 		(*ite)->genererIR();
+		/*
+		cout << "POINTEUR CFG " << *ite << endl;
+		if((*ite) != blocCourant)
+		{
+			cout << endl << "BLOC COURANT MODIFIE" << endl << endl;
+			blocCourant->genererIR();
+		}
+		*/
 		ite++;
   	}
 }

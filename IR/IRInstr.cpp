@@ -29,12 +29,10 @@ string IRInstr::genererAssembleur() {
      
 	  string codeAssembleur;
 	  int nbParametres = this->params.size();
-	  cout << "genererAssem IRinstr" << endl;
+	  cout << "genererAssem IRinstr : " << mnemoniqueAction << endl;
 	  string parametre1 = "";
 	  string parametre2 = "";
 	  string parametre3 = "";
-
-	  cout << "IRinstr::genererAssembleur 1" << endl;
 
 	  vector<string>::iterator iteParam = params.begin();
 	  if(nbParametres >= 1)

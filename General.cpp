@@ -529,11 +529,14 @@ string Expression::construireIR(CFG* cfg) {
 	}
 }
 
-void StructureControle::construireIR(CFG* cfg){
+void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator itCourant){
 	if(BlocIf* blocPereIf = dynamic_cast<BlocIf*>(this))
 	{	
 		cerr << "IR : BlocIf" << endl;
 		BasicBlock* testBB = cfg->getBlockCourant();
+
+		//std::vector<Instruction * >* instrAstBlocPere = testBB->getListeInstructionsAST();
+
 		//On evalue l'expression
 		blocPereIf->exprCondition->construireIR(cfg);
 		string labelElse = "blocELSE";
@@ -542,22 +545,30 @@ void StructureControle::construireIR(CFG* cfg){
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::IF_, testBB, params);
 		//testBB->ajouterInstrIR(nouvelleInstr);
 		testBB->ajouterInstrIRJump(nouvelleInstr);
+		string labelAfter = "blocAfter";
+		BasicBlock* afterIfBB = new BasicBlock(cfg, NULL, labelAfter);
 
-		
+
 
 		Bloc* bIf = dynamic_cast<Bloc *>(blocPereIf->instrv);
 		BasicBlock* thenBB = new BasicBlock(cfg,bIf,"blocIF");
-		string labelAfter = "blocAfter";
 		vector<std::string> params2;
 		params2.push_back(labelAfter);
 		IRInstr* nouvelleInstr2 = new IRInstr(IRInstr::Mnemonique::THEN_, thenBB, params2);
-		//thenBB->ajouterInstrIR(nouvelleInstr2);
 		thenBB->ajouterInstrIRJump(nouvelleInstr2);
+		
 		Bloc* bElse = dynamic_cast<Bloc *>(blocPereIf->blocElse);
 		BasicBlock* elseBB = new BasicBlock(cfg,bElse, labelElse);
 		
-		
-		BasicBlock* afterIfBB = new BasicBlock(cfg, NULL, labelAfter);
+		vector<Instruction*>* instrAstAfterBB = new vector<Instruction*>(); 
+		vector<Instruction*>::iterator it;
+		int i = 1;
+		for(it=itCourant+1; it !=  testBB->getListeInstructionsAST()->end(); it++)
+		{	
+			instrAstAfterBB->push_back(*it);
+		}
+		afterIfBB->setListeInstructionAST(instrAstAfterBB);
+
 		afterIfBB->setSuccCond(testBB->getSuccCond());
 		afterIfBB->setSuccIncond(testBB->getSuccIncond());
 
@@ -576,8 +587,9 @@ void StructureControle::construireIR(CFG* cfg){
 		elseBB->setSuccCond(afterIfBB) ;
 		elseBB->setSuccIncond(NULL) ;
 		
-
+		cout << "POINTEUR GENERAL 1 " << cfg->getBlockCourant() << endl;
 		cfg->setBlockCourant(afterIfBB);
+		cout << "POINTEUR GENERAL 2 " << cfg->getBlockCourant() << endl;
 
 		cerr << "Fin IR : BlocIf" << endl;
 	} 

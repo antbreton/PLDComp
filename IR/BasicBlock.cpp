@@ -12,9 +12,9 @@ BasicBlock::BasicBlock(std::string label)
 
 BasicBlock::BasicBlock(CFG* cfg)
 {
-	cfg->setBlockCourant(this);
+	//cfg->setBlockCourant(this);
 	this->cfg = cfg;
-
+	cfg->addBasicBlock(this);
 	listeInstructionsIR = new vector<IRInstr*>();
 	listeInstructionsAST = new vector<Instruction*>();
 }
@@ -25,6 +25,11 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 
 	this->cfg = cfg;
 	this-> label = label;
+	if(label != "blocIF" && label != "blocELSE"){
+		cout << "NI IF NI ELSE" << endl;
+		//cfg->addBasicBlock(this);
+	}
+	cout << "CREATION BLOC : " << label << endl;
 
 	listeInstructionsIR = new vector<IRInstr*>();
 	listeInstructionsAST = new vector<Instruction*>();
@@ -59,26 +64,26 @@ void BasicBlock::genererIR()
 		{
 			cout << "------ IF ----------" << endl;
 			e->construireIR(cfg);
+			cout << "------ FIN IF ----------" << endl;
 		} else if (StructureControle* s = dynamic_cast<StructureControle*>(*ite))
 		{
 			cout << "INSTRUCTION STRUCTURE DE CONTROLE" << endl;
-			s->construireIR(cfg);
-
-			if(succCond != nullptr){
-				cout << "succCond non NULL" << endl;
-				succCond->genererIR();
-			}
-
-			if (succIncond != nullptr){
-					cout << "succIncond non NULL" << endl;
-					succIncond->genererIR();
-			}
-
+			s->construireIR(cfg,ite);
 
 		} else if (Bloc* b = dynamic_cast<Bloc*>(*ite))
 		{
 			cout << "INSTRUCTION DE TYPE BLOC" << endl;
 		}
+
+		if(succCond != nullptr){
+			succCond->genererIR();
+			if(succIncond != nullptr){
+				succIncond->genererIR();
+			}
+			break;
+		}
+
+		cout << "------ FIN FOR ----------" << endl;
 	}	 
 }
 
@@ -86,8 +91,6 @@ void BasicBlock::genererIR()
 // de chaque Instruction IR.
 string BasicBlock::genererAssembleur() {
     string codeAssembleur;
-
-    //cfg->setBlockCourant(this);
 
     
     vector<IRInstr *>::iterator ite = listeInstructionsIR->begin();
@@ -106,15 +109,12 @@ string BasicBlock::genererAssembleur() {
 		codeAssembleur += jumpIRIntr->genererAssembleur();
 	}
 
-    //if(succCond != nullptr && label != "blocIF"){
     if(succCond != nullptr)
     {
-		cout << "succCond assembleur" << endl;
 		codeAssembleur += succCond->genererAssembleur();	
 	} 
 
 	if (succIncond != nullptr){
-		cout << "succIncond assembleur" << endl;
 		codeAssembleur += succIncond->genererAssembleur();
 	}
   

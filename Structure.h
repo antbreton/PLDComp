@@ -16,7 +16,7 @@ class StructureControle : public Instruction {
 		virtual void Afficher (int nbtab){}
 		virtual void setRecursifBlocAncestorToAll(Bloc * bloc);
 		bool testReturn(bool nullable);
-		void construireIR(CFG* cfg);
+		void construireIR(CFG* cfg,vector<Instruction*>::iterator itCourant);
 		virtual bool checkIDs() {if(Bloc *b1 = dynamic_cast<Bloc *>(instrv))	return b1->checkIDs();	return true;}
 };
 

@@ -33,6 +33,8 @@ class BasicBlock {
 		void setSuccCond(BasicBlock* bb) {succCond = bb;};
 		void setSuccIncond(BasicBlock* bb) {succIncond = bb;};
 
+		std::vector<Instruction * >* getListeInstructionsAST() {return listeInstructionsAST; };
+		void setListeInstructionAST(vector<Instruction*>* v) {listeInstructionsAST = v; };
 		void genererIR();
 
 	private:
