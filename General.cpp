@@ -518,7 +518,7 @@ string Expression::construireIR(CFG* cfg) {
 		params.push_back(regGauche);
 		params.push_back(regDroit);
 
-		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::DIV, blocCourant, params);
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::DIV_, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 		
 		cerr << "Fin IR :  OperateurDivise" << endl;
@@ -580,7 +580,7 @@ string Expression::construireIR(CFG* cfg) {
 		params.push_back(regResultat);
 		params.push_back(regExprCourante);
 		
-		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::NOT, blocCourant, params);
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::NOT_, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 
 		cerr << "Fin IR :  Not" << endl;

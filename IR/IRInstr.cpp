@@ -226,7 +226,7 @@ string IRInstr::genererAssembleur() {
 			codeAssembleur += "    call   "+ parametre1 +"\r\n";
 			break;
 		  
-		case NOT :
+		case NOT_ :
 			cerr << "IRInstr.cpp : NOT : Assembleur TODO" << endl;
 			break;
 
@@ -249,7 +249,7 @@ string IRInstr::genererAssembleur() {
 		  codeAssembleur += "    movq    %rax, "+ parametre1 +"\r\n";
 		  break;
 
-		case DIV :
+		case DIV_ :
 			cerr << "IRInstr.cpp : DIV : Assembleur TODO" << endl;
 			break;
 		
