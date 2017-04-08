@@ -6,9 +6,10 @@ main:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-    subq    $48, %rsp 
+    subq    $56, %rsp 
 
-    movl   $1, -8(%rbp)
+    movq    $2, %rax
+    movq    %rax, -8(%rbp)
     movl   $2, -16(%rbp)
     movq    -8(%rbp), %rax 
     xor    -16(%rbp), %rax
@@ -21,14 +22,17 @@ blocIF:
     movl   $86, -32(%rbp)
     mov    -32(%rbp), %edi
     call   putchar
-    jmp blocAfter
-blocELSE:
-    movl   $70, -40(%rbp)
+    movl   $10, -40(%rbp)
     mov    -40(%rbp), %edi
     call   putchar
-blocAfter:
-    movl   $10, -48(%rbp)
+    jmp blocAfter
+blocELSE:
+    movl   $88, -48(%rbp)
     mov    -48(%rbp), %edi
+    call   putchar
+blocAfter:
+    movl   $90, -56(%rbp)
+    mov    -56(%rbp), %edi
     call   putchar
 
     leave
