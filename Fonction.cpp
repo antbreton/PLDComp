@@ -18,6 +18,7 @@ void Bloc::ajouterListeVariable(vector<Variable*>* listeVariable)
 	 /* On ajoute la variable dans la table des symboles */	 
 	 for(int i =0; i<listeVariable->size();i++)
 	 {
+			cout << endl << endl << "adding variable :"<< (*listeVariable)[i]->getIdentifiant()<<endl<<endl;
 	 		// On construit la pair avec la valeur courante du vecteur
 	 		std::pair<string,Identifiable*> pairCourante((*listeVariable)[i]->getIdentifiant(), (*listeVariable)[i]);
 	 		

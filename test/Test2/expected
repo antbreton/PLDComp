@@ -1,5 +1,6 @@
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
-	BEGIN_BLOC // nb instr : 0 - tableSymb size : 3
+	BEGIN_BLOC // nb instr : 1 - tableSymb size : 3
+		AFFECTATION ID f  = VAL 2  
 	END_BLOC
 END_PROGRAMME
