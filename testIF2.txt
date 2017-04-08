@@ -1,0 +1,13 @@
+void main (){
+	int32_t a;
+	a = 2;
+	if(a == 6){
+		putchar('V');
+		putchar(10);
+	}
+	else {
+		putchar('X');
+		putchar(10);
+	}
+
+}
