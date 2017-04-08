@@ -1,9 +1,9 @@
 getid
-[a:0x7fad3c402ed0, c:0x7fad3c402da0  st ]
-[a:0x7fad3c402c00, c:0x7fad3c402ed0  st ]
+[a:0x7f934a402eb0, c:0x7f934a402d80  st ]
+[a:0x7f934a402be0, c:0x7f934a402eb0  st ]
 getid
 getid
-[a:0x7fad3c402930, c:0x7fad3c402c00 ]
+[a:0x7f934a402910, c:0x7f934a402be0 ]
 %%%Frontend%%%
 
 
@@ -21,24 +21,61 @@ END_PROGRAMME
 
 Erreur de résolution de portée : 'a' est inconnue dans ce scope.
 %%%Backend%%%
-Taille liste fonction : 1
-getid
-test 2
------- FOR ----------
 getid
 getid
 getid
-Taille liste CFG : 1
+getid
+NI IF NI ELSE
+CREATION BLOC : main
+BasicBlock::listeInstructionsAST->size() 1
+getid
+getid
+getid
+IR::genererIR
+CFG::genererIR
+BB:genererIR()::listeInstructionsAST->size()1
+------ FOR ----------  main
+INSTRUCTION STRUCTURE DE CONTROLE
+IR Val
+NI IF NI ELSE
+CREATION BLOC : blocAfter
+CREATION BLOC : blocIF
+BasicBlock::listeInstructionsAST->size() 1
+ICI 4
+ICI 5
+ICI 6
+ICI 7
+BREAKmain
+BB:genererIR()::listeInstructionsAST->size()1
+------ FOR ----------  blocIF
+------ IF ----------
+IR : Affectation
+------ FIN IF ----------
+------ FIN FOR ----------
+BB:genererIR()::listeInstructionsAST->size()0
 
 GEN_PROLOGUE
+getid
+getid
 .text        
-.global main 
+.globl main 
+.type main, @function
 
 main:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-    subq    $24, %rsp 
+    subq    $32, %rsp 
+    mov    %rdi, -16(%rbp) 
+    mov    %rsi, -8(%rbp) 
+
+    movq   $1, -24(%rbp)
+    jne blocELSE
+blocIF:
+    movq    $2, %rax
+    movq    %rax, -32(%rbp)
+    jmp blocAfter
+blocAfter:
 
     leave
     ret

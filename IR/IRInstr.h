@@ -30,7 +30,8 @@ class IRInstr {
 			CMP_LT, // Less than
 			CMP_LE, // Less than or Equal
 			IF_,
-			THEN_
+			THEN_,
+			WHILE_
 		};
 		IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std::string> params);
 		~IRInstr();

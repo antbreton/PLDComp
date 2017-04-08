@@ -1,6 +1,6 @@
 getid
 getid
-[a:0x7fcc3e402920, c:0x7fcc3e402bf0 ]
+[a:0x7fc7505002d0, c:0x7fc750402730 ]
 %%%Frontend%%%
 
 
@@ -13,23 +13,35 @@ END_PROGRAMME
 Erreur semantique : erreur de return dans : main
 
 %%%Backend%%%
-Taille liste fonction : 1
-getid
-test 2
------- FOR ----------
 getid
 getid
-Taille liste CFG : 1
+getid
+getid
+NI IF NI ELSE
+CREATION BLOC : main
+BasicBlock::listeInstructionsAST->size() 1
+getid
+getid
+IR::genererIR
+CFG::genererIR
+BB:genererIR()::listeInstructionsAST->size()1
+------ FOR ----------  main
+------ FIN FOR ----------
 
 GEN_PROLOGUE
+getid
+getid
 .text        
-.global main 
+.globl main 
+.type main, @function
 
 main:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-    subq    $16, %rsp 
+    mov    %rdi, -16(%rbp) 
+    mov    %rsi, -8(%rbp) 
+
 
     leave
     ret

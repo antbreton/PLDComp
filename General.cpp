@@ -602,7 +602,7 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 		if(blocPereIf->blocElse != nullptr)
 		{
 			Bloc* bElse = dynamic_cast<Bloc *>(blocPereIf->blocElse);
-			BasicBlock* elseBB = new BasicBlock(cfg,bElse, labelElse);
+			elseBB = new BasicBlock(cfg,bElse, labelElse);
 		}
 
 
@@ -623,12 +623,12 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 		testBB->setSuccCond(thenBB);
 		testBB->setSuccIncond(elseBB);
 
-		
 		if(blocPereIf->blocElse == nullptr)
 		{
 			thenBB->setSuccCond(afterIfBB);
-
+			//testBB->setSuccIncond(nullptr);
 		} else {
+			//testBB->setSuccIncond(elseBB);
 			thenBB->setSuccCond(NULL);
 			elseBB->setSuccCond(afterIfBB) ;
 			elseBB->setSuccIncond(NULL) ;
@@ -641,7 +641,53 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 
 		cerr << "Fin IR : BlocIf" << endl;
 	} 
-	else if (dynamic_cast<BlocWhile*>(this))
+	else if (BlocWhile* blocWhilePere = dynamic_cast<BlocWhile*>(this))
 	{
+/*
+		cerr <<  "IR : BlocWhile" << endl;
+
+		BasicBlock * testBB = cfg→currentBB;
+		testBB->bbreak = true;
+
+		Bloc* bWhile = dynamic_cast<Bloc *>(blocPereIf->instrv);
+		BasicBlock bodyBB = new BasicBlock(cfg,bWhile,"blocWhile");
+		blocWhilePere->exprCondition→ConstruireIR(cfg);
+
+		string labelElse = "blocAfter";
+		vector<std::string> params;
+		params.push_back(blocAfter);
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::WHILE_, testBB, params);
+		testBB->ajouterInstrIRJump(nouvelleInstr);
+
+		string labelComp = "blocWhile";
+		vector<std::string> params2;
+		params2.push_back(labelComp);
+		IRInstr* nouvelleInstr2 = new IRInstr(IRInstr::Mnemonique::THEN_, bodyBB, params2);
+		bodyBB->ajouterInstrIRJump(nouvelleInstr2);
+
+		BasicBlock * afterWhileBB = new BasicBlock(cfg);
+		vector<Instruction*>* instrAstAfterBB = new vector<Instruction*>(); 
+		vector<Instruction*>::iterator it;
+		int i = 1;
+		for(it=itCourant+1; it !=  testBB->getListeInstructionsAST()->end(); it++)
+		{	
+			instrAstAfterBB->push_back(*it);
+		}
+		afterWhileBB->setListeInstructionAST(instrAstAfterBB);
+		
+
+		afterWhileBB->setSuccCond(testBB->getSuccCond());
+		afterWhileBB->setSuccIncond(testBB->getSuccIncond());
+		
+		testBB->setSuccCond(bodyBB);
+		testBB->setSuccIncond(afterWhileBB);
+		
+		bodyBB->succCond = testBB ;
+		bodyBB->succIncond = NULL;
+		
+		cfg->setBlockCourant(afterWhileBB);
+
+		cerr <<  "FIN IR : BlocWhile" << endl;
+*/
 	}
 }

@@ -1,26 +1,21 @@
-<<<<<<< HEAD
-[a:0x7ffe99d003f0, c:0x7ffe99d003b0 ]
-[a:0x7ffe99d003f0, c:0x7ffe99d003d0 ]
+[a:0x7ffb71402b70, c:0x7ffb71402b30 ]
+[a:0x7ffb71402b70, c:0x7ffb71402b50 ]
 getid
-[a:0x7ffe99e00040, c:0x7ffe99e00000 ]
-[a:0x7ffe99e00040, c:0x7ffe99e00020 ]
-getid
-getid
-[a:0x7ffe99e00300, c:0x7ffe99e00070  st ]
-[a:0x7ffe99e00330, c:0x7ffe99d00420  st ]
-[a:0x7ffe99d00320, c:0x7ffe99e00330  st ]
+[a:0x7ffb71402d90, c:0x7ffb71402d50 ]
+[a:0x7ffb71402d90, c:0x7ffb71402d70 ]
 getid
 getid
-[a:0x7ffe99d00040, c:0x7ffe99d00320 ]
+[a:0x7ffb71403120, c:0x7ffb71402dc0  st ]
+[a:0x7ffb71403150, c:0x7ffb71402ba0  st ]
+[a:0x7ffb71402aa0, c:0x7ffb71403150  st ]
+[a:0x7ffb71402910, c:0x7ffb71402aa0 ]
 %%%Frontend%%%
 
 
 
-=======
->>>>>>> 48c947840616c21ec14edd64eea45d5e0c404fa8
 PROGRAMME // tableSymb size : 0
-	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
-	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2
+	FONCTION	VOID main // size : 0
+	BEGIN_BLOC // nb instr : 1 - tableSymb size : 0
 		BLOC_IF ( EGAL VAL 1  == VAL 1 )
 
 		BEGIN_BLOC // nb instr : 0 - tableSymb size : 1
@@ -35,31 +30,23 @@ PROGRAMME // tableSymb size : 0
 			END_BLOC
 	END_BLOC
 END_PROGRAMME
-<<<<<<< HEAD
 
 %%%Backend%%%
-Taille liste fonction : 1
-getid
-test 2
------- FOR ----------
 getid
 getid
-Taille liste CFG : 1
-
-GEN_PROLOGUE
-.text        
-.global main 
-
-main:
-
-    pushq   %rbp 
-    movq    %rsp, %rbp 
-    subq    $16, %rsp 
-
-    leave
-    ret
-
-
-Fin de l'analyse du programme
-=======
->>>>>>> 48c947840616c21ec14edd64eea45d5e0c404fa8
+NI IF NI ELSE
+CREATION BLOC : main
+BasicBlock::listeInstructionsAST->size() 1
+IR::genererIR
+CFG::genererIR
+BB:genererIR()::listeInstructionsAST->size()1
+------ FOR ----------  main
+INSTRUCTION STRUCTURE DE CONTROLE
+IR Val
+IR Val
+NI IF NI ELSE
+CREATION BLOC : blocAfter
+CREATION BLOC : blocIF
+BasicBlock::listeInstructionsAST->size() 0
+CREATION BLOC : blocELSE
+ICI 4

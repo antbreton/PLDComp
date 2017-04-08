@@ -1,19 +1,16 @@
-<<<<<<< HEAD
-[a:0x7febd9402e40, c:0x7febd9402de0 ]
-[a:0x7febd9402e40, c:0x7febd9402e20 ]
-[a:0x7febd9402f80, c:0x7febd9402f40 ]
-[a:0x7febd9402f80, c:0x7febd9402f60 ]
-[a:0x7febd9403000, c:0x7febd9402e70  st ]
-[a:0x7febd9402c00, c:0x7febd9403000  st ]
+[a:0x7fc544402e20, c:0x7fc544402dc0 ]
+[a:0x7fc544402e20, c:0x7fc544402e00 ]
+[a:0x7fc544402f60, c:0x7fc544402f20 ]
+[a:0x7fc544402f60, c:0x7fc544402f40 ]
+[a:0x7fc544402fe0, c:0x7fc544402e50  st ]
+[a:0x7fc544402be0, c:0x7fc544402fe0  st ]
 getid
 getid
-[a:0x7febd9402930, c:0x7febd9402c00 ]
+[a:0x7fc544402910, c:0x7fc544402be0 ]
 %%%Frontend%%%
 
 
 
-=======
->>>>>>> 48c947840616c21ec14edd64eea45d5e0c404fa8
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 3 - tableSymb size : 2
@@ -25,36 +22,53 @@ PROGRAMME // tableSymb size : 0
 		END_BLOC
 	END_BLOC
 END_PROGRAMME
-<<<<<<< HEAD
 
 %%%Backend%%%
-Taille liste fonction : 1
 getid
-test 2
------- FOR ----------
+getid
+getid
+getid
+NI IF NI ELSE
+CREATION BLOC : main
+BasicBlock::listeInstructionsAST->size() 3
+getid
+getid
+IR::genererIR
+CFG::genererIR
+BB:genererIR()::listeInstructionsAST->size()3
+------ FOR ----------  main
 ------ IF ----------
 IR : Affectation
------- FOR ----------
+nomvariable z
+reg offset -16
+------ FIN IF ----------
+------ FIN FOR ----------
+------ FOR ----------  main
 ------ IF ----------
 IR : Affectation
------- FOR ----------
-getid
-getid
-Taille liste CFG : 1
+nomvariable t
+reg offset -8
+------ FIN IF ----------
+------ FIN FOR ----------
+------ FOR ----------  main
+INSTRUCTION STRUCTURE DE CONTROLE
+------ FIN FOR ----------
 
 GEN_PROLOGUE
-genererAssem IRinstr
-IRinstr::genererAssembleur 1
-genererAssem IRinstr
-IRinstr::genererAssembleur 1
+getid
+getid
 .text        
-.global main 
+.globl main 
+.type main, @function
 
 main:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-    subq    $16, %rsp 
+    subq    $32, %rsp 
+    mov    %rdi, -16(%rbp) 
+    mov    %rsi, -8(%rbp) 
+
     movq    $5, %rax
     movq    %rax, -16(%rbp)
     movq    $0, %rax
@@ -65,5 +79,3 @@ main:
 
 
 Fin de l'analyse du programme
-=======
->>>>>>> 48c947840616c21ec14edd64eea45d5e0c404fa8

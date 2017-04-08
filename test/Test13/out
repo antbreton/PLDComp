@@ -1,8 +1,8 @@
 getid
 getid
-[a:0x7fc4c2402930, c:0x7fc4c2402c00 ]
-[a:0x7fc4c2402930, c:0x7fc4c2402dc0 ]
-[a:0x7fc4c2402930, c:0x7fc4c2402f40 ]
+[a:0x7ff27cc02910, c:0x7ff27cc02be0 ]
+[a:0x7ff27cc02910, c:0x7ff27cc02da0 ]
+[a:0x7ff27cc02910, c:0x7ff27cc02f20 ]
 %%%Frontend%%%
 
 
@@ -22,16 +22,23 @@ PROGRAMME // tableSymb size : 0
 END_PROGRAMME
 
 %%%Backend%%%
-Taille liste fonction : 5
-getid
-test 2
 getid
 getid
 getid
-test 2
------- FOR ----------
 getid
-test 2
------- FOR ----------
+NI IF NI ELSE
+CREATION BLOC : main
+BasicBlock::listeInstructionsAST->size() 0
 getid
-test 2
+getid
+getid
+NI IF NI ELSE
+CREATION BLOC : aaa
+BasicBlock::listeInstructionsAST->size() 1
+getid
+NI IF NI ELSE
+CREATION BLOC : bbb
+BasicBlock::listeInstructionsAST->size() 1
+getid
+NI IF NI ELSE
+CREATION BLOC : ccc

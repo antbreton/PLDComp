@@ -277,7 +277,9 @@ string IRInstr::genererAssembleur() {
 		case THEN_ :
 			codeAssembleur += "    jmp " + parametre1 + "\r\n";
 			break;
-		  
+		 
+		case WHILE_ :
+			codeAssembleur += "    jge " + parametre1 + "\r\n";
 	  }
 	  
 	return codeAssembleur;

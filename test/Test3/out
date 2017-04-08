@@ -1,18 +1,15 @@
-<<<<<<< HEAD
-[a:0x7faa0bc02cd0, c:0x7faa0bc02c90 ]
-[a:0x7faa0bc02cd0, c:0x7faa0bc02cb0 ]
+[a:0x7fd147e000d0, c:0x7fd147e00090 ]
+[a:0x7fd147e000d0, c:0x7fd147e000b0 ]
 getid
-[a:0x7faa0bc02ea0, c:0x7faa0bc02d00  st ]
-[a:0x7faa0bc02c00, c:0x7faa0bc02ea0  st ]
+[a:0x7fd147e002b0, c:0x7fd147e00100  st ]
+[a:0x7fd147e00000, c:0x7fd147e002b0  st ]
 getid
 getid
-[a:0x7faa0bc02930, c:0x7faa0bc02c00 ]
+[a:0x7fd147c00270, c:0x7fd147e00000 ]
 %%%Frontend%%%
 
 
 
-=======
->>>>>>> 48c947840616c21ec14edd64eea45d5e0c404fa8
 PROGRAMME // tableSymb size : 0
 	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
 	BEGIN_BLOC // nb instr : 1 - tableSymb size : 2
@@ -22,31 +19,67 @@ PROGRAMME // tableSymb size : 0
 		END_BLOC
 	END_BLOC
 END_PROGRAMME
-<<<<<<< HEAD
 
 %%%Backend%%%
-Taille liste fonction : 1
-getid
-test 2
------- FOR ----------
 getid
 getid
-Taille liste CFG : 1
+getid
+getid
+NI IF NI ELSE
+CREATION BLOC : main
+BasicBlock::listeInstructionsAST->size() 1
+getid
+getid
+IR::genererIR
+CFG::genererIR
+BB:genererIR()::listeInstructionsAST->size()1
+------ FOR ----------  main
+INSTRUCTION STRUCTURE DE CONTROLE
+IR Val
+IR Val
+NI IF NI ELSE
+CREATION BLOC : blocAfter
+CREATION BLOC : blocIF
+BasicBlock::listeInstructionsAST->size() 0
+ICI 4
+ICI 5
+ICI 6
+ICI 7
+BREAKmain
+BB:genererIR()::listeInstructionsAST->size()0
+BB:genererIR()::listeInstructionsAST->size()0
 
 GEN_PROLOGUE
+getid
+getid
+
 .text        
-.global main 
+.globl main 
+.type main, @function
 
 main:
 
     pushq   %rbp 
     movq    %rsp, %rbp 
-    subq    $16, %rsp 
+    subq    $40, %rsp 
+    mov    %rdi, -16(%rbp) 
+    mov    %rsi, -8(%rbp) 
+
+    movq   $1, -24(%rbp)
+    movq   $1, -32(%rbp)
+    movq    -24(%rbp), %rax 
+    xor    -32(%rbp), %rax
+    cmpq   $0, %rax 
+    sete   %al 
+    movzbq %al, %rax 
+    movq    %rax, -40(%rbp) 
+    jne blocELSE
+blocIF:
+    jmp blocAfter
+blocAfter:
 
     leave
     ret
 
 
 Fin de l'analyse du programme
-=======
->>>>>>> 48c947840616c21ec14edd64eea45d5e0c404fa8
