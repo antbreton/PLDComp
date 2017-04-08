@@ -34,7 +34,15 @@ IR::~IR()
 
 // Methodes
 
+void IR::genererIR(){
+	cout << "IR::genererIR" << endl;
 
+	list<CFG*>::iterator ite;
+	for(ite=listeCFG.begin();ite!=listeCFG.end();ite++)
+	{
+	  (*ite)->genererIR();
+	}	
+}
 // Parcours les CFGs du programme et en genere le code assembleur.
 string IR::genererAssembleur() 
 {

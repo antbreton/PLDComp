@@ -39,6 +39,7 @@ int main(void) {
 
 	IR* ir = new IR(programme);
 
+	ir->genererIR();
 	cout << ir->genererAssembleur() << endl;
 	
 	cout << "Fin de l'analyse du programme" << endl;

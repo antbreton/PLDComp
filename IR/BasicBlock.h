@@ -13,12 +13,13 @@ class BasicBlock {
 
 		BasicBlock(std::string label);
 		BasicBlock(CFG* cfg, Bloc* bloc, std::string label);
-		BasicBlock(CFG* cfg, Instruction* instr);
 		BasicBlock(CFG* cfg);
 		~BasicBlock();
 		
 		std::string genererAssembleur();
 		void ajouterInstrIR(IRInstr* instruction);
+		void ajouterInstrIRJump(IRInstr* instruction);
+
 		
 		CFG* getCFG();
 		std::string getLabel() {return label;};
@@ -33,8 +34,14 @@ class BasicBlock {
 		void setSuccCond(BasicBlock* bb) {succCond = bb;};
 		void setSuccIncond(BasicBlock* bb) {succIncond = bb;};
 
+		std::vector<Instruction * >* getListeInstructionsAST() {return listeInstructionsAST; };
+		void setListeInstructionAST(vector<Instruction*>* v) {listeInstructionsAST = v; };
+		void genererIR();
+
 	private:
 		std::vector<IRInstr * >* listeInstructionsIR;
+		IRInstr* jumpIRIntr;
+		std::vector<Instruction*>* listeInstructionsAST;
 		BasicBlock* succCond; // Son successeur conditionnel
 		BasicBlock* succIncond; // Son sucesseur inconditionnel
 		map<std::string,int> mappingVarReg;

@@ -84,6 +84,20 @@ string CFG::genererAssembleur() {
 	return codeAssembleur;
 }
 
+void CFG::genererIR()
+{
+
+	cout<< "CFG::genererIR" << endl;
+	list<BasicBlock *>::iterator ite = listeBasicBlocks.begin() ;
+
+  	while (ite != listeBasicBlocks.end()) 
+  	{
+  		blocCourant = (*ite);
+		(*ite)->genererIR();
+		ite++;
+  	}
+}
+
 std::string CFG::gen_prologue()
 {
 	string codeAssembleur;

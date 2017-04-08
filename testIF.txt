@@ -4,4 +4,5 @@ void main (){
 	} else {
 		putchar('F');
 	}
+	putchar('10');
 }

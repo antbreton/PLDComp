@@ -269,6 +269,14 @@ string IRInstr::genererAssembleur() {
 		  codeAssembleur += "    movzbl %al, %rax \r\n";
 		  codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
 		  break;
+
+		case IF_ : // instruction apres la condition de test
+			codeAssembleur += "    jne " + parametre1 + "\r\n";
+			break;
+
+		case THEN_ :
+			codeAssembleur += "    jmp " + parametre1 + "\r\n";
+			break;
 		  
 	  }
 	  
