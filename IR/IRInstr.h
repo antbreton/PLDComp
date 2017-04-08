@@ -39,6 +39,9 @@ class IRInstr {
 		string genererAssembleur();
 		Mnemonique getMnemonique();
 		
+		bool getEstPredIF(){return estPredIF;};
+		void setEstPredIF(bool choix){estPredIF=choix;};
+		
 	private:
 		Mnemonique mnemoniqueAction; // Les mnemoniques du tableau
 		BasicBlock* blocParent;
@@ -46,7 +49,9 @@ class IRInstr {
 		/**< For 3-op instrs: destination, operande1, operande2; 
 			 for ldconst: destination, constante;  
 			 For call: label, destination, params;  
-			 for wmem and rmem: destination, source */ 
+			 for wmem and rmem: destination, source */
+		
+		bool estPredIF;
 
 };
 

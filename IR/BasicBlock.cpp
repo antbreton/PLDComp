@@ -110,29 +110,50 @@ string BasicBlock::genererAssembleur() {
 	
     while(ite != listeInstructionsIR->end()) {
       codeAssembleur += (*ite)->genererAssembleur();
+	  
+	  // Si c'est une instruction avant un IF on gere les sauts
+	  if((*ite)->getEstPredIF())
+	  {
+		  	// On Gere les sauts
+			if(succIncond != NULL) 
+			{
+				  if(succCond != NULL && jumpInstr != "") 
+				  {
+					int varOffset = this->getCFG()->getVariableReg(jumpInstr)->getOffset();
+					string offsetDestEgal = "-"+to_string(varOffset)+"(%rbp)";
+					
+					codeAssembleur += "    cmpq    $1, "+offsetDestEgal+" \r\n";
+					codeAssembleur += "    je      "+succCond->getLabel()+" \r\n"; // Jump si egal : then
+					codeAssembleur += "    jmp     "+succIncond->getLabel()+" \r\n"; // Jump classique : else
+					
+				  } 
+				  else 
+				  {
+					codeAssembleur += "    jmp     "+succIncond->getLabel()+" \r\n";
+				  }
+				  codeAssembleur += " \r\n";
+			}		
+			
+			// TODO COPY instr
+			int itePos = std::distance(listeInstructionsIR->begin(), ite)+1;
+			vector<IRInstr*>* suiteInstr = CopyNotEntireList(listeInstructionsIR,itePos);
+			
+			succCond->getSuccIncond()->setListeInstructionsIR(suiteInstr);
+			
+			break;
+	  }
+	  
       ite++;
     }
 	
-	// On Gere les sauts
-    
-    if(succIncond != NULL) {
-		
-		  if(succCond != NULL && jumpInstr != "") 
-		  {
-			int varOffset = this->getCFG()->getVariableReg(jumpInstr)->getOffset();
-			string offsetDestEgal = "-"+to_string(varOffset)+"(%rbp)";
-			
-			codeAssembleur += "    cmpq    $1, "+offsetDestEgal+" \r\n";
-			codeAssembleur += "    je      "+succCond->getLabel()+" \r\n"; // Jump si egal : then
-			codeAssembleur += "    jmp     "+succIncond->getLabel()+" \r\n"; // Jump classique : else
-			
-		  } 
-		  else 
-		  {
+	if(succIncond != NULL) 
+	{
+		if(succCond == NULL || jumpInstr == "") 
+		{
 			codeAssembleur += "    jmp     "+succIncond->getLabel()+" \r\n";
-		  }
-		  codeAssembleur += " \r\n";
-	}
+		}
+		codeAssembleur += " \r\n";
+	}	
 	
 	
 	// ON genere les deux successeurs.
@@ -176,6 +197,27 @@ void BasicBlock::ajouterInstrIRJump(IRInstr *instruction) {
 	jumpIRIntr = instruction;
 }
 
+
+vector<IRInstr*>* BasicBlock::CopyNotEntireList(vector<IRInstr*>* currentList, int beginAt, int size)
+{
+    vector<IRInstr*>* newList = new vector<IRInstr*>;
+    vector<IRInstr*>::iterator it=currentList->begin();
+    unsigned int curPos = 0;
+
+    while(it != currentList->end())
+    {
+        if(curPos >= beginAt && (curPos - beginAt < size || size == 0))
+        {
+            newList->push_back(*it);
+        }
+
+        curPos++;
+        ++it;
+    }
+
+    return newList;
+}
+
 // GETTER / SETTER
 
 CFG* BasicBlock::getCFG() {
@@ -210,4 +252,11 @@ int BasicBlock::getValeurMappee(std::string nomVariable) {
       cerr << "BasicBlock::GetValeurMappee : mappingDe " + nomVariable + " non trouve" << endl; 
 	  return 0;
     }
+}
+
+IRInstr* BasicBlock::getLastInstructionsIR()
+{
+	vector<IRInstr*>:: iterator ite;
+	IRInstr* instr = this->listeInstructionsIR->back();
+	return instr;
 }

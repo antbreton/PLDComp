@@ -580,6 +580,7 @@ void StructureControle::construireIR(CFG* cfg){
 		//On evalue l'expression du IF
 		string jumpInstr = blocPereIf->exprCondition->construireIR(cfg);
 		testBB->setJumpInstr(jumpInstr);
+		testBB->getLastInstructionsIR()->setEstPredIF(true);
 		
 		// TODO : trouver un moyen de donner des noms uniques ... le cfg c'est pas suffisant il peut y avoir plusieurs if par CFG
 		string labelElse = "blocELSE_"+cfgName;

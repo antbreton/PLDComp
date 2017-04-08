@@ -43,6 +43,9 @@ class BasicBlock {
 		void setEstDernierBlocIf(bool choix){estDernierBlocIf=choix;};
 		bool getEstDernierBlocIf(){return estDernierBlocIf;};
 		
+		IRInstr* getLastInstructionsIR();
+		void setListeInstructionsIR(vector<IRInstr*>* newVector ){listeInstructionsIR = newVector; };
+		
 	private:
 		std::vector<IRInstr * >* listeInstructionsIR;
 		IRInstr* jumpIRIntr;
@@ -56,6 +59,8 @@ class BasicBlock {
 		Bloc* bloc;
 		bool estVide;
 		bool estDernierBlocIf;
+		
+		vector<IRInstr*>* CopyNotEntireList(vector<IRInstr*>* currentList, int beginAt, int size = 0);
 };
 
 

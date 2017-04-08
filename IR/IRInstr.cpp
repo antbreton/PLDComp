@@ -12,6 +12,7 @@ IRInstr::IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std:
 	this->mnemoniqueAction = mnemonique;
 	this->blocParent = blocParent;
 	this->params = params;
+	this->estPredIF=false;
 
 }
 
