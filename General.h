@@ -142,6 +142,7 @@ class Programme {
 class Not : public Expression {
 	public: 
 		Not(Expression * membre):Expression(), membre(membre) {}
+		Expression* getExpression() { return this->membre; }
 	private:
 		Expression * membre;
 		bool checkIDs(Bloc *b) { return membre->checkIDs(b); }
