@@ -7,7 +7,8 @@
 #include "IRInstr.h"
 #include "../Fonction.h"
 #include "CFG.h"
-//class CFG;
+
+
 class BasicBlock {
 	public:
 
@@ -38,7 +39,6 @@ class BasicBlock {
 		string getJumpInstr() {return jumpInstr;};
 		void setJumpInstr(string jumpInstrAdd ) { jumpInstr = jumpInstrAdd;};
 		Bloc* getBloc() {return bloc;};
-		//bool estVide(){return estVide;};
 		bool getEstVide(){return estVide;};
 		void setEstDernierBlocIf(bool choix){estDernierBlocIf=choix;};
 		bool getEstDernierBlocIf(){return estDernierBlocIf;};

@@ -6,7 +6,6 @@ using namespace std;
 // Constructeur et Destructeur
 CFG::CFG(Fonction* fonction)
 {
-	cout << "CFG Constructeur" << endl;
 	fonctionDuCFG = fonction;
 	this->dicoRegTmp = new map<string, IRVar*>();
 	Bloc* bloc = fonctionDuCFG->getBloc();
@@ -62,9 +61,7 @@ void CFG::addBasicBlock(BasicBlock* newBasicBlock)
 
 
 // Parcours le CFG et en genere le code assembleur.
-string CFG::genererAssembleur() {
-	
-	cout << "CFG genererAssembleur" << endl;	
+string CFG::genererAssembleur() {	
 	
 	string codeAssembleur;
 
@@ -91,7 +88,6 @@ string CFG::genererAssembleur() {
 
 void CFG::genererIR()
 {
-	cout<< "CFG::genererIR" << endl;
 	list<BasicBlock *>::iterator ite = listeBasicBlocks.begin() ;
 
   	while (ite != listeBasicBlocks.end()) 
@@ -115,11 +111,10 @@ std::string CFG::gen_prologue()
 	codeAssembleur += "    movq    %rsp, %rbp \r\n";  
 	
 
-	cout << endl << "GEN_PROLOGUE" << endl;
-
 	std::map<string, IRVar*>* dico = this->getDicoRegTmp();
 	std::map<string, IRVar*>::iterator it;
 	
+	// ON attribut les offsets aux variables autres que celles des parametres.
 	int j = 1;
 	if(dico->size() != 0){
 
@@ -127,9 +122,7 @@ std::string CFG::gen_prologue()
 
 		for(it=dico->begin(); it!=dico->end(); ++it)
 		{
-			cout << it->first << endl;
 			it->second->setOffset(8*j + taillePileParam);
-			cout << it->second->getOffset() << endl;
 			j++;
 		}
 	}
@@ -233,7 +226,7 @@ IRVar* CFG::getVariableReg(string nom)
     return (varIte->second);
 }
 
-// Permet d'attribuer les offsets à toutes les variables.
+// Permet d'attribuer les offsets à toutes les variables des PARAMETRES.
 int CFG::giveOffsets() 
 {
     int offset = -8;

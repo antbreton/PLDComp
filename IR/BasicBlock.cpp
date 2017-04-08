@@ -30,32 +30,12 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* blocAdd, string label)
 	this-> label = label;
 	estDernierBlocIf = false;
 	
-	//mappingVarReg = new map<string,int> ();
-	
 	listeInstructionsIR = new vector<IRInstr*>();
 	listeInstructionsAST = new vector<Instruction*>();
 
 	if(bloc != NULL)
 	{
-		/*
-		//listeInstructionsAST = bloc->getInstructions();
-		vector<Instruction*>* listeIntruc = bloc->getInstructions();
-		vector<Instruction*>:: iterator ite;
-
-		for(ite = listeIntruc->begin(); ite!=listeIntruc->end(); ++ite)
-		{
-			if(Expression* e = dynamic_cast<Expression*>(*ite))
-			{
-				e->construireIR(cfg);
-			} else if (StructureControle* s = dynamic_cast<StructureControle*>(*ite))
-			{
-				cout << "INSTRUCTION STRUCTURE DE CONTROLE" << endl;
-				s->construireIR(cfg);
-			}
-		}
-		*/
 		listeInstructionsAST = bloc->getInstructions();
-	
 	}
 	else {
 		estVide=true;
@@ -116,14 +96,12 @@ void BasicBlock::genererIR()
 // Genere le code assembleur du bloc, pour cela on appelle chaque methode genererAssembleur
 // de chaque Instruction IR.
 string BasicBlock::genererAssembleur() {
+	
     string codeAssembleur;
 	cout << "BasicBlock genererAssembleur" << endl;
-    //cfg->setBlockCourant(this);
-
-    
+  
     vector<IRInstr *>::iterator ite = listeInstructionsIR->begin();
-	
-	
+
 	if (label.compare("main")) // TODO etendre a toute fonciton
     {
 		codeAssembleur = label + ":\r\n";
@@ -135,18 +113,13 @@ string BasicBlock::genererAssembleur() {
       ite++;
     }
 	
-		// Gestion des sauts
+	// On Gere les sauts
     
     if(succIncond != NULL) {
 		
-		cout << "succIncond assembleur" << endl;
-		  if(succCond != NULL && jumpIRIntr != NULL) 
+		  if(succCond != NULL && jumpInstr != "") 
 		  {
-			  cout << "succCond jumpIRIntr" << endl;
-			
-			cout << "succCond jumpIRIntr" << jumpInstr <<  endl;
 			int varOffset = this->getCFG()->getVariableReg(jumpInstr)->getOffset();
-			cout << "succCond jumpIRIntr varOffset" << varOffset <<  endl;
 			string offsetDestEgal = "-"+to_string(varOffset)+"(%rbp)";
 			
 			codeAssembleur += "    cmpq    $1, "+offsetDestEgal+" \r\n";
@@ -167,8 +140,6 @@ string BasicBlock::genererAssembleur() {
 
     if(succCond != NULL)
     {
-
-		cout << "succCond assembleur" << endl;
 		codeAssembleur += succCond->genererAssembleur();	
 	} 
 	
@@ -177,12 +148,11 @@ string BasicBlock::genererAssembleur() {
 		
 		if(!this->getSuccIncond()->getEstVide())
 		{
-			cout << "succIncond assembleur" << endl;
 			codeAssembleur += succIncond->genererAssembleur();
 		}
 		else // Si il est vide
 		{
-			if(this->getEstDernierBlocIf()) // et que c'est le dernier bloc
+			if(this->getEstDernierBlocIf()) // et que c'est le dernier bloc on genere le bloc After
 			{
 				codeAssembleur += succIncond->genererAssembleur();
 			}
@@ -203,7 +173,6 @@ void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
 }
 
 void BasicBlock::ajouterInstrIRJump(IRInstr *instruction) {
-	cout << "BasicBlock ajouterInstrIRJump" << endl;
 	jumpIRIntr = instruction;
 }
 

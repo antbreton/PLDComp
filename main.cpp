@@ -20,17 +20,9 @@ int main(void) {
 	cout << "%%%Frontend%%%" << endl;
 	programme->Afficher(0);
 	
-
-	
 	passe1(programme);
 	passe2(programme);
 	
-		
-
-
-	
-	// PASSE 4 qui check les IDs
-//	cout <<endl << "PASSE 4";
 	if(!programme->checkIDs())
 		{
 			error = true;

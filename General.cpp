@@ -217,7 +217,7 @@ string Expression::construireIR(CFG* cfg) {
 
 		cerr << "Fin IR : OperateurInf" << endl;
 		
-		return regGauche;
+		return regResultat;
 
 	} else if(dynamic_cast<OperateurSupEgal*>(this)) {
 		cerr << "TODO : Construire IR : Classe OperateurSupEgal" << endl;
@@ -267,7 +267,6 @@ string Expression::construireIR(CFG* cfg) {
 
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_EQ, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
-		blocCourant->setJumpInstr(regResultat);
 		
 		cerr << "Fin IR : OperateurEgal" << endl;
 		
@@ -287,9 +286,9 @@ string Expression::construireIR(CFG* cfg) {
 		
 		// Destination
 		string regResultat = cfg->creerNouveauRegistre();
-		BasicBlock* blocCourant = cfg->getBlockCourant();
-		
+		BasicBlock* blocCourant = cfg->getBlockCourant();	
 		vector<std::string> params;
+		
 		// Destination - Operande 1 - Operande 2
 		params.push_back(regResultat);
 		params.push_back(regGauche);
@@ -352,7 +351,7 @@ string Expression::construireIR(CFG* cfg) {
 		
 		cerr << "Construire IR : Classe OperateurMultiplier" << endl;
 		
-		return regGauche;
+		return regResultat;
 
 	} else if(dynamic_cast<OperateurModulo*>(this)) {
 		cerr << "TODO : Construire IR : Classe OperateurModulo" << endl;
@@ -480,13 +479,15 @@ string Expression::construireIR(CFG* cfg) {
 				Expression* expI = (*listeParametresFonction)[i]; 
 				string regI = expI->construireIR(cfg);
 
-				if(Identifiant* identifiant = dynamic_cast<Identifiant*>(expI)) {
+				if(Identifiant* identifiant = dynamic_cast<Identifiant*>(expI)) 
+				{
 					
 					string regValIdent = cfg->creerNouveauRegistre();
-					
 					vector<std::string> paramsI;
+					
 					paramsI.push_back(regValIdent);
 					paramsI.push_back(regI);
+					
 					IRInstr* nouvelleInstrI = new IRInstr(IRInstr::Mnemonique::RMEM, blocCourant, paramsI);
 					blocCourant->ajouterInstrIR(nouvelleInstrI);
 					
@@ -515,56 +516,53 @@ string Expression::construireIR(CFG* cfg) {
 
 		BasicBlock* blocCourant = cfg->getBlockCourant();
 		string nomVariable = *affectation->getIdentifiant()->getId();
-		string reg;
-		cout << "IR : Affectation 2 " << endl;
-		if(!blocCourant->estVarMappee(nomVariable)){
-			cout << "IR : Affectation 25 " << endl;
+		string regDestination;
+
+		if(!blocCourant->estVarMappee(nomVariable))
+		{
 			blocCourant->ajouterVariableMappee(cfg, nomVariable);
 			cerr << "Affectation :: La variable " << nomVariable << " n existe pas : On la cree" << endl;
 		} else {
-			cout << "IR : Affectation 24 " << endl;
 			cerr << "Affectation :: La variable " << nomVariable << " existe  : Valeur : " 
 				 << to_string(blocCourant->getValeurMappee(nomVariable))	 << endl;
 		}
-		cout << "IR : Affectation 3" << endl;
+
 		// Si c'est un parametre, dans ce cas on reprend le registre où il est placé. 
 		if(blocCourant->getCFG()->estUnParametre(nomVariable))
 		{
 			int regOffset = blocCourant->getCFG()->getVariable(nomVariable)->getOffset();
-			cout << "nomvariable " <<  nomVariable << endl;
-			cout << "reg offset " <<  regOffset << endl;
-			reg = to_string(regOffset) + "(%rbp)";
+			regDestination = to_string(regOffset) + "(%rbp)";
 		}
 		else 
 		{
-			reg = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
+			regDestination = "!r" + to_string(blocCourant->getValeurMappee(nomVariable));
 		}
 
-			string reg2; 
+			string regSource; 
 
 			if(Val* v = dynamic_cast<Val*>(affectation->getValeur()))
 			{
-				reg2 = to_string(v->valeur);
-			} else if (Caractere* car = dynamic_cast<Caractere*>(affectation->getValeur()))
+				regSource = to_string(v->valeur);
+			} 
+			else if (Caractere* car = dynamic_cast<Caractere*>(affectation->getValeur()))
 			{
-				//reg2 = car->c;
-				reg2 = to_string((int)(static_cast<Caractere*>(car)->c ));
+				regSource = to_string((int)(static_cast<Caractere*>(car)->c ));
 			}
 			else {
-				reg2 = affectation->getValeur()->construireIR(cfg);
+				regSource = affectation->getValeur()->construireIR(cfg);
 			}
 
 			vector<std::string> params;
 			
-			params.push_back(reg); // Destination
-			params.push_back(reg2); // Source
+			params.push_back(regDestination); // Destination
+			params.push_back(regSource); // Source
 
 			IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::WMEM, blocCourant, params);
 			blocCourant->ajouterInstrIR(nouvelleInstr);
 
 		cerr << "Fin IR :  Affectation" << endl;
 
-		return reg;
+		return regDestination;
 
 	} else {
 		return "Inconnu";
@@ -575,31 +573,25 @@ void StructureControle::construireIR(CFG* cfg){
 	if(BlocIf* blocPereIf = dynamic_cast<BlocIf*>(this))
 	{	
 		cerr << "IR : BlocIf" << endl;
+		
 		BasicBlock* testBB = cfg->getBlockCourant();
-		
 		string cfgName = cfg->getFonction()->getIdentifiant();
+		
 		//On evalue l'expression du IF
-		blocPereIf->exprCondition->construireIR(cfg);
+		string jumpInstr = blocPereIf->exprCondition->construireIR(cfg);
+		testBB->setJumpInstr(jumpInstr);
 		
+		// TODO : trouver un moyen de donner des noms uniques ... le cfg c'est pas suffisant il peut y avoir plusieurs if par CFG
 		string labelElse = "blocELSE_"+cfgName;
-		
-		// Inutil a mon gout
-		vector<std::string> params;
-		params.push_back(labelElse);
-		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::IF_, testBB, params);
-		testBB->ajouterInstrIRJump(nouvelleInstr);
 
 		
 		// On construit le basicblock THEN
 		Bloc* bIf = dynamic_cast<Bloc *>(blocPereIf->instrv);
 		BasicBlock* thenBB = new BasicBlock(cfg,bIf,"blocIF_"+cfgName);
+		
+		// TODO
 		string labelAfter = "blocAfter_"+cfgName;
 		
-		
-		vector<std::string> params2;
-		params2.push_back(labelAfter);
-		IRInstr* nouvelleInstr2 = new IRInstr(IRInstr::Mnemonique::THEN_, thenBB, params2);
-		thenBB->ajouterInstrIRJump(nouvelleInstr2);
 		
 		// ELSE
 		Bloc* bElse = dynamic_cast<Bloc *>(blocPereIf->blocElse);

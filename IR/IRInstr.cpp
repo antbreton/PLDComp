@@ -108,8 +108,6 @@ string IRInstr::genererAssembleur() {
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre2)->second;
 		int varOffset = variableIR->getOffset();
-		cout << endl;
-		// to_string est dans le C++11 sinon NumberToString
 		parametre2 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre2[0]))
@@ -122,7 +120,6 @@ string IRInstr::genererAssembleur() {
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre3)->second;
 		int varOffset = variableIR->getOffset();		
-		// to_string est dans le C++11 sinon NumberToString
 		parametre3 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre3[0]))
@@ -134,7 +131,6 @@ string IRInstr::genererAssembleur() {
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre4)->second;
 		int varOffset = variableIR->getOffset();		
-		// to_string est dans le C++11 sinon NumberToString
 		parametre4 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre4[0]))
@@ -146,7 +142,6 @@ string IRInstr::genererAssembleur() {
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre5)->second;
 		int varOffset = variableIR->getOffset();		
-		// to_string est dans le C++11 sinon NumberToString
 		parametre5 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre5[0]))
@@ -158,7 +153,6 @@ string IRInstr::genererAssembleur() {
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre6)->second;
 		int varOffset = variableIR->getOffset();		
-		// to_string est dans le C++11 sinon NumberToString
 		parametre6 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre6[0]))
@@ -170,7 +164,6 @@ string IRInstr::genererAssembleur() {
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre7)->second;
 		int varOffset = variableIR->getOffset();		
-		// to_string est dans le C++11 sinon NumberToString
 		parametre7 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre7[0]))
@@ -182,7 +175,6 @@ string IRInstr::genererAssembleur() {
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre8)->second;
 		int varOffset = variableIR->getOffset();		
-		// to_string est dans le C++11 sinon NumberToString
 		parametre8 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre8[0]))
@@ -252,11 +244,6 @@ string IRInstr::genererAssembleur() {
 		  codeAssembleur += "    sete   %al \r\n";   // SETE = Set byte if equal ; AL is the lower 8 bits : Tous les bits de al passe a 1 si ils sont egaux
 		  codeAssembleur += "    movzbq %al, %rax \r\n"; // MOV, zero extend, Byte to Long : On étend ça a tout le %rax.
 		  codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
-		  
-		  
-		  
-		//  codeAssembleur += "	test	"+parametre1+", "+parametre2+"\r\n"; 
-		  
 		  break;
 		  
 		case CMP_LT :
@@ -274,17 +261,8 @@ string IRInstr::genererAssembleur() {
 		  codeAssembleur += "    movzbl %al, %rax \r\n";
 		  codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
 		  break;
-
-		case IF_ : // instruction apres la condition de test
-			codeAssembleur += "    jne " + parametre1 + "\r\n";
-			break;
-
-		case THEN_ :
-			codeAssembleur += "    jmp " + parametre1 + "\r\n";
-			break;
 			
 		case JMP :
-		//codeAssembleur += "    JMP\r\n";
 		  codeAssembleur += "    jmp    "+ parametre1 +" \r\n";
 		  break;  
 	  }
