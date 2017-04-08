@@ -30,7 +30,7 @@ int main(void) {
 	cout << endl<<"%%%Backend%%%" << endl;
 
 	IR* ir = new IR(programme);
-
+cout << "Avant genererIR" << endl;
 	ir->genererIR();
 	cout << ir->genererAssembleur() << endl;
 	

@@ -9,8 +9,8 @@
 Bloc::Bloc() : Instruction()
 {
 	instrs = new vector <Instruction*>();
-	tableSymboles = new map<string,Identifiable*>(); 
-	tableVariables = new map<string,Variable*>();
+	this->tableSymboles = new map<string,Identifiable*>(); 
+	this->tableVariables = new map<string,Variable*>();
 }
 
 void Bloc::ajouterListeVariable(vector<Variable*>* listeVariable)
@@ -199,18 +199,25 @@ vector<Instruction*>* Bloc::getInstructions()
 
 void Bloc::constructor_tableVariables(){
 	//1: parcours de la table des symboles, on recupere les Identifiable de type Variable
-	for(map<string,Identifiable*>::iterator it = tableSymboles->begin(); it != tableSymboles->end(); it++)
-	{
-		if(Variable* v = dynamic_cast<Variable*>(it->second))
-		{	
 
+	cout << "Bloc::constructor_tableVariables" << endl;
+	std::map<std::string,Identifiable*>::iterator ite = tableSymboles->begin();
+	
+	while ( ite!= tableSymboles->end() ) 
+	{
+		cout << "Bloc::constructor_tableVariables 2" << endl;
+		if(Variable* v = dynamic_cast<Variable*>(ite->second))
+		{	
+		cout << "Bloc::constructor_tableVariables 3" << endl;
 			
 			std::pair<string, Variable*> pairAdded (v->getIdentifiant(), v);
 			tableVariables->insert(pairAdded);
 		
 		}
+		ite++;
 	}
 
+	cout << "Bloc::constructor_tableVariables 4" << endl;
 
 	//2: appel recursif
 	for(vector<Instruction*>::iterator it = instrs->begin(); it != instrs->end(); it++){

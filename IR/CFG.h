@@ -40,6 +40,7 @@ class CFG {
 		int giveOffsets();
 		bool estUnParametre(string nomVariable);
 		Fonction* getFonction() {return fonctionDuCFG;};
+		list<BasicBlock* > getListeBasicBlocks() { return listeBasicBlocks;};
 		
 
 	private:

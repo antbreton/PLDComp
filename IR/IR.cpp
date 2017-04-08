@@ -14,11 +14,14 @@ IR::IR(Programme* programme)
 	// On recupere le nom de la toute premiere fonction
 	premiereFctNom = listeDeFonctions[0]->getIdentifiant();
 	
+	cout << "IR CONSTRUCTEUR" << endl;
+	
 	for(fonction = listeDeFonctions.begin() ; fonction != listeDeFonctions.end() ; ++fonction)
 	{
 		CFG* newCFG = new CFG(*fonction);
 		this->addCFG(newCFG);
 	}	
+	cout << "IR CONSTRUCTEUR FIN" << endl;
 }
 
 IR::~IR()
@@ -58,7 +61,10 @@ string IR::genererAssembleur()
 		list<CFG*>::iterator ite;
 		for(ite=listeCFG.begin();ite!=listeCFG.end();ite++)
 		{
-		  codeAssembleur += (*ite)->genererAssembleur();
+			if((*ite)->getFonction()->getBloc() != NULL)
+			{
+				codeAssembleur += (*ite)->genererAssembleur();
+			}
 		}
 		
 		// Ecriture dans main.s

@@ -32,7 +32,7 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* blocAdd, string label)
 	
 	listeInstructionsIR = new vector<IRInstr*>();
 	listeInstructionsAST = new vector<Instruction*>();
-
+cout << "BasicBlock constructeur 2" << endl;
 	if(bloc != NULL)
 	{
 		listeInstructionsAST = bloc->getInstructions();
@@ -40,7 +40,7 @@ BasicBlock::BasicBlock(CFG* cfg, Bloc* blocAdd, string label)
 	else {
 		estVide=true;
 	}
-			
+cout << "BasicBlock constructeur fin" << endl;			
 }
 
 
@@ -102,7 +102,7 @@ string BasicBlock::genererAssembleur() {
   
     vector<IRInstr *>::iterator ite = listeInstructionsIR->begin();
 
-	if (label.compare("main")) // TODO etendre a toute fonciton
+	if (label.compare(cfg->getListeBasicBlocks().front()->getLabel())) // TODO etendre a toute fonciton
     {
 		codeAssembleur = label + ":\r\n";
 	}

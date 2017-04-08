@@ -3,7 +3,7 @@ int64_t myFunc(int64_t a) {
 }
 void main(int32_t z, int64_t t) {
 	t=myFunc(t);
-	myFunct(t);
+	myFunc(t);
 }
 
 

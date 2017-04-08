@@ -9,7 +9,10 @@ CFG::CFG(Fonction* fonction)
 	fonctionDuCFG = fonction;
 	this->dicoRegTmp = new map<string, IRVar*>();
 	Bloc* bloc = fonctionDuCFG->getBloc();
-
+	
+	if(bloc != NULL) { 
+	
+	cout << "CFG CONSTRUCTEUR" << endl;
 	
 	// ***************
 	// Ajout des paramètres dans les variables
@@ -34,10 +37,15 @@ CFG::CFG(Fonction* fonction)
 	BasicBlock* newBasicBlock = new BasicBlock(this, bloc, fonctionDuCFG->getIdentifiant());
 	this->addBasicBlock(newBasicBlock);
 	
-	
+	cout << "CFG CONSTRUCTEUR FIN" << endl;
 	nbRegVirtuels = 0;
-	calculeTaille();
-
+	
+	if(bloc != NULL)
+	{
+		calculeTaille();
+	}
+	}
+	cout << "CFG CONSTRUCTEUR FIN" << endl;
 }
 
 CFG::~CFG()
@@ -63,11 +71,12 @@ void CFG::addBasicBlock(BasicBlock* newBasicBlock)
 // Parcours le CFG et en genere le code assembleur.
 string CFG::genererAssembleur() {	
 	
+	cout << "CFG::genererAssembleur" << endl;
 	string codeAssembleur;
 
 	// PROLOGUE
 	codeAssembleur += gen_prologue();
-
+cout << "CFG::genererAssembleur 2" << endl;
 
 	// CORPS
 	// Pour chaque basicBlock dans le CFG on genere son code assembleur.
@@ -78,7 +87,7 @@ string CFG::genererAssembleur() {
 		codeAssembleur += (*ite)->genererAssembleur();
 		ite++;
   	}
-	
+	cout << "CFG::genererAssembleur 3" << endl;
 	// EPILOGUE
 	codeAssembleur += gen_epilogue();
 
@@ -175,7 +184,9 @@ std::string CFG::gen_epilogue()
 int CFG::calculeTaille()
 {
 	fonctionDuCFG->getBloc()->constructor_tableVariables(); //8 octets par variable
+
 	int taille = 8*fonctionDuCFG->getBloc()->tableVariables->size();
+	cout << "Debut calcul taille 3" << endl;
 	setTaille(taille);
 	return taille;
 }
