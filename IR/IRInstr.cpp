@@ -226,6 +226,10 @@ string IRInstr::genererAssembleur() {
 			codeAssembleur += "    call   "+ parametre1 +"\r\n";
 			break;
 		  
+		case NOT :
+			cerr << "IRInstr.cpp : NOT : Assembleur TODO" << endl;
+			break;
+
 		case ADD :
 		//codeAssembleur += "    ADD\r\n";
 		  codeAssembleur += "    movq    "+ parametre2 +", %rax\r\n";
@@ -244,7 +248,15 @@ string IRInstr::genererAssembleur() {
 		  codeAssembleur += "    imul   "+ parametre3 +", %rax\r\n";
 		  codeAssembleur += "    movq    %rax, "+ parametre1 +"\r\n";
 		  break;
+
+		case DIV :
+			cerr << "IRInstr.cpp : DIV : Assembleur TODO" << endl;
+			break;
 		
+		case MOD :
+			cerr << "IRInstr.cpp : MOD : Assembleur TODO" << endl;
+			break;
+
 		case CMP_EQ :
 		  codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
 		  codeAssembleur += "    xor    "+parametre3+", %rax\r\n"; // bit a 1 si different, bit a 0 si egal.
@@ -269,6 +281,42 @@ string IRInstr::genererAssembleur() {
 		  codeAssembleur += "    movzbq %al, %rax \r\n";
 		  codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
 		  break;
+
+		case CMP_GE :
+			codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
+		    codeAssembleur += "    cmp    "+parametre3+", %rax \r\n";
+		    codeAssembleur += "    setge   %al  \r\n"; // SETGE  = Set byte if greater or equal 
+		    codeAssembleur += "    movzbq %al, %rax \r\n";
+		    codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
+			cerr << "IRInstr.cpp : CMP_GE : Assembleur TODO" << endl;
+			break; 
+
+		case CMP_GT :
+			codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
+		    codeAssembleur += "    cmp    "+parametre3+", %rax \r\n";
+		    codeAssembleur += "    setg   %al  \r\n"; // SETG  = Set byte if greater
+		    codeAssembleur += "    movzbq %al, %rax \r\n";
+		    codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
+			cerr << "IRInstr.cpp : CMP_GT : Assembleur TODO" << endl;
+			break; 
+
+		case CMP_DIFF :
+			codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
+		  	codeAssembleur += "    xor    "+parametre3+", %rax\r\n"; // bit a 1 si different, bit a 0 si egal.
+		  	codeAssembleur += "    cmpq   $0, %rax \r\n"; // Est ce que Rax est a 0, si c'est a 0 c'est egal
+		  	codeAssembleur += "    setne   %al \r\n";   // SETne = Set byte if not equal ; AL is the lower 8 bits : Tous les bits de al passe a 1 si ils sont egaux
+		  	codeAssembleur += "    movzbq %al, %rax \r\n"; // MOV, zero extend, Byte to Long : On étend ça a tout le %rax.
+		  	codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
+			cerr << "IRInstr.cpp : CMP_DIFF : Assembleur TODO" << endl;
+			break;
+
+		case CMP_AND :
+			cerr << "IRInstr.cpp : CMP_AND : Assembleur TODO" << endl;
+			break;
+
+		case CMP_OR :
+			cerr << "IRInstr.cpp : CMP_OR : Assembleur TODO" << endl;
+			break;
 
 		case IF_ : // instruction apres la condition de test
 			codeAssembleur += "    jne " + parametre1 + "\r\n";

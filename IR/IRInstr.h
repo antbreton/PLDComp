@@ -22,6 +22,11 @@ class IRInstr {
 			ADD,
 			SUB,
 			MUL,
+			DIV,
+			MOD,
+			CMP_AND,
+			CMP_OR,
+			NOT,
 			RMEM,
 			WMEM,
 			WMEM_SR,
@@ -29,6 +34,9 @@ class IRInstr {
 			CMP_EQ,
 			CMP_LT, // Less than
 			CMP_LE, // Less than or Equal
+			CMP_GE,	// Greater than or equal
+			CMP_GT, // Greater than
+			CMP_DIFF, //Different
 			IF_,
 			THEN_
 		};

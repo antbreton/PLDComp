@@ -185,15 +185,84 @@ bool Affectation::checkIDs(Bloc *c)
 }
 
 string Expression::construireIR(CFG* cfg) {
-	if(dynamic_cast<OperateurAND*>(this)) {
-		cerr << "TODO : Construire IR : Classe OperateurAND" << endl;
-		return "";
-	} else if(dynamic_cast<OperateurOR*>(this)) {
-		cerr << "TODO : Construire IR : Classe OperatorOR" << endl;
-		return "";
-	} else if(dynamic_cast<OperateurSup*>(this)) {
-		cerr << "TODO : Construire IR : Classe OperateurSup" << endl;
-		return "";
+	if(OperateurAND* opeAnd = dynamic_cast<OperateurAND*>(this)) {
+		
+		cerr << "IR : OperateurAnd" << endl;
+		
+		// Operande 1
+		string regGauche = opeAnd->getMembreGauche()->construireIR(cfg);
+		// Operande 2
+		string regDroit = opeAnd->getMembreDroit()->construireIR(cfg);
+		// Destination
+		string regResultat = cfg->creerNouveauRegistre();
+
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+
+		vector<std::string> params;
+		// Destination - Operande 1 - Operande 2
+		params.push_back(regResultat);
+		params.push_back(regGauche);
+		params.push_back(regDroit);
+
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_AND, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+
+		cerr << "Fin IR : OperateurAnd" << endl;
+
+		return regResultat;
+
+	} else if(OperateurOR* opeOr = dynamic_cast<OperateurOR*>(this)) {
+		
+		cerr << "IR : OperateurOr" << endl;
+		
+		// Operande 1
+		string regGauche = opeOr->getMembreGauche()->construireIR(cfg);
+		// Operande 2
+		string regDroit = opeOr->getMembreDroit()->construireIR(cfg);
+		// Destination
+		string regResultat = cfg->creerNouveauRegistre();
+
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+
+		vector<std::string> params;
+		// Destination - Operande 1 - Operande 2
+		params.push_back(regResultat);
+		params.push_back(regGauche);
+		params.push_back(regDroit);
+
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_OR, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+
+		cerr << "Fin IR : OperateurOR" << endl;
+
+		return regResultat;
+
+	} else if(OperateurSup* opeSup = dynamic_cast<OperateurSup*>(this)) {
+		
+		cerr << "IR : OperateurSup" << endl;
+		
+		// Operande 1
+		string regGauche = opeSup->getMembreGauche()->construireIR(cfg);
+		// Operande 2
+		string regDroit = opeSup->getMembreDroit()->construireIR(cfg);
+		// Destination
+		string regResultat = cfg->creerNouveauRegistre();
+
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+
+		vector<std::string> params;
+		// Destination - Operande 1 - Operande 2
+		params.push_back(regResultat);
+		params.push_back(regGauche);
+		params.push_back(regDroit);
+
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_GT, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+
+		cerr << "Fin IR : OperateurSup" << endl;
+
+		return regResultat;
+		
 	} else if(OperateurInf* opeInf = dynamic_cast<OperateurInf*>(this)) {
 		cerr << "IR : OperateurInfEgal" << endl;
 		// Operande 1
@@ -218,9 +287,32 @@ string Expression::construireIR(CFG* cfg) {
 		
 		return regGauche;
 
-	} else if(dynamic_cast<OperateurSupEgal*>(this)) {
-		cerr << "TODO : Construire IR : Classe OperateurSupEgal" << endl;
-		return "";
+	} else if(OperateurSupEgal* opeSupEgal = dynamic_cast<OperateurSupEgal*>(this)) {
+		
+		cerr << "IR : OperateurSupEgal" << endl;
+		
+		// Operande 1
+		string regGauche = opeSupEgal->getMembreGauche()->construireIR(cfg);
+		// Operande 2
+		string regDroit = opeSupEgal->getMembreDroit()->construireIR(cfg);
+		// Destination
+		string regResultat = cfg->creerNouveauRegistre();
+
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+
+		vector<std::string> params;
+		// Destination - Operande 1 - Operande 2
+		params.push_back(regResultat);
+		params.push_back(regGauche);
+		params.push_back(regDroit);
+
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_GE, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+
+		cerr << "Fin IR : OperateurSupEgal" << endl;
+
+		return regResultat;
+
 	} else if(OperateurInfEgal* opeInfEgal = dynamic_cast<OperateurInfEgal*>(this)) {
 		cerr << "IR : OperateurInfEgal" << endl;	
 		// Operande 1
@@ -271,9 +363,32 @@ string Expression::construireIR(CFG* cfg) {
 		
         return regGauche;
         
-	} else if(dynamic_cast<OperateurDifferent*>(this)) {
-		cerr << "TODO : Construire IR : Classe OperateurDifferent" << endl;
-		return "";
+	} else if(OperateurDifferent* opeDiff = dynamic_cast<OperateurDifferent*>(this)) {
+		
+		cerr << "IR : OperateurDiff" << endl;
+		
+		// Operande 1
+		string regGauche = opeDiff->getMembreGauche()->construireIR(cfg);
+		// Operande 2
+		string regDroit = opeDiff->getMembreDroit()->construireIR(cfg);
+		// Destination
+		string regResultat = cfg->creerNouveauRegistre();
+
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+
+		vector<std::string> params;
+		// Destination - Operande 1 - Operande 2
+		params.push_back(regResultat);
+		params.push_back(regGauche);
+		params.push_back(regDroit);
+
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::CMP_DIFF, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+
+		cerr << "Fin IR : OperateurDifferent" << endl;
+
+		return regResultat;
+		
 	} else if(OperateurPlus* opePlus = dynamic_cast<OperateurPlus*>(this)) {
 
 		cerr << "IR : OperateurPlus" << endl;
@@ -329,6 +444,8 @@ string Expression::construireIR(CFG* cfg) {
 
 	} else if(OperateurMultiplier* opeMult = dynamic_cast<OperateurMultiplier*>(this)) {
 		
+		cout << "IR : OperateurMultiplier" << endl;
+
 		// Operande 1
 		string regGauche = opeMult->getMembreGauche()->construireIR(cfg);
 		
@@ -348,18 +465,66 @@ string Expression::construireIR(CFG* cfg) {
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::MUL, blocCourant, params);
 		blocCourant->ajouterInstrIR(nouvelleInstr);
 		
-		cerr << "Construire IR : Classe OperateurMultiplier" << endl;
+		cerr << "Fin IR :  OperateurMultiplier" << endl;
 		
-		return regGauche;
+		return regResultat;
 
-	} else if(dynamic_cast<OperateurModulo*>(this)) {
-		cerr << "TODO : Construire IR : Classe OperateurModulo" << endl;
-		return "";
-	} else if(dynamic_cast<OperateurDivise*>(this)) {
+	} else if(OperateurModulo* opeMod = dynamic_cast<OperateurModulo*>(this)) {
+		
+		cout << "IR : OperateurModulo" << endl;
 
-		cerr << "TODO : Construire IR : Classe OperateurDivise" << endl;
+		// Operande 1
+		string regGauche = opeMod->getMembreGauche()->construireIR(cfg);
+		
+		// Operande 2
+		string regDroit = opeMod->getMembreDroit()->construireIR(cfg);
+		
+		// Destination
+		string regResultat = cfg->creerNouveauRegistre();
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+		vector<std::string> params;
+		
+		// Destination - Operande 1 - Operande 2
+		// On utilisera l'appel assembleur DIV ou IDIV et on recupera DX ou EDX le reste
+		params.push_back(regResultat);
+		params.push_back(regGauche);
+		params.push_back(regDroit);
 
-		return "";
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::MOD, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+		
+		cerr << "Fin IR :  OperateurModulo" << endl;
+		
+		return regResultat;
+
+	} else if(OperateurDivise* opeDiv = dynamic_cast<OperateurDivise*>(this)) {
+	
+		cout << "IR : OperateurDivise" << endl;
+
+		// Operande 1
+		string regGauche = opeDiv->getMembreGauche()->construireIR(cfg);
+		
+		// Operande 2
+		string regDroit = opeDiv->getMembreDroit()->construireIR(cfg);
+		
+		// Destination
+		string regResultat = cfg->creerNouveauRegistre();
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+		vector<std::string> params;
+		
+		// Destination - Operande 1 - Operande 2
+		// On utilisera l'appel assembleur DIV ou IDIV et on recupera DX ou EDX le reste
+		params.push_back(regResultat);
+		params.push_back(regGauche);
+		params.push_back(regDroit);
+
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::DIV, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+		
+		cerr << "Fin IR :  OperateurDivise" << endl;
+		
+		return regResultat;
+
 
 	} else if(dynamic_cast<Val*>(this)) {
 		
@@ -400,12 +565,28 @@ string Expression::construireIR(CFG* cfg) {
 
 		return reg;
 
-	} else if(dynamic_cast<Not*>(this)) {
+	} else if(Not* opeNot = dynamic_cast<Not*>(this)) {
 		
-		cerr << "TODO : Construire IR : Classe Not" << endl;
+		cout << "IR : Not" << endl;
 		
-		return "";
-	
+		string regExprCourante = opeNot->getExpression()->construireIR(cfg);
+
+		// Destination
+		string regResultat = cfg->creerNouveauRegistre();
+		BasicBlock* blocCourant = cfg->getBlockCourant();
+		vector<std::string> params;
+		
+		// Destination - Expression Courante 
+		params.push_back(regResultat);
+		params.push_back(regExprCourante);
+		
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::NOT, blocCourant, params);
+		blocCourant->ajouterInstrIR(nouvelleInstr);
+
+		cerr << "Fin IR :  Not" << endl;
+		
+		return regResultat;
+
 	} else if(Identifiant* identifiant = dynamic_cast<Identifiant*>(this)) {
 
 		cout << "IR Identifiant" << endl;
