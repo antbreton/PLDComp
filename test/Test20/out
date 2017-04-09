@@ -1,6 +1,6 @@
 getid
 getid
-[a:0x7fd918402910, c:0x7fd918402be0 ]
+[a:0x7fbcd7c00c30, c:0x7fbcd7c00f00 ]
 %%%Frontend%%%
 
 
@@ -11,46 +11,3 @@ PROGRAMME // tableSymb size : 0
 		ID a 
 	END_BLOC
 END_PROGRAMME
-
-Erreur de résolution de portée : 'a' est inconnue dans ce scope.
-%%%Backend%%%
-getid
-getid
-getid
-getid
-NI IF NI ELSE
-CREATION BLOC : main
-BasicBlock::listeInstructionsAST->size() 1
-getid
-getid
-IR::genererIR
-CFG::genererIR
-BB:genererIR()::listeInstructionsAST->size()1
------- FOR ----------  main
------- IF ----------
-IR Identifiant
-Fin IR : Identifiant
------- FIN IF ----------
------- FIN FOR ----------
-
-GEN_PROLOGUE
-getid
-getid
-.text        
-.globl main 
-.type main, @function
-
-main:
-
-    pushq   %rbp 
-    movq    %rsp, %rbp 
-    subq    $24, %rsp 
-    mov    %rdi, -16(%rbp) 
-    mov    %rsi, -8(%rbp) 
-
-
-    leave
-    ret
-
-
-Fin de l'analyse du programme

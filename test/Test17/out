@@ -1,6 +1,6 @@
 getid
 getid
-[a:0x7f837ec02910, c:0x7f837ec02be0 ]
+[a:0x7f98c7c02910, c:0x7f98c7c02be0 ]
 %%%Frontend%%%
 
 
@@ -42,7 +42,6 @@ aaaa:
     mov    %rdi, -16(%rbp) 
     mov    %rsi, -8(%rbp) 
 
-aaaa:
 
     leave
     ret

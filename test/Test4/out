@@ -9,8 +9,13 @@ PROGRAMME // tableSymb size : 0
 END_PROGRAMME
 
 %%%Backend%%%
-getid
-getid
-getid
-NI IF NI ELSE
-CREATION BLOC : main
+IR::genererIR
+CFG::genererIR
+CFG::genererIR
+CFG::genererIR
+.text        
+.globl  
+.type , @function
+
+
+Fin de l'analyse du programme

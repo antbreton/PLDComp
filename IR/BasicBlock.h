@@ -39,6 +39,8 @@ class BasicBlock {
 		void genererIR();
 
 		bool bbreak = false;
+		map<std::string,int> getMapVarReg() {return mappingVarReg;};
+		void setMapVarReg(map<std::string,int> mymap) {mappingVarReg = mymap;};
 
 	private:
 		std::vector<IRInstr * >* listeInstructionsIR;

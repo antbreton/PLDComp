@@ -1,14 +1,14 @@
-[a:0x7ffb71402b70, c:0x7ffb71402b30 ]
-[a:0x7ffb71402b70, c:0x7ffb71402b50 ]
+[a:0x7fdf49600160, c:0x7fdf49600120 ]
+[a:0x7fdf49600160, c:0x7fdf49600140 ]
 getid
-[a:0x7ffb71402d90, c:0x7ffb71402d50 ]
-[a:0x7ffb71402d90, c:0x7ffb71402d70 ]
+[a:0x7fdf49600380, c:0x7fdf49600340 ]
+[a:0x7fdf49600380, c:0x7fdf49600360 ]
 getid
 getid
-[a:0x7ffb71403120, c:0x7ffb71402dc0  st ]
-[a:0x7ffb71403150, c:0x7ffb71402ba0  st ]
-[a:0x7ffb71402aa0, c:0x7ffb71403150  st ]
-[a:0x7ffb71402910, c:0x7ffb71402aa0 ]
+[a:0x7fdf49600710, c:0x7fdf496003b0  st ]
+[a:0x7fdf49600740, c:0x7fdf49600190  st ]
+[a:0x7fdf49600090, c:0x7fdf49600740  st ]
+[a:0x7fdf49500120, c:0x7fdf49600090 ]
 %%%Frontend%%%
 
 
@@ -45,8 +45,45 @@ INSTRUCTION STRUCTURE DE CONTROLE
 IR Val
 IR Val
 NI IF NI ELSE
-CREATION BLOC : blocAfter
-CREATION BLOC : blocIF
+CREATION BLOC : blocIF_0
 BasicBlock::listeInstructionsAST->size() 0
-CREATION BLOC : blocELSE
-ICI 4
+NI IF NI ELSE
+CREATION BLOC : blocELSE_0
+NI IF NI ELSE
+CREATION BLOC : blocAfter_0
+BREAKmain
+BB:genererIR()::listeInstructionsAST->size()0
+BB:genererIR()::listeInstructionsAST->size()0
+BB:genererIR()::listeInstructionsAST->size()0
+
+GEN_PROLOGUE
+
+.text        
+.globl main 
+.type main, @function
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $24, %rsp 
+
+    movq   $1, -8(%rbp)
+    movq   $1, -16(%rbp)
+    movq    -8(%rbp), %rax 
+    xor    -16(%rbp), %rax
+    cmpq   $0, %rax 
+    sete   %al 
+    movzbq %al, %rax 
+    movq    %rax, -24(%rbp) 
+    jne blocELSE_0
+blocIF_0:
+    jmp blocAfter_0
+blocELSE_0:
+blocAfter_0:
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme

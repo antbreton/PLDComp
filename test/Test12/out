@@ -1,12 +1,12 @@
 getid
-[a:0x7f8690400870, c:0x7f8690400830 ]
-[a:0x7f8690400870, c:0x7f8690400850 ]
-[a:0x7f86906000b0, c:0x7f8690700030  st ]
-[a:0x7f8690700320, c:0x7f86904008a0  st ]
-[a:0x7f86904006b0, c:0x7f8690700320  st ]
+[a:0x7f8909c02f00, c:0x7f8909c02ec0 ]
+[a:0x7f8909c02f00, c:0x7f8909c02ee0 ]
+[a:0x7f8909c033d0, c:0x7f8909c030d0  st ]
+[a:0x7f8909c03400, c:0x7f8909c02f30  st ]
+[a:0x7f8909c02d40, c:0x7f8909c03400  st ]
 getid
 getid
-[a:0x7f8690400280, c:0x7f86904006b0 ]
+[a:0x7f8909c02910, c:0x7f8909c02d40 ]
 %%%Frontend%%%
 
 
@@ -37,5 +37,75 @@ END_PROGRAMME
 getid
 getid
 getid
+getid
 NI IF NI ELSE
-CREATION BLOC : fonction1
+CREATION BLOC : main
+BasicBlock::listeInstructionsAST->size() 1
+getid
+getid
+getid
+IR::genererIR
+CFG::genererIR
+CFG::genererIR
+BB:genererIR()::listeInstructionsAST->size()1
+------ FOR ----------  main
+INSTRUCTION STRUCTURE DE CONTROLE
+IR Val
+IR Val
+NI IF NI ELSE
+CREATION BLOC : blocIF_0
+BasicBlock::listeInstructionsAST->size() 1
+NI IF NI ELSE
+CREATION BLOC : blocELSE_0
+NI IF NI ELSE
+CREATION BLOC : blocAfter_0
+BREAKmain
+BB:genererIR()::listeInstructionsAST->size()1
+------ FOR ----------  blocIF_0
+------ IF ----------
+IR AppelFonction
+IR Val
+------ FIN IF ----------
+------ FIN FOR ----------
+BB:genererIR()::listeInstructionsAST->size()0
+BB:genererIR()::listeInstructionsAST->size()0
+
+GEN_PROLOGUE
+getid
+getid
+
+
+.text        
+.globl main 
+.type main, @function
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $56, %rsp 
+    mov    %rdi, -16(%rbp) 
+    mov    %rsi, -8(%rbp) 
+
+    movq   $1, -24(%rbp)
+    movq   $2, -32(%rbp)
+    movq    -24(%rbp), %rax 
+    xor    -32(%rbp), %rax
+    cmpq   $0, %rax 
+    sete   %al 
+    movzbq %al, %rax 
+    movq    %rax, -40(%rbp) 
+    jne blocELSE_0
+blocIF_0:
+    movq   $2, -56(%rbp)
+    mov    -56(%rbp), %rdi 
+    call   fonction1
+    jmp blocAfter_0
+blocELSE_0:
+blocAfter_0:
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme

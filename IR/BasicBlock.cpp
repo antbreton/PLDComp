@@ -143,6 +143,7 @@ CFG* BasicBlock::getCFG() {
 
 
 bool BasicBlock::estVarMappee(std::string nomVariable) {
+	cout << "NOMBRE DE FOIS VARIABLE TROUVEE : " << to_string(this->mappingVarReg.count(nomVariable)) << endl;
     if(this->mappingVarReg.count(nomVariable) == 0) {
         return false;
     }

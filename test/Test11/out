@@ -1,9 +1,9 @@
 getid
-[a:0x7faa9ee00280, c:0x7faa9ee00240 ]
-[a:0x7faa9ee00280, c:0x7faa9ee00260 ]
+[a:0x7fd1be402f00, c:0x7fd1be402ec0 ]
+[a:0x7fd1be402f00, c:0x7fd1be402ee0 ]
 getid
 getid
-[a:0x7faa9ec02910, c:0x7faa9ee000b0 ]
+[a:0x7fd1be402910, c:0x7fd1be402d40 ]
 %%%Frontend%%%
 
 
@@ -21,5 +21,58 @@ END_PROGRAMME
 getid
 getid
 getid
+getid
 NI IF NI ELSE
-CREATION BLOC : fonction1
+CREATION BLOC : main
+BasicBlock::listeInstructionsAST->size() 2
+getid
+getid
+getid
+IR::genererIR
+CFG::genererIR
+CFG::genererIR
+BB:genererIR()::listeInstructionsAST->size()2
+------ FOR ----------  main
+------ IF ----------
+IR Val
+IR Val
+------ FIN IF ----------
+------ FIN FOR ----------
+------ FOR ----------  main
+------ IF ----------
+IR AppelFonction
+IR Val
+------ FIN IF ----------
+------ FIN FOR ----------
+
+GEN_PROLOGUE
+getid
+getid
+
+
+.text        
+.globl main 
+.type main, @function
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $56, %rsp 
+    mov    %rdi, -16(%rbp) 
+    mov    %rsi, -8(%rbp) 
+
+    movq   $1, -24(%rbp)
+    movq   $1, -32(%rbp)
+    movq    -24(%rbp), %rax
+    addq    -32(%rbp), %rax
+    movq    %rax, -40(%rbp)
+    movq   $2, -56(%rbp)
+    mov    -56(%rbp), %rdi 
+    call   fonction1
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme
