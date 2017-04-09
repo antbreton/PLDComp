@@ -13,7 +13,7 @@ void passe1(Programme* programme);
 void passe2(Programme* programme);
 
 int main(void) {
-   yydebug = 1;
+   yydebug = 0;
 	Programme* programme = new Programme();
 	yyparse(&programme);
 	bool error = false;
