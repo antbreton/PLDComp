@@ -755,39 +755,47 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 		BasicBlock* testBB = cfg->getBlockCourant();
 		testBB->bbreak = true;
 
-		//std::vector<Instruction * >* instrAstBlocPere = testBB->getListeInstructionsAST();
-
-		//On evalue l'expression
+		//Evaluation la condition de test
 		blocPereIf->exprCondition->construireIR(cfg);
-		string labelElse = "blocELSE";
+
+		//Creation de l'IR de jne si la condition n'est pas respecte : 
+		//vers le blocElse ou vers le blocAfter si pas de Else
 		vector<std::string> params;
-		params.push_back(labelElse);
-		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::IF_, testBB, params);
-		//testBB->ajouterInstrIR(nouvelleInstr);
-		testBB->ajouterInstrIRJump(nouvelleInstr);
 		string labelAfter = "blocAfter";
-		BasicBlock* afterIfBB = new BasicBlock(cfg, NULL, labelAfter);
+		string labelElse = "blocELSE";
+		if(blocPereIf->blocElse != nullptr)
+		{
+			params.push_back(labelElse);
+
+		} else 
+		{
+			params.push_back(labelAfter);
+		}
+		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::IF_, testBB, params);
+		testBB->ajouterInstrIRJump(nouvelleInstr);
+		
 
 
-
+		//Creation du BB Then 
 		Bloc* bIf = dynamic_cast<Bloc *>(blocPereIf->instrv);
 		BasicBlock* thenBB = new BasicBlock(cfg,bIf,"blocIF");
 		vector<std::string> params2;
+		//--Ajout de l'instruction du jmp
 		params2.push_back(labelAfter);
 		IRInstr* nouvelleInstr2 = new IRInstr(IRInstr::Mnemonique::THEN_, thenBB, params2);
 		thenBB->ajouterInstrIRJump(nouvelleInstr2);
 		
-
+		//Creation du BB Else
 		BasicBlock* elseBB = nullptr;
-
 		if(blocPereIf->blocElse != nullptr)
 		{
 			Bloc* bElse = dynamic_cast<Bloc *>(blocPereIf->blocElse);
 			elseBB = new BasicBlock(cfg,bElse, labelElse);
 		}
 
-
-		
+		//Creation du BB after
+		BasicBlock* afterIfBB = new BasicBlock(cfg, NULL, labelAfter);
+		//--On recupere les instructions dans le BB courant après le If-Then-else
 		vector<Instruction*>* instrAstAfterBB = new vector<Instruction*>(); 
 		vector<Instruction*>::iterator it;
 		int i = 1;
@@ -797,6 +805,7 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 		}
 		afterIfBB->setListeInstructionAST(instrAstAfterBB);
 
+		//Gestion des successeurs
 		afterIfBB->setSuccCond(testBB->getSuccCond());
 		afterIfBB->setSuccIncond(testBB->getSuccIncond());
 
@@ -807,9 +816,7 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 		if(blocPereIf->blocElse == nullptr)
 		{
 			thenBB->setSuccCond(afterIfBB);
-			//testBB->setSuccIncond(nullptr);
 		} else {
-			//testBB->setSuccIncond(elseBB);
 			thenBB->setSuccCond(NULL);
 			elseBB->setSuccCond(afterIfBB) ;
 			elseBB->setSuccIncond(NULL) ;
@@ -830,26 +837,29 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 		BasicBlock * testBB = cfg->getBlockCourant();;
 		testBB->bbreak = true;
 
-
-		Bloc* bWhile = dynamic_cast<Bloc *>(blocWhilePere->instrv);
-		BasicBlock* bodyBB = new BasicBlock(cfg,bWhile,"blocWhile");
+		//On evalue l'expression
 		blocWhilePere->exprCondition->construireIR(cfg);
 
-
+		//--Ajout de l'instruction jge
 		string labelAfter = "blocAfter";
 		vector<std::string> params;
 		params.push_back(labelAfter);
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::WHILE_, testBB, params);
 		testBB->ajouterInstrIRJump(nouvelleInstr);
 
-
-		string labelComp = "blocWhile";
+		//Creation du corps du while
+		string labelWhile = "blocWhile";
+		Bloc* bWhile = dynamic_cast<Bloc *>(blocWhilePere->instrv);
+		BasicBlock* bodyBB = new BasicBlock(cfg,bWhile,labelWhile);
+		//--Ajout de l'instruction de jmp pour retourner sur la condition de test
 		vector<std::string> params2;
-		params2.push_back(labelComp);
+		params2.push_back(labelWhile); //TODO : il faut ajouter un label avant l'instruction cmp, ce parametre n'est pas bon
 		IRInstr* nouvelleInstr2 = new IRInstr(IRInstr::Mnemonique::THEN_, bodyBB, params2);
 		bodyBB->ajouterInstrIRJump(nouvelleInstr2);
 
+		//Creation du bloc after
 		BasicBlock * afterWhileBB = new BasicBlock(cfg);
+		//--On recupere les instructions restantes du bloc courant 
 		vector<Instruction*>* instrAstAfterBB = new vector<Instruction*>(); 
 		vector<Instruction*>::iterator it;
 		int i = 1;
@@ -859,14 +869,14 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 		}
 		afterWhileBB->setListeInstructionAST(instrAstAfterBB);
 
+
+		//Gestion des successeurs
 		afterWhileBB->setSuccCond(testBB->getSuccCond());
 		afterWhileBB->setSuccIncond(testBB->getSuccIncond());
 		
-
 		testBB->setSuccCond(bodyBB);
 		testBB->setSuccIncond(afterWhileBB);
 		
-
 		bodyBB->setSuccCond(testBB) ;
 		bodyBB->setSuccIncond(NULL);
 
