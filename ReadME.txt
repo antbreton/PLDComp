@@ -61,6 +61,7 @@ Le backend prend en compte :
 Le backend ne prend pas en compte :
 
 - les appels de fonctions
+- return de fonction
 - les elseIf
 - les ifs imbriqués
 - les for 
@@ -68,6 +69,5 @@ Le backend ne prend pas en compte :
 - l'utilisation de bloc arbitraire (les instructions entre les {} n'apparaissent pas)
 - les divisions
 - les modulo
-
 
 pour les test, faire tourner ./runTestBackEnd.sh
