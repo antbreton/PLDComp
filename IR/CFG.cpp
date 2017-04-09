@@ -1,4 +1,5 @@
 #include "CFG.h"
+
 using namespace std;
 
 
@@ -6,17 +7,45 @@ using namespace std;
 CFG::CFG(Fonction* fonction)
 {
 	fonctionDuCFG = fonction;
-	
 	this->dicoRegTmp = new map<string, IRVar*>();
-	
 	Bloc* bloc = fonctionDuCFG->getBloc();
 
-	BasicBlock* newBasicBlock = new BasicBlock(this, bloc, fonctionDuCFG->getIdentifiant()+"_bb");
-
-	this->addBasicBlock(newBasicBlock);
+	if(bloc != NULL) { 
 	
-	nbRegVirtuels = 0;
-	calculeTaille();
+		// ***************
+		// Ajout des paramètres dans les variables
+		// ****************
+		
+		vector<Variable*>* params = fonctionDuCFG->getVariables();
+		vector<Variable *>::iterator ite = params->begin() ;
+		
+		while ( ite != params->end() ) 
+		{
+			Variable *v = (*ite);
+			IRVar* var = new IRVar(v->getType(), v->getIdentifiant(), 0);
+			this->addVariable(var);
+			ite++;
+		}
+		
+		// ***************
+		
+		// On recupere la taille total des parametres
+		taillePileParam = this->giveOffsets();
+			
+		BasicBlock* newBasicBlock = new BasicBlock(this, bloc, fonctionDuCFG->getIdentifiant());
+		this->addBasicBlock(newBasicBlock);
+		
+		
+		nbRegVirtuels = 0;
+		calculeTaille();
+
+		//Compteurs pour les labels
+		this->nbBlocIF = 0;
+		this->nbBlocELSE = 0;
+		this->nbBlocAfter = 0;
+	
+	}
+
 }
 
 CFG::~CFG()
@@ -41,7 +70,6 @@ void CFG::addBasicBlock(BasicBlock* newBasicBlock)
 // Parcours le CFG et en genere le code assembleur.
 string CFG::genererAssembleur() {
 		
-	// TODO : Chopper la taille de la pile (et l'avoir calculer avant ...)
 	string codeAssembleur;
 
 	// PROLOGUE
@@ -64,6 +92,20 @@ string CFG::genererAssembleur() {
 	return codeAssembleur;
 }
 
+void CFG::genererIR()
+{
+
+	cout<< "CFG::genererIR" << endl;
+	list<BasicBlock *>::iterator ite = listeBasicBlocks.begin() ;
+
+  	while (ite != listeBasicBlocks.end()) 
+  	{
+  		blocCourant = (*ite);
+		(*ite)->genererIR();
+		ite++;
+  	}
+}
+
 std::string CFG::gen_prologue()
 {
 	string codeAssembleur;
@@ -74,50 +116,54 @@ std::string CFG::gen_prologue()
 	codeAssembleur += insLabel;
 	codeAssembleur += "\r\n";
 	codeAssembleur += "    pushq   %rbp \r\n";
-	codeAssembleur += "    movq    %rsp, %rbp \r\n";
-	  // addq ou subq ? Depend de la pile ? 
-	//codeAssembleur += "    subq    $"+ to_string(this->calculeTaille()) +", %rsp \r\n";
-	//codeAssembleur += "\r\n";
-	  
+	codeAssembleur += "    movq    %rsp, %rbp \r\n";  
 	
-	//Offset pour chaque variable
-	/*
-	int i = 1;
+
+	cout << endl << "GEN_PROLOGUE" << endl;
+
 	std::map<string, IRVar*>* dico = this->getDicoRegTmp();
 	std::map<string, IRVar*>::iterator it;
 	
-	// Si il y a au moins une instruction dans le programme
-	if(dico != NULL)
-	{
+	int j = 1;
+	if(dico->size() != 0){
+
+		codeAssembleur += "    subq    $"+ to_string(8*dico->size()+taillePileParam) +", %rsp \r\n";
 
 		for(it=dico->begin(); it!=dico->end(); ++it)
 		{
-			it->second->setOffset(8*i);
-			string instructionASM = "movq $" + to_string(it->second->getValeur()) + ", -" + to_string(it->second->getOffset())  +"(%rbp)\r\n";
-			codeAssembleur += instructionASM;
-			i++;
+			it->second->setOffset(8*j + taillePileParam);
+			j++;
 		}
 	}
-
-	*/
-	cout << endl << "GEN_PROLOGUE" << endl;
-	int i = 1;
-	if(taille != 0)
-	{
-		codeAssembleur += "    subq    $"+ to_string(taille) +", %rsp \r\n";
-
-		std::map<string, Variable*>* table = fonctionDuCFG->getBloc()->tableVariables;
-		std::map<string, Variable*>::iterator it;
-		for(it= table->begin(); it != table->end(); it++)
-		{
-			string key = it->first;
-			dicoRegTmp->find(key)->second->setOffset(8*i);
-			string instructionASM = "movq $" + to_string(dicoRegTmp->find(key)->second->getValeur()) + ", -" + to_string(dicoRegTmp->find(key)->second->getOffset())  +"(%rbp)\r\n";
-			codeAssembleur += instructionASM;
-			i++;
-		}
+	
+	// ***************************************
+	// Gestion des paramètres
+	// ***************************************
+	
+	vector<Variable*>* params = fonctionDuCFG->getVariables();
+	vector<Variable *>::iterator ite = params->begin() ;
+	
+	while ( ite != params->end() ) {
+		
+		// On rechoppe les IRVar liées aux parametres de la fonction
+        int position = std::distance(params->begin(), ite);
+        Variable* v = (*ite);
+        IRVar *var = this->getVariable(v->getIdentifiant());		
+        
+		// On met les registres spéciaux dedans. Ainsi ces registres speciaux sont les registres pour les parametres de la fonction. 
+		// Cf IRInstr.cpp 
+        switch(position) {
+          case 0: codeAssembleur += "    mov    %rdi, "+to_string(var->getOffset())+"(%rbp) \r\n"; break;
+          case 1: codeAssembleur += "    mov    %rsi, "+to_string(var->getOffset())+"(%rbp) \r\n"; break;
+          case 2: codeAssembleur += "    mov    %rdx, "+to_string(var->getOffset())+"(%rbp) \r\n"; break;
+          case 3: codeAssembleur += "    mov    %rcx, "+to_string(var->getOffset())+"(%rbp) \r\n"; break;
+          case 4: codeAssembleur += "    mov    %r8, "+to_string(var->getOffset())+"(%rbp) \r\n"; break;
+          case 5: codeAssembleur += "    mov    %r9, "+to_string(var->getOffset())+"(%rbp) \r\n"; break;
+        }
+        
+        ite++;
 	}
-
+	codeAssembleur += "\r\n";
 
 	return codeAssembleur;
 }
@@ -137,10 +183,8 @@ std::string CFG::gen_epilogue()
 
 int CFG::calculeTaille()
 {
-	cout << endl << "calculeTaille debut" << endl;
 	fonctionDuCFG->getBloc()->constructor_tableVariables(); //8 octets par variable
 	int taille = 8*fonctionDuCFG->getBloc()->tableVariables->size();
-	cout << endl << "calculeTaille fin" << endl;
 	setTaille(taille);
 	return taille;
 }
@@ -157,13 +201,17 @@ std::string CFG::creerNouveauRegistre() {
 }
 
 std::string CFG::creerNouveauRegistre(int nbRegVirt) {
-		std::string nomRegistreVirtuel = "!r" + nbRegVirt ;
+		std::string nomRegistreVirtuel = "!r" + to_string(nbRegVirt) ;
         IRVar* maVar = new IRVar(nomRegistreVirtuel);
         this->dicoRegTmp->insert(std::pair<std::string, IRVar*>(nomRegistreVirtuel, maVar));
         return nomRegistreVirtuel;
 }
 
 
+// Ajoute un parametre à la map des Parametres.
+void CFG::addVariable(IRVar* var) {
+    this->variableMap.insert(pair<string,IRVar*> (var->getNom(), var));
+}
 
 
 // GETTER / SETTER
@@ -171,4 +219,60 @@ std::string CFG::creerNouveauRegistre(int nbRegVirt) {
 int CFG::getNbRegVirtuels()
 {
 	return nbRegVirtuels;
+}
+
+IRVar* CFG::getVariable(string nom) 
+{
+    map<string,IRVar*>::iterator varIte;
+    varIte = variableMap.find(nom);
+    return (varIte->second);
+}
+
+// Permet d'attribuer les offsets à toutes les variables.
+int CFG::giveOffsets() 
+{
+    int offset = -8;
+    int tailleTotale = 0;
+    
+    map<std::string,IRVar*>::iterator ite = variableMap.begin() ;
+    while ( ite != variableMap.end() ) {
+        ite->second->setOffset(offset);
+
+        string type = ite->second->getType();
+		
+		// Dans notre cas pour l'instant tout les types font 8 bytes. 
+		// Ils ne sont pas encore gérés.
+		if(type == "INT32") {
+			offset -= 8;
+			tailleTotale += 8;
+		} else if(type == "INT64") {
+			offset -= 8;
+			tailleTotale += 8;
+		} else if(type == "CHAR") {
+			offset -= 8;
+			tailleTotale += 8;
+		} else {
+			offset -= 8;
+			tailleTotale += 8;
+		}
+        
+        ite++;
+    }
+    
+    return tailleTotale;
+    
+}
+
+// Renvoi si la variable est un parametre ou non.
+bool CFG::estUnParametre(string nomVariable)
+{
+	map<string,IRVar*>::iterator varIte;
+    varIte = variableMap.find(nomVariable);
+	if(varIte != variableMap.end())
+	{
+		return true;
+	}
+    else {
+		return false;
+	}
 }

@@ -1,0 +1,11 @@
+void main(int32_t a, int32_t b){
+	int32_t g;
+	g=6;
+	int32_t f;
+	f=10;
+	int32_t h;
+	h=f-g;
+	a=4;
+	a=6;
+	b=h+a;
+}

@@ -8,7 +8,7 @@
 #include "IRVar.h"
 
 class BasicBlock;
-//class CFG;
+
 using namespace std;
 
 		
@@ -22,12 +22,24 @@ class IRInstr {
 			ADD,
 			SUB,
 			MUL,
+			DIV_,
+			MOD,
+			CMP_AND,
+			CMP_OR,
+			NOT_,
 			RMEM,
 			WMEM,
+			WMEM_SR,
 			CALL,
-			//cmp_eq,
-			//cmp_lt,
-			//cmp_le
+			CMP_EQ,
+			CMP_LT, // Less than
+			CMP_LE, // Less than or Equal
+			CMP_GE,	// Greater than or equal
+			CMP_GT, // Greater than
+			CMP_DIFF, //Different
+			IF_,
+			THEN_,
+			WHILE_
 		};
 		IRInstr(Mnemonique mnemonique, BasicBlock* blocParent, std::vector<std::string> params);
 		~IRInstr();

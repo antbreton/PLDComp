@@ -13,7 +13,7 @@ void passe1(Programme* programme);
 void passe2(Programme* programme);
 
 int main(void) {
-   yydebug = 1;
+   yydebug = 0;
 	Programme* programme = new Programme();
 	yyparse(&programme);
 	bool error = false;
@@ -39,6 +39,7 @@ int main(void) {
 
 	IR* ir = new IR(programme);
 
+	ir->genererIR();
 	cout << ir->genererAssembleur() << endl;
 	
 	cout << "Fin de l'analyse du programme" << endl;

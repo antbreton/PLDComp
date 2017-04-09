@@ -1,8 +1,8 @@
 PROGRAMME // tableSymb size : 0
-	FONCTION	VOID main // size : 2VAR INT32 z VAR INT64 t 
-	BEGIN_BLOC // nb instr : 3 - tableSymb size : 4
-		AFFECTATION ID a  = CARACTEREi 
-		AFFECTATION ID a  = CARACTEREk 
-		AFFECTATION ID b  = CARACTEREj 
+	FONCTION	VOID main // size : 0
+	BEGIN_BLOC // nb instr : 3 - tableSymb size : 2
+		AFFECTATION ID a  =  
+		AFFECTATION ID a  =  
+		AFFECTATION ID b  =  
 	END_BLOC
 END_PROGRAMME

@@ -1,4 +1,5 @@
 #include "BasicBlock.h"
+#include "../Structure.h"
 using namespace std;
 
 
@@ -7,38 +8,34 @@ BasicBlock::BasicBlock(std::string label)
 {
 	
 }
+BasicBlock::BasicBlock(CFG* cfg)
+{
 
+	this->cfg = cfg;
+	cfg->addBasicBlock(this);
+	listeInstructionsIR = new vector<IRInstr*>();
+	listeInstructionsAST = new vector<Instruction*>();
+
+}
 BasicBlock::BasicBlock(CFG* cfg, Bloc* bloc, string label)
 {
 
-	cout << "test 2" << endl;
-	cfg->setBlockCourant(this); //TODO : faut-il maj ailleur de bloc courant ?
-
 	this->cfg = cfg;
 	this-> label = label;
+	if(label != "blocIF" && label != "blocELSE"){
+		cout << "NI IF NI ELSE" << endl;
+		//cfg->addBasicBlock(this);
+	}
+	cout << "CREATION BLOC : " << label << endl;
 
 	listeInstructionsIR = new vector<IRInstr*>();
+	listeInstructionsAST = new vector<Instruction*>();
 
-	if(bloc!=NULL)
+	if(bloc != NULL)
 	{
-
-		vector<Instruction*>* listeIntruc = bloc->getInstructions();
-		vector<Instruction*>:: iterator ite;
-
-
-		for(ite = listeIntruc->begin(); ite!=listeIntruc->end(); ++ite)
-		{
-			
-			if(Expression* e = dynamic_cast<Expression*>(*ite))
-			{
-				e->construireIR(cfg);
-			}
-		}
-	
+		listeInstructionsAST = bloc->getInstructions();
+		cout << "BasicBlock::listeInstructionsAST->size() " << listeInstructionsAST->size() << endl;
 	}
-	// TODO : POur chaque instruction dans le bloc : 
-	// On regarde son type, et selon celui-ci
-	// on recupere le code IR associee (on appelle le getIR de chaque classe) 
 	
 }
 
@@ -51,6 +48,49 @@ BasicBlock::~BasicBlock()
 
 // Methodes
 
+void BasicBlock::genererIR()
+{
+	vector<Instruction*>:: iterator ite;
+
+	cout << "BB:genererIR()::listeInstructionsAST->size()" << listeInstructionsAST->size() << endl;
+	for(ite = listeInstructionsAST->begin(); ite!=listeInstructionsAST->end(); ++ite)
+	{
+		cfg->setBlockCourant(this);
+		cout << "------ FOR ----------  " << label << endl;
+		
+		if(Expression* e = dynamic_cast<Expression*>(*ite))
+		{
+			cout << "------ IF ----------" << endl;
+			e->construireIR(cfg);
+			cout << "------ FIN IF ----------" << endl;
+		} else if (StructureControle* s = dynamic_cast<StructureControle*>(*ite))
+		{
+			cout << "INSTRUCTION STRUCTURE DE CONTROLE" << endl;
+			s->construireIR(cfg,ite);
+		} else if (Bloc* b = dynamic_cast<Bloc*>(*ite))
+		{
+			cout << "INSTRUCTION DE TYPE BLOC" << endl;
+		}
+
+
+
+		if(bbreak) {
+			cout << "BREAK"<<  label << endl;
+			break;
+		}
+
+		cout << "------ FIN FOR ----------" << endl;
+	}	
+
+	if(succCond != nullptr){
+		succCond->genererIR();
+		if(succIncond != nullptr){
+			succIncond->genererIR();
+		}
+	} 
+}
+
+
 // Genere le code assembleur du bloc, pour cela on appelle chaque methode genererAssembleur
 // de chaque Instruction IR.
 string BasicBlock::genererAssembleur() {
@@ -58,10 +98,29 @@ string BasicBlock::genererAssembleur() {
     
     vector<IRInstr *>::iterator ite = listeInstructionsIR->begin();
 
+
+	if (label.compare(cfg->getListeBasicBlocks().front()->getLabel())) 
+    {
+		codeAssembleur = label + ":\r\n";
+	}
+
     while(ite != listeInstructionsIR->end()) {
       codeAssembleur += (*ite)->genererAssembleur();
       ite++;
     }
+    if (jumpIRIntr != NULL)
+    {
+		codeAssembleur += jumpIRIntr->genererAssembleur();
+	}
+
+    if(succCond != nullptr)
+    {
+		codeAssembleur += succCond->genererAssembleur();	
+	} 
+
+	if (succIncond != nullptr){
+		codeAssembleur += succIncond->genererAssembleur();
+	}
   
     return codeAssembleur;
 }
@@ -72,6 +131,9 @@ void BasicBlock::ajouterInstrIR(IRInstr *instruction) {
 	listeInstructionsIR->push_back(instruction);
 }
 
+void BasicBlock::ajouterInstrIRJump(IRInstr *instruction) {
+	jumpIRIntr = instruction;
+}
 
 // GETTER / SETTER
 
@@ -81,6 +143,7 @@ CFG* BasicBlock::getCFG() {
 
 
 bool BasicBlock::estVarMappee(std::string nomVariable) {
+	cout << "NOMBRE DE FOIS VARIABLE TROUVEE : " << to_string(this->mappingVarReg.count(nomVariable)) << endl;
     if(this->mappingVarReg.count(nomVariable) == 0) {
         return false;
     }
@@ -95,10 +158,12 @@ void BasicBlock::ajouterVariableMappee(CFG* cfg, std::string nomVariable) {
 }
 
 int BasicBlock::getValeurMappee(std::string nomVariable) {
+
     auto trouve = this->mappingVarReg.find(nomVariable);
     if(trouve != this->mappingVarReg.end()) {
       return trouve->second;
     } else {
       cerr << "BasicBlock::GetValeurMappee : mappingDe " + nomVariable + " non trouve" << endl; 
+	  return 0;
     }
 }

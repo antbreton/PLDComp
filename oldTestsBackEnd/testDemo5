@@ -1,0 +1,16 @@
+void main(){
+	char a;
+	char b,c;
+	a = 'M';
+	b = 1 + a +1;
+	c = b - 4;
+	char d;
+	d='\n';
+	char e;
+	e='\t';
+	putchar(e);
+	putchar(b);
+	putchar(' ');
+	putchar(c);
+	putchar(d);
+}

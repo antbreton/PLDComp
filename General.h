@@ -124,7 +124,7 @@ class Caractere : public Expression {
 		Caractere(char c):Expression(), c(c) {}
         // TODO : Pk char en public ?
 		char c;
-		void Afficher (int nbtab) {
+		void Afficher () {
 			 cout<<"CARACTERE"<< c;
 		 }
 };
@@ -151,6 +151,7 @@ class Programme {
 class Not : public Expression {
 	public: 
 		Not(Expression * membre):Expression(), membre(membre) {}
+		Expression* getExpression() { return this->membre; }
 	private:
 		Expression * membre;
 		bool checkIDs(Bloc *b) { return membre->checkIDs(b); }
@@ -399,10 +400,10 @@ class Variable : public Identifiable
 				this->type=type;
 		}
 		
-		
+				bool initialisation;
+
 	private:
 		string type;
-		bool initialisation;
 		Expression * expr;
 };
 

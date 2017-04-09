@@ -1,0 +1,7 @@
+void main(){
+	int32_t a;
+	int32_t b;
+	a = 5;
+	a = 15 + a;
+	putchar(a);
+}

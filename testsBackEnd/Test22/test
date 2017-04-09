@@ -1,0 +1,23 @@
+void main (){
+	int32_t a;
+    int32_t b;
+    b = 3;
+	a = 2;
+
+	if(a == 3) {
+	    putchar('3');
+	} else if(a == 4) {
+        putchar('4');
+    } else {
+	    putchar('U');
+	}
+
+	if(b == 6) {
+        putchar('6');
+    } else if(b == 3) {
+        putchar('3');
+    } else {
+        putchar('U');
+    }
+
+}

@@ -2,7 +2,6 @@
 #include "IRInstr.h"
 #include "BasicBlock.h"
 
-//#include "CFG.h"
 using namespace std;
 
 
@@ -30,12 +29,16 @@ string IRInstr::genererAssembleur() {
      
 	  string codeAssembleur;
 	  int nbParametres = this->params.size();
-	  cout << "genererAssem IRinstr" << endl;
+	  
+	  // DE 3 à 8 car seulement 6 registres disponibles pour le call. Un par parametre de la fonction.
 	  string parametre1 = "";
 	  string parametre2 = "";
 	  string parametre3 = "";
-
-	  cout << "IRinstr::genererAssembleur 1" << endl;
+	  string parametre4 = "";
+	  string parametre5 = "";
+	  string parametre6 = "";
+	  string parametre7 = "";
+	  string parametre8 = "";
 
 	  vector<string>::iterator iteParam = params.begin();
 	  if(nbParametres >= 1)
@@ -53,25 +56,48 @@ string IRInstr::genererAssembleur() {
 		parametre3 = *iteParam;
 		iteParam++;
 	  }
+	  if(nbParametres >= 4) 
+	  {
+		parametre4 = *iteParam;
+		iteParam++;
+	  }
+	  if(nbParametres >= 5) 
+	  {
+		parametre5 = *iteParam;
+		iteParam++;
+	  }
+	  if(nbParametres >= 6) 
+	  {
+		parametre6 = *iteParam;
+		iteParam++;
+	  }
+	  if(nbParametres >= 7) 
+	  {
+		parametre7 = *iteParam;
+		iteParam++;
+	  }
+	  if(nbParametres >= 8) 
+	  {
+		parametre8 = *iteParam;
+		iteParam++;
+	  }
 
 
 	  CFG* cfg = blocParent->getCFG();
 	  map<string, IRVar*>* dicoRegTmp = cfg->getDicoRegTmp();
 	  
 	  // MODIFICATION
+	  
 	  // Si c'est un registre/variable :
 	  // On cherche l'offset du parametre, et apres on y ajoute le (%rbp).
 	  // Si c'est une constante :
 	  // On ajoute un $ devant.
-	  // && parametre1[1] == 'r'
-
-
-
+	  
 	  if(parametre1[0] == '!' ) 
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre1)->second;
 		int varOffset = variableIR->getOffset();
-		parametre1 = to_string(varOffset)+"(%rbp)";
+		parametre1 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre1[0])) // Si c'est un entier
 	  {
@@ -82,56 +108,135 @@ string IRInstr::genererAssembleur() {
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre2)->second;
 		int varOffset = variableIR->getOffset();
+		cout << endl;
 		// to_string est dans le C++11 sinon NumberToString
-		parametre2 = to_string(varOffset)+"(%rbp)";
+		parametre2 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre2[0]))
 	  {
 		  parametre2 = "$"+parametre2;
 	  }
+
 	  
 	  if(parametre3[0] == '!') 
 	  {
 		IRVar* variableIR = dicoRegTmp->find(parametre3)->second;
 		int varOffset = variableIR->getOffset();		
 		// to_string est dans le C++11 sinon NumberToString
-		parametre3 = to_string(varOffset)+"(%rbp)";
+		parametre3 = "-"+to_string(varOffset)+"(%rbp)";
 	  }
 	  else if(isdigit(parametre3[0]))
 	  {
 		  parametre3 = "$"+parametre3;
 	  }
 	  
+	  if(parametre4[0] == '!') 
+	  {
+		IRVar* variableIR = dicoRegTmp->find(parametre4)->second;
+		int varOffset = variableIR->getOffset();		
+		// to_string est dans le C++11 sinon NumberToString
+		parametre4 = "-"+to_string(varOffset)+"(%rbp)";
+	  }
+	  else if(isdigit(parametre4[0]))
+	  {
+		  parametre4 = "$"+parametre4;
+	  }
+	  
+	  if(parametre5[0] == '!') 
+	  {
+		IRVar* variableIR = dicoRegTmp->find(parametre5)->second;
+		int varOffset = variableIR->getOffset();		
+		// to_string est dans le C++11 sinon NumberToString
+		parametre5 = "-"+to_string(varOffset)+"(%rbp)";
+	  }
+	  else if(isdigit(parametre5[0]))
+	  {
+		  parametre5 = "$"+parametre5;
+	  }
+	  
+	  if(parametre6[0] == '!') 
+	  {
+		IRVar* variableIR = dicoRegTmp->find(parametre6)->second;
+		int varOffset = variableIR->getOffset();		
+		// to_string est dans le C++11 sinon NumberToString
+		parametre6 = "-"+to_string(varOffset)+"(%rbp)";
+	  }
+	  else if(isdigit(parametre6[0]))
+	  {
+		  parametre6 = "$"+parametre3;
+	  }
+	  
+	  if(parametre7[0] == '!') 
+	  {
+		IRVar* variableIR = dicoRegTmp->find(parametre7)->second;
+		int varOffset = variableIR->getOffset();		
+		// to_string est dans le C++11 sinon NumberToString
+		parametre7 = "-"+to_string(varOffset)+"(%rbp)";
+	  }
+	  else if(isdigit(parametre7[0]))
+	  {
+		  parametre7 = "$"+parametre7;
+	  }
+	  
+	  if(parametre8[0] == '!') 
+	  {
+		IRVar* variableIR = dicoRegTmp->find(parametre8)->second;
+		int varOffset = variableIR->getOffset();		
+		// to_string est dans le C++11 sinon NumberToString
+		parametre8 = "-"+to_string(varOffset)+"(%rbp)";
+	  }
+	  else if(isdigit(parametre8[0]))
+	  {
+		  parametre8 = "$"+parametre8;
+	  }
+	  
 	  
 	  switch(mnemoniqueAction) {
 		case LDCONST :
-		  codeAssembleur += "    movq   "+ parametre2 +", "+parametre1+"\r\n";
+		  //codeAssembleur += "    LDCONST\r\n";
+		  codeAssembleur += "    movq   "+ parametre2 +", "+ parametre1 +"\r\n";
 		  break;
 		  
 		case WMEM :
+		//codeAssembleur += "    WMEM\r\n";
 		  codeAssembleur += "    movq    "+ parametre2 +", %rax\r\n";
 		  codeAssembleur += "    movq    %rax, "+ parametre1 +"\r\n";
 		  break;
-		  
+		
+		case WMEM_SR :
+		//codeAssembleur += "    WMEM SR\r\n";
+		  codeAssembleur += "    mov    "+parametre2+", "+parametre1+"\r\n";
+		  break;
+
 		case RMEM :
-		  codeAssembleur += "    movq    "+ parametre1 +", %rax\r\n";
-		  codeAssembleur += "    movq    "+ parametre2 +", %r10\r\n";
-		  codeAssembleur += "    movq    %r10, (%rax)\r\n";
+		//codeAssembleur += "    RMEM\r\n";
+		  if(parametre1 !="-0(%rbp)"){ codeAssembleur += "    movq    "+ parametre1 +", %rax\r\n"; }
+		  codeAssembleur += "    movq    "+ parametre2 +", %rdi\r\n";
+		  codeAssembleur += "    movq    %rdi, %rax\r\n";
 		  break;
 		  
 		case CALL :
-		  codeAssembleur += "    call   "+ parametre1 +"\r\n";
-		  break;
+		//codeAssembleur += "    CALL\r\n";
+			if(parametre3 != "") { codeAssembleur += "    mov    "+parametre3+", %rdi \r\n"; }
+			if(parametre4 != "") { codeAssembleur += "    mov    "+parametre4+", %rsi \r\n"; }
+			if(parametre5 != "") { codeAssembleur += "    mov    "+parametre5+", %rdx \r\n"; }
+			if(parametre6 != "") { codeAssembleur += "    mov    "+parametre6+", %rcx \r\n"; }
+			if(parametre7 != "") { codeAssembleur += "    mov    "+parametre7+", %r8 \r\n"; }
+			if(parametre8 != "") { codeAssembleur += "    mov    "+parametre8+", %r9 \r\n"; }
+			codeAssembleur += "    call   "+ parametre1 +"\r\n";
+			break;
 		  
+		case NOT_ :
+			cerr << "IRInstr.cpp : NOT : Assembleur TODO" << endl;
+			break;
+
 		case ADD :
+		//codeAssembleur += "    ADD\r\n";
 		  codeAssembleur += "    movq    "+ parametre2 +", %rax\r\n";
 		  codeAssembleur += "    addq    "+ parametre3 +", %rax\r\n";
 		  codeAssembleur += "    movq    %rax, "+ parametre1 +"\r\n";
 		  break;
 		  
-		  
-		/* 
-		// les deux sont fait pour la suite
 		case SUB :
 		  codeAssembleur += "    movq    "+ parametre2 +", %rax\r\n";
 		  codeAssembleur += "    subq    "+ parametre3 +", %rax\r\n";
@@ -143,8 +248,87 @@ string IRInstr::genererAssembleur() {
 		  codeAssembleur += "    imul   "+ parametre3 +", %rax\r\n";
 		  codeAssembleur += "    movq    %rax, "+ parametre1 +"\r\n";
 		  break;
-		 */ 
+
+		case DIV_ :
+			cerr << "IRInstr.cpp : DIV : Assembleur TODO" << endl;
+			break;
+		
+		case MOD :
+			cerr << "IRInstr.cpp : MOD : Assembleur TODO" << endl;
+			break;
+
+		case CMP_EQ :
+		  codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
+		  codeAssembleur += "    xor    "+parametre3+", %rax\r\n"; // bit a 1 si different, bit a 0 si egal.
+		  codeAssembleur += "    cmpq   $0, %rax \r\n"; // Est ce que Rax est a 0, si c'est a 0 c'est egal
+		  codeAssembleur += "    sete   %al \r\n";   // SETE = Set byte if equal ; AL is the lower 8 bits : Tous les bits de al passe a 1 si ils sont egaux
+		  codeAssembleur += "    movzbq %al, %rax \r\n"; // MOV, zero extend, Byte to Long : On étend ça a tout le %rax.
+		  codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
+		  break;
 		  
+		case CMP_LT :
+		  codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
+		  codeAssembleur += "    cmp    "+parametre3+", %rax \r\n";
+		  codeAssembleur += "    setl   %al  \r\n";  // SETL = Set byte if less
+		  codeAssembleur += "    movzbq %al, %rax \r\n";
+		  codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
+		  break;
+		  
+		case CMP_LE :
+		  codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
+		  codeAssembleur += "    cmp    "+parametre3+", %rax \r\n";
+		  codeAssembleur += "    setle   %al  \r\n"; // SETLE  = Set byte if less or equal 
+		  codeAssembleur += "    movzbq %al, %rax \r\n";
+		  codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
+		  break;
+
+		case CMP_GE :
+			codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
+		    codeAssembleur += "    cmp    "+parametre3+", %rax \r\n";
+		    codeAssembleur += "    setge   %al  \r\n"; // SETGE  = Set byte if greater or equal 
+		    codeAssembleur += "    movzbq %al, %rax \r\n";
+		    codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
+			cerr << "IRInstr.cpp : CMP_GE : Assembleur TODO" << endl;
+			break; 
+
+		case CMP_GT :
+			codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
+		    codeAssembleur += "    cmp    "+parametre3+", %rax \r\n";
+		    codeAssembleur += "    setg   %al  \r\n"; // SETG  = Set byte if greater
+		    codeAssembleur += "    movzbq %al, %rax \r\n";
+		    codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
+			cerr << "IRInstr.cpp : CMP_GT : Assembleur TODO" << endl;
+			break; 
+
+		case CMP_DIFF :
+			codeAssembleur += "    movq    "+parametre2+", %rax \r\n";
+		  	codeAssembleur += "    xor    "+parametre3+", %rax\r\n"; // bit a 1 si different, bit a 0 si egal.
+		  	codeAssembleur += "    cmpq   $0, %rax \r\n"; // Est ce que Rax est a 0, si c'est a 0 c'est egal
+		  	codeAssembleur += "    setne   %al \r\n";   // SETne = Set byte if not equal ; AL is the lower 8 bits : Tous les bits de al passe a 1 si ils sont egaux
+		  	codeAssembleur += "    movzbq %al, %rax \r\n"; // MOV, zero extend, Byte to Long : On étend ça a tout le %rax.
+		  	codeAssembleur += "    movq    %rax, "+parametre1+" \r\n";
+			cerr << "IRInstr.cpp : CMP_DIFF : Assembleur TODO" << endl;
+			break;
+
+		case CMP_AND :
+			cerr << "IRInstr.cpp : CMP_AND : Assembleur TODO" << endl;
+			break;
+
+		case CMP_OR :
+			cerr << "IRInstr.cpp : CMP_OR : Assembleur TODO" << endl;
+			break;
+
+		case IF_ : // instruction apres la condition de test
+			codeAssembleur += "    cmpq    $1, "+parametre2+" \r\n";
+			codeAssembleur += "    jne " + parametre1 + "\r\n";
+			break;
+
+		case THEN_ :
+			codeAssembleur += "    jmp " + parametre1 + "\r\n";
+			break;
+		 
+		case WHILE_ :
+			codeAssembleur += "    jge " + parametre1 + "\r\n";
 	  }
 	  
 	return codeAssembleur;
@@ -154,11 +338,7 @@ string IRInstr::genererAssembleur() {
 
 
 // GETTER / SETTER
-/*
-CFG* IRInstr::getCFG() {
-    return cfg;
-}
-*/
+
 IRInstr::Mnemonique IRInstr::getMnemonique() {
   return this->mnemoniqueAction;
 }

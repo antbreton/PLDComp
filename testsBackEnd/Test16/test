@@ -1,0 +1,26 @@
+void main (){
+	int32_t a;
+	int32_t b;
+	int32_t c;
+
+	a = 2;
+	b = 3;
+	c = 4;
+	if(a == 2 || b == 4) {
+	    putchar('V');
+	} else {
+	    putchar('F');
+	}
+
+	if(a == 8 || c == 3) {
+        putchar('V');
+    } else {
+        putchar('F');
+    }
+
+    if(a == 2 || c == 4) {
+        putchar('V');
+    } else {
+        putchar('F');
+    }
+}

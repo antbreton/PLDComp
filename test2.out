@@ -1,7 +1,0 @@
-PROGRAMME - tableSymb size : 0
-	FONCTION
-	INT32 main SIZE : 2  
-BEGIN_BLOC - nb instr : 0 - tableSymb size : 1
-END_BLOC
-END_PROGRAMME
-Résutlat : 0

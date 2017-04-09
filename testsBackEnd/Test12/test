@@ -1,0 +1,9 @@
+void main (){
+	int32_t a;
+	int32_t b;
+	b = 3;
+
+	a = ( 42 + b ) * 2 + 1;
+    putchar(a);
+
+}

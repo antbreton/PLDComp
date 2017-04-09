@@ -1,0 +1,7 @@
+void main() {
+	char f;
+	f = 'q';
+	char g;
+	g = 'k';
+	g = f;
+}

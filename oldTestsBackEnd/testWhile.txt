@@ -1,0 +1,10 @@
+void main(){
+	int32_t a;
+	a=7;
+	putchar('b');
+	while(a<10)
+	{
+		putchar('z');
+		a = a+1;
+	}
+}

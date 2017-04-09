@@ -1,0 +1,8 @@
+void main(){
+char a,b,c;
+a='M';
+b=1+a+1;
+c=b+1;
+putchar(b);
+putchar(c);
+}
