@@ -1,10 +1,10 @@
-[a:0x7f82df4020d0, c:0x7f82df500b40 ]
-[a:0x7f82df4020d0, c:0x7f82df4020b0 ]
+[a:0x7f8598c02c30, c:0x7f8598c02bf0 ]
+[a:0x7f8598c02c30, c:0x7f8598c02c10 ]
 getid
-[a:0x7f82df5009b0, c:0x7f82df500a90 ]
+[a:0x7f8598c02910, c:0x7f8598c02b40 ]
 getid
 getid
-[a:0x7f82df5009b0, c:0x7f82df402370 ]
+[a:0x7f8598c02910, c:0x7f8598c02ed0 ]
 %%%Frontend%%%
 
 
@@ -84,7 +84,6 @@ myFunc:
     movq    %rsp, %rbp 
     mov    %rdi, -8(%rbp) 
 
-myFunc:
 
     leave
     ret

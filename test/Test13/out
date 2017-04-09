@@ -1,8 +1,8 @@
 getid
 getid
-[a:0x7ff27cc02910, c:0x7ff27cc02be0 ]
-[a:0x7ff27cc02910, c:0x7ff27cc02da0 ]
-[a:0x7ff27cc02910, c:0x7ff27cc02f20 ]
+[a:0x7fc147501dc0, c:0x7fc147502090 ]
+[a:0x7fc147501dc0, c:0x7fc147400a70 ]
+[a:0x7fc147501dc0, c:0x7fc147400bf0 ]
 %%%Frontend%%%
 
 
@@ -39,6 +39,59 @@ getid
 NI IF NI ELSE
 CREATION BLOC : bbb
 BasicBlock::listeInstructionsAST->size() 1
+IR::genererIR
+CFG::genererIR
+BB:genererIR()::listeInstructionsAST->size()0
+CFG::genererIR
+BB:genererIR()::listeInstructionsAST->size()1
+------ FOR ----------  aaa
+------ FIN FOR ----------
+CFG::genererIR
+BB:genererIR()::listeInstructionsAST->size()1
+------ FOR ----------  bbb
+------ FIN FOR ----------
+CFG::genererIR
+CFG::genererIR
+
+GEN_PROLOGUE
 getid
-NI IF NI ELSE
-CREATION BLOC : ccc
+getid
+
+GEN_PROLOGUE
+
+GEN_PROLOGUE
+.text        
+.globl main 
+.type main, @function
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    mov    %rdi, -16(%rbp) 
+    mov    %rsi, -8(%rbp) 
+
+
+    leave
+    ret
+
+aaa:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+
+
+    leave
+    ret
+
+bbb:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme

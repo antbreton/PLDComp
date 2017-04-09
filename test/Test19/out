@@ -1,12 +1,12 @@
 getid
-[a:0x7fa042c02910, c:0x7fa042c02b40 ]
+[a:0x7fbc55e00cb0, c:0x7fbc55d01c50 ]
 getid
-[a:0x7fa042d00300, c:0x7fa042d002a0 ]
-[a:0x7fa042d00300, c:0x7fa042d002e0 ]
-[a:0x7fa042d00060, c:0x7fa042d001f0  bloc ]
+[a:0x7fbc55d021e0, c:0x7fbc55d02180 ]
+[a:0x7fbc55d021e0, c:0x7fbc55d021c0 ]
+[a:0x7fbc55d01f50, c:0x7fbc55d020d0  bloc ]
 getid
 getid
-[a:0x7fa042c02910, c:0x7fa042d00060 ]
+[a:0x7fbc55e00cb0, c:0x7fbc55d01f50 ]
 %%%Frontend%%%
 
 
@@ -72,7 +72,6 @@ fonc:
     subq    $16, %rsp 
     mov    %rdi, -8(%rbp) 
 
-fonc:
     movq   $1, -16(%rbp)
 
     leave

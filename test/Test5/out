@@ -1,9 +1,9 @@
 getid
-[a:0x7ff688500080, c:0x7ff688500040 ]
-[a:0x7ff688500080, c:0x7ff688500060 ]
+[a:0x7f8e63500710, c:0x7f8e635006d0 ]
+[a:0x7f8e63500710, c:0x7f8e635006f0 ]
 getid
 getid
-[a:0x7ff688402910, c:0x7ff688402d40 ]
+[a:0x7f8e63500120, c:0x7f8e63500550 ]
 %%%Frontend%%%
 
 
@@ -20,5 +20,48 @@ END_PROGRAMME
 getid
 getid
 getid
+getid
 NI IF NI ELSE
-CREATION BLOC : fonction1
+CREATION BLOC : main
+BasicBlock::listeInstructionsAST->size() 1
+getid
+getid
+getid
+IR::genererIR
+CFG::genererIR
+CFG::genererIR
+BB:genererIR()::listeInstructionsAST->size()1
+------ FOR ----------  main
+------ IF ----------
+IR Val
+IR Val
+------ FIN IF ----------
+------ FIN FOR ----------
+
+GEN_PROLOGUE
+getid
+getid
+
+.text        
+.globl main 
+.type main, @function
+
+main:
+
+    pushq   %rbp 
+    movq    %rsp, %rbp 
+    subq    $40, %rsp 
+    mov    %rdi, -16(%rbp) 
+    mov    %rsi, -8(%rbp) 
+
+    movq   $1, -24(%rbp)
+    movq   $1, -32(%rbp)
+    movq    -24(%rbp), %rax
+    addq    -32(%rbp), %rax
+    movq    %rax, -40(%rbp)
+
+    leave
+    ret
+
+
+Fin de l'analyse du programme

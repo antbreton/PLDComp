@@ -598,6 +598,7 @@ string Expression::construireIR(CFG* cfg) {
 		// Si ce n'est pas une variables mappée et que c'est pas un parametre, on ajoute une variable mappee
 		if(!blocCourant->estVarMappee(nomVariable) && !blocCourant->getCFG()->estUnParametre(nomVariable))
 		{
+			cout << "VALEUR NON MAPPEE : " << nomVariable << endl;
 			blocCourant->ajouterVariableMappee(cfg, nomVariable);
 		}
 		
@@ -810,6 +811,7 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 			instrAstAfterBB->push_back(*it);
 		}
 		afterIfBB->setListeInstructionAST(instrAstAfterBB);
+		afterIfBB->setMapVarReg(testBB->getMapVarReg());
 
 		//Gestion des successeurs
 		afterIfBB->setSuccCond(testBB->getSuccCond());
@@ -876,6 +878,7 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 			instrAstAfterBB->push_back(*it);
 		}
 		afterWhileBB->setListeInstructionAST(instrAstAfterBB);
+
 
 
 		//Gestion des successeurs
