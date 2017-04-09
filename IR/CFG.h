@@ -42,6 +42,14 @@ class CFG {
 		list<BasicBlock* > getListeBasicBlocks() { return listeBasicBlocks;};
 		Fonction* getFonction() {return fonctionDuCFG;};
 
+		int getNbBlocIF() { return this->nbBlocIF; }
+		int getNbBlocELSE() { return this->nbBlocELSE; }
+		int getNbBlocAfter() { return this->nbBlocAfter; }
+
+		void incrementerNbBlocIF() { this->nbBlocIF++; }
+		void incrementerNbBlocELSE() { this->nbBlocELSE++; }
+		void incrementerNbBlocAfter() { this->nbBlocAfter++; }
+
 	private:
 		std::list<BasicBlock* > listeBasicBlocks;
 		Fonction* fonctionDuCFG;
@@ -53,6 +61,9 @@ class CFG {
 		BasicBlock* blocCourant;
 		int taille;
 		int taillePileParam;
+		int nbBlocIF;
+		int nbBlocELSE;
+		int nbBlocAfter;
 
 
 };

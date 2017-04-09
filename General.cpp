@@ -761,12 +761,16 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 		//Creation de l'IR de jne si la condition n'est pas respecte : 
 		//vers le blocElse ou vers le blocAfter si pas de Else
 		vector<std::string> params;
-		string labelAfter = "blocAfter";
-		string labelElse = "blocELSE";
+		string labelAfter = "blocAfter_" + to_string(cfg->getNbBlocAfter());
+		string labelElse = "blocELSE_" + to_string(cfg->getNbBlocELSE());
+		cfg->incrementerNbBlocELSE();
+		cfg->incrementerNbBlocAfter();
+		
+		
+
 		if(blocPereIf->blocElse != nullptr)
 		{
 			params.push_back(labelElse);
-
 		} else 
 		{
 			params.push_back(labelAfter);
@@ -778,7 +782,8 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 
 		//Creation du BB Then 
 		Bloc* bIf = dynamic_cast<Bloc *>(blocPereIf->instrv);
-		BasicBlock* thenBB = new BasicBlock(cfg,bIf,"blocIF");
+		string blocIF = "blocIF_" + to_string(cfg->getNbBlocIF());
+		BasicBlock* thenBB = new BasicBlock(cfg,bIf,blocIF);
 		vector<std::string> params2;
 		//--Ajout de l'instruction du jmp
 		params2.push_back(labelAfter);
@@ -826,6 +831,8 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 
 		
 		cfg->setBlockCourant(afterIfBB);
+
+		cfg->incrementerNbBlocIF();
 
 		cerr << "Fin IR : BlocIf" << endl;
 	} 

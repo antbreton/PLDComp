@@ -38,6 +38,11 @@ CFG::CFG(Fonction* fonction)
 		
 		nbRegVirtuels = 0;
 		calculeTaille();
+
+		//Compteurs pour les labels
+		this->nbBlocIF = 0;
+		this->nbBlocELSE = 0;
+		this->nbBlocAfter = 0;
 	
 	}
 
