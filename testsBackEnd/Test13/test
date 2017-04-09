@@ -1,0 +1,13 @@
+void main (){
+	int32_t a;
+	int32_t b;
+	int32_c;
+	b = 2;
+	a = ( 78 + b ) / 2 + 1; // 41
+	c = ( 78 + 3 ) / 2 + 1; // 41 car cast en int
+
+
+    putchar(a);
+    putchar(c);
+
+}

@@ -1,0 +1,25 @@
+void main (){
+	int32_t a;
+    int32_t b;
+    b = 3;
+	a = 2;
+
+	if(a != 2) {
+	    putchar('V');
+	} else {
+	    putchar('F');
+	}
+
+	if(a != 1) {
+        putchar('V');
+    } else {
+        putchar('F');
+    }
+
+    if(a != b) {
+        putchar('V');
+    } else {
+        putchar('F');
+    }
+
+}

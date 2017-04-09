@@ -1,0 +1,14 @@
+void main (){
+	int32_t a;
+	int32_t b;
+	int32_c;
+	b = 2;
+	a = ( 12 + b ) * 2 + 1; // 41
+	c = ( 12 + b ) * 2 ; // 41 car cast en int
+    a = (a % 2) + 40;
+    b = (b % 2) + 40;
+
+    putchar(a);
+    putchar(c);
+
+}
