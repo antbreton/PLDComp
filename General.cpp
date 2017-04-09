@@ -285,7 +285,7 @@ string Expression::construireIR(CFG* cfg) {
 
 		cerr << "Fin IR : OperateurInf" << endl;
 		
-		return regGauche;
+		return regResultat;
 
 	} else if(OperateurSupEgal* opeSupEgal = dynamic_cast<OperateurSupEgal*>(this)) {
 		
@@ -336,7 +336,7 @@ string Expression::construireIR(CFG* cfg) {
 
 		cerr << "Fin IR : OperateurInfEgal" << endl;
 		
-		return regGauche;
+		return regResultat;
 
 	} else if(OperateurEgal* opeEgal = dynamic_cast<OperateurEgal*>(this)) {
 		cerr << "IR : OperateurEgal" << endl;
@@ -361,7 +361,7 @@ string Expression::construireIR(CFG* cfg) {
 
 		cerr << "Fin IR : OperateurEgal" << endl;
 		
-        return regGauche;
+        return regResultat;
         
 	} else if(OperateurDifferent* opeDiff = dynamic_cast<OperateurDifferent*>(this)) {
 		
@@ -594,7 +594,7 @@ string Expression::construireIR(CFG* cfg) {
 		BasicBlock* blocCourant = cfg->getBlockCourant();
 		string nomVariable = *identifiant->getId();
 		string reg = "";
-		
+		cout << "NON VARIABLE" << nomVariable << endl;
 		// Si ce n'est pas une variables mappée et que c'est pas un parametre, on ajoute une variable mappee
 		if(!blocCourant->estVarMappee(nomVariable) && !blocCourant->getCFG()->estUnParametre(nomVariable))
 		{
@@ -756,7 +756,7 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 		testBB->bbreak = true;
 
 		//Evaluation la condition de test
-		blocPereIf->exprCondition->construireIR(cfg);
+		string regSortie = blocPereIf->exprCondition->construireIR(cfg);
 
 		//Creation de l'IR de jne si la condition n'est pas respecte : 
 		//vers le blocElse ou vers le blocAfter si pas de Else
@@ -775,6 +775,7 @@ void StructureControle::construireIR(CFG* cfg, vector<Instruction*>::iterator it
 		{
 			params.push_back(labelAfter);
 		}
+		params.push_back(regSortie);
 		IRInstr* nouvelleInstr = new IRInstr(IRInstr::Mnemonique::IF_, testBB, params);
 		testBB->ajouterInstrIRJump(nouvelleInstr);
 		

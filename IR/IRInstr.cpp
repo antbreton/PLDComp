@@ -319,6 +319,7 @@ string IRInstr::genererAssembleur() {
 			break;
 
 		case IF_ : // instruction apres la condition de test
+			codeAssembleur += "    cmpq    $1, "+parametre2+" \r\n";
 			codeAssembleur += "    jne " + parametre1 + "\r\n";
 			break;
 
