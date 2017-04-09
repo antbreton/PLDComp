@@ -99,7 +99,7 @@ string BasicBlock::genererAssembleur() {
     vector<IRInstr *>::iterator ite = listeInstructionsIR->begin();
 
 
-	if (label.compare("main")) // TODO etendre a toute fonciton
+	if (label.compare(cfg->getListeBasicBlocks().front()->getLabel())) 
     {
 		codeAssembleur = label + ":\r\n";
 	}

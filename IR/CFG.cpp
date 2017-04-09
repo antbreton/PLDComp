@@ -10,33 +10,36 @@ CFG::CFG(Fonction* fonction)
 	this->dicoRegTmp = new map<string, IRVar*>();
 	Bloc* bloc = fonctionDuCFG->getBloc();
 
+	if(bloc != NULL) { 
 	
-	// ***************
-	// Ajout des paramètres dans les variables
-	// ****************
-	
-	vector<Variable*>* params = fonctionDuCFG->getVariables();
-	vector<Variable *>::iterator ite = params->begin() ;
-	
-	while ( ite != params->end() ) 
-	{
-		Variable *v = (*ite);
-		IRVar* var = new IRVar(v->getType(), v->getIdentifiant(), 0);
-		this->addVariable(var);
-		ite++;
-	}
-	
-	// ***************
-	
-	// On recupere la taille total des parametres
-	taillePileParam = this->giveOffsets();
+		// ***************
+		// Ajout des paramètres dans les variables
+		// ****************
 		
-	BasicBlock* newBasicBlock = new BasicBlock(this, bloc, fonctionDuCFG->getIdentifiant());
-	this->addBasicBlock(newBasicBlock);
+		vector<Variable*>* params = fonctionDuCFG->getVariables();
+		vector<Variable *>::iterator ite = params->begin() ;
+		
+		while ( ite != params->end() ) 
+		{
+			Variable *v = (*ite);
+			IRVar* var = new IRVar(v->getType(), v->getIdentifiant(), 0);
+			this->addVariable(var);
+			ite++;
+		}
+		
+		// ***************
+		
+		// On recupere la taille total des parametres
+		taillePileParam = this->giveOffsets();
+			
+		BasicBlock* newBasicBlock = new BasicBlock(this, bloc, fonctionDuCFG->getIdentifiant());
+		this->addBasicBlock(newBasicBlock);
+		
+		
+		nbRegVirtuels = 0;
+		calculeTaille();
 	
-	
-	nbRegVirtuels = 0;
-	calculeTaille();
+	}
 
 }
 

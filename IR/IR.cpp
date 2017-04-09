@@ -12,7 +12,14 @@ IR::IR(Programme* programme)
 	vector<Fonction*> listeDeFonctions = programme->getFonctions();
 	
 	// On recupere le nom de la toute premiere fonction
-	premiereFctNom = listeDeFonctions[0]->getIdentifiant();
+	for(fonction = listeDeFonctions.begin() ; fonction != listeDeFonctions.end() ; ++fonction)
+	{
+		if((*fonction)->getBloc() != NULL)
+		{
+			premiereFctNom = (*fonction)->getIdentifiant();
+			break;
+		}
+	}
 	
 	for(fonction = listeDeFonctions.begin() ; fonction != listeDeFonctions.end() ; ++fonction)
 	{
@@ -58,7 +65,10 @@ string IR::genererAssembleur()
 		list<CFG*>::iterator ite;
 		for(ite=listeCFG.begin();ite!=listeCFG.end();ite++)
 		{
-		  codeAssembleur += (*ite)->genererAssembleur();
+			if((*ite)->getFonction()->getBloc() != NULL)
+			{
+				codeAssembleur += (*ite)->genererAssembleur();
+			}
 		}
 		
 		// Ecriture dans main.s

@@ -39,6 +39,8 @@ class CFG {
 		int giveOffsets();
 		bool estUnParametre(string nomVariable);
 		
+		list<BasicBlock* > getListeBasicBlocks() { return listeBasicBlocks;};
+		Fonction* getFonction() {return fonctionDuCFG;};
 
 	private:
 		std::list<BasicBlock* > listeBasicBlocks;
